@@ -1,0 +1,90 @@
+import "main.del";
+globalvar String[] LANG_STR;
+
+// index guide
+// 0 = show/hide stats
+// 1 = random hero
+// 2 = death info
+// 3 = kill streaks
+// 4 = stats
+// 5 = misc
+
+rule: "Set Language"
+{
+    if (s_lang == 0)
+    {
+        LANG_STR[0] = ["Hold * to hide stats", // 0
+                       "Hold * to show stats" // 1
+                       ];
+
+        LANG_STR[1] = ["Random Hero (Hold * +", /* 0 */ "*)", // 1
+                       "Random hero spawning enabled!", // 2
+                       "Random hero spawning disabled!" // 3
+                       ];
+
+        LANG_STR[2] = ["Press * to respawn instantly", // 0
+                       "Use normal hero select to change hero" // 1
+                       ];
+
+        LANG_STR[3] = ["Streak:", // 0
+                       "* player killstreak!", // 1
+                       "* player killstreak! Your personal best!", // 2
+                       "* player killstreak! The lobby's best!", // 3
+                       "* got a", /* 4 */ " * player killstreak! The lobby's best!", // 5
+                       "(You)" // 6
+                       ];
+        
+        LANG_STR[4] = ["KDR:", // 0
+                       "DMG Ratio:", // 1
+                       "DMG Out:", // 2
+                       "DMG In:", // 3
+                       "Accuracy:", // 4
+                       "Crit Accuracy:", // 5
+                       "Scope Accuracy:", // 6
+                       "Scope Crit Accuracy:", // 7
+                       "Environment Kills:", // 8
+                       "Healing:", // 9
+                       "Best Streak:" // 10
+                       ];
+
+        LANG_STR[5] = " was kicked for not selecting a hero after 5 minutes";
+    }
+    else if (s_lang == 1)
+    {
+        LANG_STR[0] = ["*を押す統計を非表示する", // 0
+                       "*を押す統計を見せる" // 1
+                       ];
+
+        LANG_STR[1] = ["ランダムのヒーロー(*+", /* 0 */  "*を押す)", // 1
+                       "ランダムヒーローのを点けた！", // 2
+                       "ランダムヒーローのを消した！" // 3
+                       ];
+
+        LANG_STR[2] = ["*を押す直ぐにルスポーンする", // 0
+                       "普通ヒーローセレクトで変更する" // 1
+                       ];
+
+        LANG_STR[3] = ["ストリーク:", // 0
+                       "*人キルストリーク！", // 1
+                       "*人キルストリーク！あなたのベスト記録！", // 2
+                       "* プレヤーのキルストリーク！このロビーで最高！", // 3
+                       "*は", /* 4 */ "*人キルストリークを得ました！このロビーで最高！", // 5
+                       "(あなた)"
+                       ];
+
+        LANG_STR[4] = ["KDR：", // 0
+                       "DMG Ratio：", // 1
+                       "DMG Out：", // 2
+                       "DMG In：", // 3
+                       "アキュラシー：", // 4
+                       "CRITアキュラシー：", // 5
+                       "スコープアキュラシー：", // 6
+                       "スコープCRITアキュラシー：", // 7
+                       "環境のキル：", // 8
+                       "ヒーリング：", // 9
+                       "最高ストリーク：" // 10
+                       ];
+
+        LANG_STR[5] = "は5分にヒーローを選択しなかったためにキックされる";
+    }
+}

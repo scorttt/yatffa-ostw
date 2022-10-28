@@ -1,0 +1,46 @@
+import "main.del";
+playervar Number heal_amt;
+playervar Any hot;
+playervar Boolean healing;
+rule: "Heal On Kill"
+Event.OnFinalBlow
+if (s_heal_on_kill) 
+if (!IsDuplicating()) 
+if (Health() < MaxHealth())
+{
+    healing = true;
+    heal_amt = Max((MaxHealth(Victim()) * s_heal), 200 * s_heal);
+
+    StopHealOverTime(hot);
+
+    StartHealOverTime(Attacker(), null, s_hot_time, heal_amt / s_hot_time);
+    hot = LastHealOverTime();
+
+    Wait(s_hot_time, WaitBehavior.RestartWhenTrue);
+
+    StopHealOverTime(hot);
+    healing = false;
+}
+
+rule: "Player Took Damage"
+Event.OnDamageTaken
+if (s_hot_interrupt)
+if (healing)
+if (IsAlive())
+if (IsAlive(Attacker()))
+if (EventDamage() >= 2) // minimum damage to stop hot
+{
+    StopHealOverTime(hot);
+    healing = false;
+}
+
+rule: "Player Took Health Pack"
+Event.OnHealingTaken
+if (s_hot_interrupt)
+if (healing)
+if (IsAlive())
+if (EventWasHealthPack())
+{
+    StopHealOverTime(hot);
+    healing = false;
+}

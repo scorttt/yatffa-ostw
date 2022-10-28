@@ -1,0 +1,233 @@
+import "settings.json";
+import "../workshop-scripts/macros.del";
+
+import "lang.del";
+import "hok.del";
+import "hud.del";
+import "debug.del";
+
+globalvar Hero[] critexc_arr;
+globalvar Hero[] scope_arr;
+globalvar Hero[] scope_crit_arr;
+globalvar Hero[] enviro_arr;
+globalvar String[] s_match_time;
+globalvar Number match_time;
+globalvar Boolean s_player_stats;
+globalvar Boolean s_killstreak_hud;
+globalvar Boolean s_heal_on_kill;
+globalvar Number s_hot_time;
+globalvar Boolean s_hot_interrupt;
+globalvar Boolean s_instant_respawn;
+globalvar Boolean s_score_win;
+globalvar Boolean s_auto_restart;
+globalvar Number s_score;
+globalvar Number s_heal;
+globalvar Number s_lang;
+
+playervar Boolean spawn_random;
+
+Vector txt_location(in Number X, in Number Y): 
+Update(EyePosition(local) + 100 * 
+          (X * WorldVectorOf(Right(), local, LocalVector.Rotation) + // X
+          (Y // Y
+          - 0.200) * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) +
+          3 * Facing(local)));
+
+rule: "v1.2.1.102822 | Created by scort#12211" 
+{
+    DisableInspectorRecording(); 
+}
+
+rule: "Initial Global"
+{
+    critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
+    scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
+    scope_crit_arr = [Hero.Widowmaker, Hero.Ashe];
+    enviro_arr = [Hero.Doomfist, Hero.Pharah, Hero.Lucio, Hero.WreckingBall, Hero.Orisa, Hero.Brigitte, Hero.Junkrat, Hero.Winston, Hero.Sigma, Hero.Zenyatta, Hero.JunkerQueen];
+
+    s_lang = WorkshopSettingCombo("Settings", "Lobby Language", 0, ["English", "日本語"], 0);
+
+    s_match_time = WorkshopSettingCombo("Settings", "Match Time", 2, 
+    ["15 minutes", "30 minutes", "45 minutes", 
+    "1 hour", "1 hour, 15 minutes", "1 hour, 30 minutes", "1 hour, 45 minutes",
+    "2 hours", "2 hours, 15 minutes", "2 hours, 30 minutes", "2 hours, 45 minutes",
+    "3 hours", "3 hours, 15 minutes", "3 hours, 30 minutes", "3 hours, 45 minutes",
+    "4 hours", "4 hours, 15 minutes"], 1);
+    match_time = ((s_match_time + 1) * 15);
+    t_left = match_time * 60;
+    t_left_yellow = t_left / 4;
+
+    s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
+    s_killstreak_hud = WorkshopSettingToggle("Settings", "Show Kill Streaks", true, 3);
+    s_player_stats = WorkshopSettingToggle("Settings", "Show Player Stats", true, 4);
+    s_auto_restart = WorkshopSettingToggle("Settings", "Automatically Restart Lobby After POTG", true, 6);
+
+    s_score_win = WorkshopSettingToggle("Score Win", "Enable Score Win Condition", true, 1);
+    s_score = WorkshopSettingInteger("Score Win", "Score to win", 75, 20, 2000, 2);
+
+    s_heal_on_kill = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 1);
+    s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
+    s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
+    s_heal = WorkshopSettingInteger("Heal On Kill", "Heal Percentage based on enemies max health", 40, 0, 100, 4) / 100;
+
+    Number credit = WorkshopSettingCombo("Credit", "Created by", 0, ["scort#11221", "saruyo (JP Localization)", "BXRXY", "Please credit!"], 1000);
+
+    SetMatchTime(10);
+}
+
+rule: "Initial Player Join"
+Event.OnPlayerJoin
+{
+    kill_streak = 0;
+    DisableGameModeHud();
+}
+
+rule: "Player Leave"
+Event.OnPlayerLeave
+{
+    kill_streak = 0;
+    best_streak = 0;
+
+    // Wait(0.5);
+    // strk_arr = SortedArray(all, best_streak);
+    // strk_arr = MappedArray(strk_arr, Curr().best_streak);
+    // bs_hero = HeroIconString(HeroOf());
+
+    // bs_ser = LastOf(strk_arr);
+    // bs_ser_usr = LastOf(SortedArray(all, Curr().best_streak));
+    // bs_ser_hero = bs_ser_usr.bs_hero;
+}
+
+rule: "Kick players who havent selected a hero"
+Event.OngoingPlayer
+if (!HasSpawned())
+{
+    # 5 minutes
+    WaitIfTrue(300);
+    SmallMessage(all, <"   <0><1>", player, LANG_STR[5]>);
+    Wait(1);
+    RemovePlayer(player);
+}
+
+rule: "Match Started"
+if (IsGameInProgress())
+{
+    DisableCompletion();
+    DisableAnnouncer();
+
+    t_running = true;
+    Wait(0.08);
+    SetMatchTime(0);
+}
+
+void EndMatch() globalvar "End Match Sub"
+{
+    t_running = false;
+    EnableCompletion();
+
+    if (s_auto_restart)
+    {
+        Wait(25);
+        RestartMatch();
+    }
+}
+
+rule: "Declare score win"
+if (s_score_win)
+if (IsTrueForAny(all, ScoreOf(Curr()) >= s_score))
+{
+    EndMatch();
+}
+
+rule: "Time End"
+if (t_left <= 0)
+{
+    EndMatch();
+}
+
+rule: "Respawn"
+Event.OngoingPlayer
+if (HasSpawned())
+if (IsAlive())
+{
+    AllowButton(player, Button.Interact);
+
+    if (spawn_random)
+    {
+        # remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
+        Hero prev_hero = HeroOf();
+        Hero[] hero_arr = AllowedHeroes() - prev_hero;
+
+        ForcePlayerHero(player, hero_arr.Random());
+        StopForcingHero();
+
+        # add the previous hero back to the hero array
+        hero_arr = AllowedHeroes() + prev_hero;
+    }
+
+    // workaround for characters spawning with one less hp
+    if (Health() != MaxHealth())
+        Heal(player, null, MaxHealth());
+
+    // tracer / sym
+    if (IsHero(Hero.Tracer) || IsHero(Hero.Symmetra))
+        SetAbilityCharge(player, Button.Ability1, 3);
+
+    // junkrat
+    if (IsHero(Hero.Junkrat))
+        SetAbilityCharge(player, Button.Ability1, 2);
+
+    // dva
+    if (IsHero(Hero.Dva))
+        SetAbilityResource(player, Button.SecondaryFire, 100);
+
+    // rein
+    if (IsHero(Hero.Reinhardt))
+        SetAbilityCharge(player, Button.Ability2, 2);
+
+    // pharah
+    if (IsHero(Hero.Pharah))
+        SetAbilityResource(player, Button.Jump, 100);
+
+    ResetHeroAvailability();
+
+    Wait(0.08);
+
+    SetAmmo(player, 0, MaxAmmo());
+    SetAmmo(player, 1, MaxAmmo());
+    SetAbilityCooldown(player, Button.Ability1, 0);
+    SetAbilityCooldown(player, Button.Ability2, 0);
+    SetAbilityCooldown(player, Button.PrimaryFire, 0);
+    SetAbilityCooldown(player, Button.SecondaryFire, 0);
+}
+
+rule: "Force Respawn"
+Event.OngoingPlayer
+if (s_instant_respawn)
+if (IsButtonHeld(player, Button.Interact))
+if (IsDead())
+{
+    Respawn();
+}
+
+rule: "Random Hero Toggle"
+Event.OngoingPlayer
+if (IsButtonHeld(player, Button.Crouch))
+if (IsButtonHeld(player, Button.Melee))
+{
+    WaitIfTrue(0.5);
+
+    spawn_random = !spawn_random;
+    if (spawn_random)
+    {
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), LANG_STR[1][2]>);
+    }
+    else
+    {
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), LANG_STR[1][3]>);
+
+        # unsure if these are necessary
+        ResetHeroAvailability();
+        StopForcingHero();
+    }
+}

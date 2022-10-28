@@ -1,0 +1,127 @@
+{
+    "Lobby": {
+      "Allow Players Who Are In Queue": true,
+      "Match Voice Chat": true,
+      "Map Rotation": "After A Game",
+      "Max FFA Players": 12,
+      "Max Spectators": 3,
+      "Return To Lobby": "Never"
+    },
+    "Modes": {
+      "All": {
+        "Game Mode Start": "Immediately",
+        "Hero Limit": "Off"
+      },
+      "Deathmatch": {
+        "Enabled Maps": ["Château Guillard"]
+    }
+  },
+  "Heroes": {
+    "General": {
+      "Enabled Heroes": [
+        "Ana",
+        "Ashe",
+        "Baptiste",
+        "Bastion",
+        "Doomfist",
+        "Genji",
+        "Hanzo",
+        "Junker Queen",
+        "Lúcio",
+        "Cassidy",
+        "Mei",
+        "Echo",
+        "Kiriko",
+        "Sombra",
+        "Pharah",
+        "Soldier: 76",
+        "Sojourn",
+        "Tracer",
+        "Torbjörn",
+        "Widowmaker",
+        "Zenyatta"
+      ],
+      "Ana": {
+        "Sleep Dart Cooldown Time": 80
+      },
+      "Cassidy": {
+        "Secondary Fire": false,
+        "Magnetic Grenade": false,
+        "Ultimate Ability (Deadeye)": false
+      },
+      "D.va": {
+        "Boosters": false,
+        "Defense Matrix": false,
+        "Micro Missiles": false,
+        "Spawn Without Mech": true,
+        "Ultimate Ability (Self-Destruct)": false
+      },
+      "Doomfist": {
+        "Health": 61.1111,
+        "Ultimate Ability (Meteor Strike)": false
+      },
+      "Baptiste": {
+        "Immortality Field": false
+      },
+      "Bastion": {
+        "Reconfigure": false,
+        "Ultimate Ability (Configuration: Artillery)": false
+      },
+      "Echo": {
+        "Ultimate Ability (Duplicate)": false
+      },
+      "Torbjörn": {
+        "Deploy Turret": false,
+        "Ultimate Ability (Molten Core)": false
+      },
+      "Mei": {
+        "No Ammunition Requirement": true,
+        "Cryo-Freeze": false,
+        "Ice Wall": false,
+        "Primary Fire": false,
+        "Ultimate Ability (Blizzard)": false
+      },
+      "Hanzo": {
+        "Ultimate Ability (Dragonstrike)": false
+      },
+      "Junker Queen": {
+        "Health": 70.5882,
+        "Commanding Shout": false,
+        "Carnage": false,
+        "Jagged Blade Cooldown Time": 75,
+        "Ultimate Ability (Rampage)": false
+      },
+      "Genji": {
+        "Ultimate Ability (Dragonblade)": false
+      },
+      "Sombra": {
+        "Hack": false,
+        "Stealth": false,
+        "Ultimate Ability (EMP)": false
+      },
+      "Soldier: 76": {
+        "Healing Dealt": 70,
+        "Ultimate Ability (Tactical Visor)": false
+      },
+      "Sojourn": {
+        "Disruptor Shot": false,
+        "Ultimate Ability (Overclock)": false
+      },
+      "Ashe": {
+        "Ultimate Ability (B.O.B.)": false,
+        "Dynamite": false
+      },
+      "Pharah": {
+        "Ultimate Ability (Barrage)": false
+      },
+      "Lúcio": {
+        "Healing Dealt": 20
+      },
+      "Kiriko": {
+        "Protection Suzu Cooldown Time": 115
+      }
+    }
+  },
+  "Mode Name": "<FGFF00FFFF>Tryhard FFA (YATFFA)",
+  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\nv1.2.0 | 10/24/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
+}
