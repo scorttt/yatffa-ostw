@@ -62,32 +62,28 @@ rule: "Global Hud Text"
 
         HeroOf(local), // 1
 
-        <"<0> <1>\n", LANG_STR[4][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
-
-        <"<0> <1>\n", LANG_STR[4][1], DamageDealt(local) / DamageTaken(local)>, // 3
-
-        <"<0> <1>\n", LANG_STR[4][2], DamageDealt(local)>, // 4
-
-        <"<0> <1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
-
-        <"<0> <1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
+        <"<0><1>\n", LANG_STR[4][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
+        <"<0><1>\n", LANG_STR[4][1], DamageDealt(local) / DamageTaken(local)>, // 3
+        <"<0><1>\n", LANG_STR[4][2], DamageDealt(local)>, // 4
+        <"<0><1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
+        <"<0><1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
 
         !ArrayContains(critexc_arr, HeroOf(local)) // 7
-            ? <"<0> <1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
+            ? <"<0><1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
 
         ArrayContains(scope_arr, HeroOf(local)) // 8
-            ? <"<0> <1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
+            ? <"<0><1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
 
         ArrayContains(scope_crit_arr, HeroOf(local)) // 9
-            ? <"<0> <1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
+            ? <"<0><1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
 
         EnvironmentalKills(local) != 0 || ArrayContains(enviro_arr, HeroOf(local)) // 10
-            ? <"<0> <1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
+            ? <"<0><1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
 
-        <"<0> <1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
+        <"<0><1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
 
         local.best_streak != 0 // 12
-            ? <" \n<0> <1>", LANG_STR[4][10], local.best_streak> : "">,
+            ? <" \n<0><1>", LANG_STR[4][10], local.best_streak> : "">,
 
         null, Location.Left, 0.1, Color.White, Color.White, Color.White, HudTextRev.VisibleToSortOrderAndString, Spectators: Spectators.DefaultVisibility);
     }

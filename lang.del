@@ -34,17 +34,17 @@ rule: "Set Language"
                        "(You)" // 6
                        ];
         
-        LANG_STR[4] = ["KDR:", // 0
-                       "DMG Ratio:", // 1
-                       "DMG Out:", // 2
-                       "DMG In:", // 3
-                       "Accuracy:", // 4
-                       "Crit Accuracy:", // 5
-                       "Scope Accuracy:", // 6
-                       "Scope Crit Accuracy:", // 7
-                       "Environment Kills:", // 8
-                       "Healing:", // 9
-                       "Best Streak:" // 10
+        LANG_STR[4] = ["KDR: ", // 0
+                       "DMG Ratio: ", // 1
+                       "DMG Out: ", // 2
+                       "DMG In: ", // 3
+                       "Accuracy: ", // 4
+                       "Crit Accuracy: ", // 5
+                       "Scope Accuracy: ", // 6
+                       "Scope Crit Accuracy: ", // 7
+                       "Environment Kills: ", // 8
+                       "Healing: ", // 9
+                       "Best Streak: " // 10
                        ];
 
         LANG_STR[5] = " was kicked for not selecting a hero after 5 minutes";
