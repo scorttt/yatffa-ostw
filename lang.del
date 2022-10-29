@@ -17,7 +17,7 @@ rule: "Set Language"
                        "Hold * to show stats" // 1
                        ];
 
-        LANG_STR[1] = ["Random Hero (Hold * +", /* 0 */ "*)", // 1
+        LANG_STR[1] = ["Random Hero (Hold * +", /* 0 */ " *)", // 1
                        "Random hero spawning enabled!", // 2
                        "Random hero spawning disabled!" // 3
                        ];
