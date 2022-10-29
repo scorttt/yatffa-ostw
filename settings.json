@@ -36,6 +36,7 @@
         "Pharah",
         "Soldier: 76",
         "Sojourn",
+        "Symmetra",
         "Tracer",
         "Torbjörn",
         "Widowmaker",
@@ -106,6 +107,12 @@
       "Sojourn": {
         "Disruptor Shot": false,
         "Ultimate Ability (Overclock)": false
+      },
+      "Symmetra":
+      {
+        "Sentry Turret": false,
+        "Teleporter": false,
+        "Ultimate Ability (Photon Barrier)": false
       },
       "Ashe": {
         "Ultimate Ability (B.O.B.)": false,
