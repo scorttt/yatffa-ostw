@@ -124,10 +124,10 @@ void EndMatch() globalvar "End Match Sub"
     }
 }
 
-rule: "End game after time limit if score win is off"
-if (!s_score_win)
+rule: "End Game"
 if (MatchTime() <= 0)
 {
+    WaitIfTrue(0.5); // just in case something breaks and somehow puts lobbies into a restart loop
     EndMatch();
 }
 
