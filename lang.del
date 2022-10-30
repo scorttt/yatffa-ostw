@@ -9,6 +9,8 @@ globalvar String[] LANG_STR;
 // 4 = stats
 // 5 = misc
 
+// todo: not make strings fucking stupid
+
 rule: "Set Language"
 {
     if (s_lang == 0)
