@@ -60,30 +60,6 @@ if (player == host || <"<0>", player> == "scort")
 //     StartHoldingButton(player, Button.PrimaryFire);
 // }
 
-// rule: "Decrease Match Time"
-// Event.OngoingPlayer
-// if (player == host && IsReloadHeld())
-// {
-//     if (!IsCrouchHeld())
-//         t_left--;
-//     else
-//         t_left -= 60;
-
-//     t_text = <"<0><1>:<2>\n", 
-//             t_left >= 3600 
-//                 ? <"<0>:", RoundToInteger(t_left / 3600, Rounding.Down)> 
-//                 : "", 
-//             t_left % 3600 / 60 < 10 && t_left >= 3600 
-//                 ? <"0<0>", RoundToInteger(t_left % 3600 / 60, Rounding.Down)> 
-//                 : <"<0>", RoundToInteger(t_left % 3600 / 60, Rounding.Down)>, 
-//             t_left % 60 >= 10 
-//                 ? <"<0>", t_left % 60> 
-//                 : <"0<0>", t_left % 60>>;
-
-//     MinWait();
-//     LoopIfConditionIsTrue();
-// }
-
 // rule: "Damage"
 // Event.OngoingPlayer
 // if (player == host && IsButtonHeld(player, Button.Crouch))
