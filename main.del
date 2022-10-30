@@ -33,7 +33,7 @@ Update(EyePosition(local) + 100 *
           - 0.200) * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) +
           3 * Facing(local)));
 
-rule: "v1.2.1.102822 | Created by scort#12211" 
+rule: "v1.2.1.221030 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
