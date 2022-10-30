@@ -13,7 +13,8 @@
         "Hero Limit": "Off"
       },
       "Deathmatch": {
-        "Enabled Maps": ["Château Guillard"]
+        "Enabled Maps": ["Château Guillard"],
+        "Score To Win": 75
     }
   },
   "Heroes": {

@@ -2,9 +2,6 @@ import "main.del";
 
 globalvar Number[] strk_arr;
 playervar Boolean show_streak;
-globalvar Boolean t_running;
-globalvar Number t_left;
-globalvar String t_text;
 globalvar Number t_left_yellow;
 globalvar Color timer_color;
 playervar Boolean hide_hud;
@@ -28,7 +25,18 @@ Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
 rule: "Global Hud Text"
 {
     // timer
-    CreateHudText(all, null, null, t_text, Location.Top, 0.1, TextColor: t_left >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleAlways);
+    CreateHudText(all, null, null, 
+    <"<0><1><2>\n", 
+    MatchTime() >= 3600
+        ? <"<0>:", Floor(MatchTime() / 3600)> 
+        : "", 
+    MatchTime() >= 3600 && MatchTime() % 3600 / 60 < 10
+        ? <"0<0>:", Floor(MatchTime() % 3600 / 60)> 
+        : MatchTime() > 60 ? <"<0>:", Floor(MatchTime() % 3600 / 60)> : "", 
+    MatchTime() >= 60 && MatchTime() % 60 < 10
+        ? <"0<0>", Floor(MatchTime() % 60)> 
+        : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
+    Location.Top, 0.1, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleAlways);
     timer_color = Color.White;
 
     // hide/show stats toggle
@@ -171,30 +179,10 @@ Event.OnDeath
     kill_streak = 0;
 }
 
-rule: "Timer Tick"
-if (t_running)
-{
-    t_text = <"<0><1>:<2>\n", 
-            t_left >= 3600 
-                ? <"<0>:", Floor(t_left / 3600)> 
-                : "", 
-            t_left % 3600 / 60 < 10 && t_left >= 3600 
-                ? <"0<0>", Floor(t_left % 3600 / 60)> 
-                : <"<0>", Floor(t_left % 3600 / 60)>, 
-            t_left % 60 >= 10 
-                ? <"<0>", t_left % 60> 
-                : <"0<0>", t_left % 60>>;
-
-    Wait(1);
-    t_left--;
-    LoopIfConditionIsTrue();
-}
-
 rule: "Timer Color"
-if (t_running)
-if (t_left % 60 >= 10)
+if (MatchTime() % 60 >= 10)
 {
-    if (t_left > t_left_yellow)
+    if (MatchTime() > t_left_yellow)
         timer_color = Color.White;
     else
         timer_color = Color.Yellow;

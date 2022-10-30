@@ -54,8 +54,6 @@ rule: "Initial Global"
     "3 hours", "3 hours, 15 minutes", "3 hours, 30 minutes", "3 hours, 45 minutes",
     "4 hours", "4 hours, 15 minutes"], 1);
     match_time = ((s_match_time + 1) * 15);
-    t_left = match_time * 60;
-    t_left_yellow = t_left / 4;
 
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
     s_killstreak_hud = WorkshopSettingToggle("Settings", "Show Kill Streaks", true, 3);
@@ -63,7 +61,6 @@ rule: "Initial Global"
     s_auto_restart = WorkshopSettingToggle("Settings", "Automatically Restart Lobby After POTG", true, 6);
 
     s_score_win = WorkshopSettingToggle("Score Win", "Enable Score Win Condition", true, 1);
-    s_score = WorkshopSettingInteger("Score Win", "Score to win", 75, 20, 2000, 2);
 
     s_heal_on_kill = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 1);
     s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
@@ -112,17 +109,19 @@ if (!HasSpawned())
 rule: "Match Started"
 if (IsGameInProgress())
 {
-    DisableCompletion();
-    DisableAnnouncer();
+    if (!s_score_win)
+    {
+        DisableCompletion();
+        DisableAnnouncer();
+    }
 
-    t_running = true;
     Wait(0.08);
-    SetMatchTime(0);
+    SetMatchTime(match_time * 60);
+    t_left_yellow = (match_time * 60) / 4;
 }
 
 void EndMatch() globalvar "End Match Sub"
 {
-    t_running = false;
     EnableCompletion();
 
     if (s_auto_restart)
@@ -132,15 +131,9 @@ void EndMatch() globalvar "End Match Sub"
     }
 }
 
-rule: "Declare score win"
-if (s_score_win)
-if (IsTrueForAny(all, ScoreOf(Curr()) >= s_score))
-{
-    EndMatch();
-}
-
-rule: "Time End"
-if (t_left <= 0)
+rule: "End game after time limit if score win is off"
+if (!s_score_win)
+if (MatchTime() <= 0)
 {
     EndMatch();
 }
