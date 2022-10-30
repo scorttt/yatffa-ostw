@@ -36,7 +36,7 @@ rule: "Global Hud Text"
     MatchTime() >= 60 && MatchTime() % 60 < 10
         ? <"0<0>", Floor(MatchTime() % 60)> 
         : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
-    Location.Top, 0.1, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleAlways);
+    Location.Top, 0.1, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleNever);
     timer_color = Color.White;
 
     // hide/show stats toggle
