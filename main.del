@@ -10,8 +10,7 @@ globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
 globalvar Hero[] scope_crit_arr;
 globalvar Hero[] enviro_arr;
-globalvar String[] s_match_time;
-globalvar Number match_time;
+globalvar Number s_match_time;
 globalvar Boolean s_player_stats;
 globalvar Boolean s_killstreak_hud;
 globalvar Boolean s_heal_on_kill;
@@ -47,13 +46,7 @@ rule: "Initial Global"
 
     s_lang = WorkshopSettingCombo("Settings", "Lobby Language", 0, ["English", "日本語"], 0);
 
-    s_match_time = WorkshopSettingCombo("Settings", "Match Time", 2, 
-    ["15 minutes", "30 minutes", "45 minutes", 
-    "1 hour", "1 hour, 15 minutes", "1 hour, 30 minutes", "1 hour, 45 minutes",
-    "2 hours", "2 hours, 15 minutes", "2 hours, 30 minutes", "2 hours, 45 minutes",
-    "3 hours", "3 hours, 15 minutes", "3 hours, 30 minutes", "3 hours, 45 minutes",
-    "4 hours", "4 hours, 15 minutes"], 1);
-    match_time = ((s_match_time + 1) * 15);
+    s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 45, 5, 60, 1) * 60;
 
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
     s_killstreak_hud = WorkshopSettingToggle("Settings", "Show Kill Streaks", true, 3);
@@ -116,8 +109,8 @@ if (IsGameInProgress())
     }
 
     Wait(0.08);
-    SetMatchTime(match_time * 60);
-    t_left_yellow = (match_time * 60) / 4;
+    SetMatchTime(s_match_time);
+    t_left_yellow = s_match_time / 4;
 }
 
 void EndMatch() globalvar "End Match Sub"
