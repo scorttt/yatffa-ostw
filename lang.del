@@ -15,8 +15,8 @@ rule: "Set Language"
 {
     if (s_lang == 0)
     {
-        LANG_STR[0] = ["Hold * to hide stats", // 0
-                       "Hold * to show stats" // 1
+        LANG_STR[0] = ["Hold * to show menu", // 0
+                       "Hold * to hide menu" // 1
                        ];
 
         LANG_STR[1] = ["Random Hero (Hold * +", /* 0 */ " *)", // 1
@@ -53,8 +53,8 @@ rule: "Set Language"
     }
     else if (s_lang == 1)
     {
-        LANG_STR[0] = ["*を押す統計を非表示する", // 0
-                       "*を押す統計を見せる" // 1
+        LANG_STR[0] = ["*を押すメニューを見せる", // 0
+                       "*を押すメニューを非表示する" // 1
                        ];
 
         LANG_STR[1] = ["ランダムのヒーロー(*+", /* 0 */  "*を押す)", // 1

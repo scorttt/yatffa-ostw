@@ -1,0 +1,208 @@
+import "../main.del";
+playervar Number sel_item;
+playervar Boolean menu;
+
+enum Item 
+{
+    AllHUD = 0,
+    HideStats = 1,
+    HideStreak = 2,
+
+    Random = 3,
+
+    HOK = 4,
+    HOKMod = 5,
+
+    Language = 6,
+    EN = 7,
+    JP = 8,
+
+    PatchNotes = 9
+}
+
+enum OptionType
+{
+    Boolean = 0,
+    Tree = 1,
+    Mod = 2,
+    Radio = 3
+}
+
+rule: "Menu : Create Frame and options"
+{
+    // top
+    CreateHudText(local.menu ? local : null, null, <" \n\n\n┏ Navigate: <0> / <1> ━ Select: <2> ━ Close: Hold <3> ┓", 
+    InputBindingString(Button.PrimaryFire), InputBindingString(Button.SecondaryFire), InputBindingString(Button.Interact), InputBindingString(Button.Interact)>,
+    null, Location.Top, -100, null, Color.White, null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    // contents
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("Hide Workshop HUD"),
+    null, Location.Top, -99, null, 
+    local.sel_item == Item.AllHUD ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("Hide Stats"),
+    null, Location.Top, -98, null, 
+    local.sel_item == Item.HideStats ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("Hide Streaks"),
+    null, Location.Top, -97, null, 
+    local.sel_item == Item.HideStreak ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("Random Hero"),
+    null, Location.Top, -96, null, 
+    local.sel_item == Item.Random ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("\nHeal On Kill"),
+    null, Location.Top, -95, null, 
+    local.sel_item == Item.HOK ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("← 40% →\n"),
+    null, Location.Top, -94, null, 
+    local.sel_item == Item.HOKMod ? Color.Blue : Color.White, 
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("Language / 言語"),
+    null, Location.Top, -93, null, 
+    local.sel_item == Item.Language ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("English"),
+    null, Location.Top, -92, null, 
+    local.sel_item == Item.EN ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("日本語\n"),
+    null, Location.Top, -91, null, 
+    local.sel_item == Item.JP ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+
+
+    CreateHudText(local.menu ? local : null, null, 
+    AltFont("[ PATCH NOTES ]"),
+    null, Location.Top, -90, null, 
+    local.sel_item == Item.PatchNotes ? Color.Blue : Color.White,
+    null, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+}
+
+rule: "Menu : Open/Close"
+Event.OngoingPlayer
+if (IsAlive())
+if (IsInteractHeld())
+{
+    WaitIfTrue(0.5);
+    menu = !menu;
+    if (menu)
+    {
+        menu = true;
+        DisallowButton(player, Button.PrimaryFire);
+        DisallowButton(player, Button.SecondaryFire);
+    }
+    else
+    {
+        AllowButton(player, Button.PrimaryFire);
+        AllowButton(player, Button.SecondaryFire);
+        menu = false;
+    }
+}
+
+rule: "Menu : Next Item"
+Event.OngoingPlayer
+if (menu)
+if (IsPrimaryHeld())
+if (!IsInteractHeld())
+if (!IsSecondaryHeld())
+{
+    if (sel_item == Item.PatchNotes)
+        sel_item = Item.AllHUD;
+    else 
+        sel_item++;
+    
+    WaitIfTrue(0.15);
+    LoopIfConditionIsTrue();
+}
+
+rule: "Menu : Previous Item"
+Event.OngoingPlayer
+if (menu)
+if (IsSecondaryHeld())
+if (!IsInteractHeld())
+if (!IsPrimaryHeld())
+{
+    if (sel_item == Item.AllHUD)
+        sel_item = Item.PatchNotes;
+    else 
+        sel_item--;
+
+    WaitIfTrue(0.15);
+    LoopIfConditionIsTrue();
+}
+
+rule: "Menu : Selected Item"
+Event.OngoingPlayer
+if (IsAlive())
+if (IsInteractHeld())
+if (menu)
+{
+    Wait(0.1);
+    AbortIf(IsInteractHeld());
+
+    switch (sel_item)
+    {
+        case Item.AllHUD:
+            SmallMessage(player, "All HUD");
+            break;
+        case Item.HideStats:
+            SmallMessage(player, "Stats");
+            break;
+        case Item.HideStreak:
+            SmallMessage(player, "Streak");
+            break;
+        case Item.Random:
+            SmallMessage(player, "Random");
+            break;
+        case Item.HOK:
+            SmallMessage(player, "HOK");
+            break;
+        case Item.HOKMod:
+            SmallMessage(player, "HOK Mod");
+            break;
+        case Item.Language:
+            SmallMessage(player, "Language");
+            break;
+        case Item.EN:
+            SmallMessage(player, "EN");
+            break;
+        case Item.JP:
+            SmallMessage(player, "JP");
+            break;
+        case Item.PatchNotes:
+            SmallMessage(player, "Patch Notes");
+            break;
+    }
+}
+
+rule: "Menu : Player Died"
+Event.OnDeath
+if (menu)
+{
+    AllowButton(player, Button.PrimaryFire);
+    AllowButton(player, Button.SecondaryFire);
+    menu = false;
+}

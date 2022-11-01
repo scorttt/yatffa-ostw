@@ -5,6 +5,7 @@ import "lang.del";
 import "hok.del";
 import "hud.del";
 import "debug.del";
+import "menu/menu.del";
 
 globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
@@ -27,12 +28,12 @@ playervar Boolean spawn_random;
 
 Vector txt_location(in Number X, in Number Y): 
 Update(EyePosition(local) + 100 * 
-          (X * WorldVectorOf(Right(), local, LocalVector.Rotation) + // X
-          (Y // Y
-          - 0.200) * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) +
-          3 * Facing(local)));
+          (X * WorldVectorOf(Right(), local, LocalVector.Rotation) +
+          (Y - 0.200) 
+          * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) + 3 * Facing(local)));
 
-rule: "v1.2.1.221030 | Created by scort#12211" 
+
+rule: "v1.3.0.221101 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }

@@ -36,18 +36,18 @@ rule: "Global Hud Text"
     MatchTime() >= 60 && MatchTime() % 60 < 10
         ? <"0<0>", Floor(MatchTime() % 60)> 
         : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
-    Location.Top, 0.1, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleNever);
+    Location.Top, -10000, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleNever);
     timer_color = Color.White;
 
     // hide/show stats toggle
-    CreateHudText(FilteredArray(all, !Curr().hide_hud), null, StringReplace(LANG_STR[0][0], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.2, Spectators: Spectators.VisibleNever);
-    CreateHudText(FilteredArray(all, Curr().hide_hud), null, StringReplace(LANG_STR[0][1], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.3, Spectators: Spectators.VisibleNever);
+    CreateHudText(FilteredArray(all, !Curr().menu), null, StringReplace(LANG_STR[0][0], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.2, Spectators: Spectators.VisibleNever);
+    CreateHudText(FilteredArray(all, Curr().menu), null, StringReplace(LANG_STR[0][1], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.3, Spectators: Spectators.VisibleNever);
     
-    // random hero toggle
-    CreateHudText(all, null, <"<0>   <1><2>\n", 
-        local.spawn_random ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-        StringReplace(LANG_STR[1][0], "*", InputBindingString(Button.Crouch)), StringReplace(LANG_STR[1][1], "*", InputBindingString(Button.Melee))>, // this is fucking ugly
-        null, Location.Right, 0.4, null, local.spawn_random ? Color.Green : CustomColor(255, 0, 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.DefaultVisibility);
+    // // random hero toggle
+    // CreateHudText(all, null, <"<0>   <1><2>\n", 
+    //     local.spawn_random ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+    //     StringReplace(LANG_STR[1][0], "*", InputBindingString(Button.Crouch)), StringReplace(LANG_STR[1][1], "*", InputBindingString(Button.Melee))>, // this is fucking ugly
+    //     null, Location.Right, 0.4, null, local.spawn_random ? Color.Green : CustomColor(255, 0, 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.DefaultVisibility);
 
     // spacing for death info
     CreateHudText(all, null, null, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", Location.Top, 10, null, null, null, Spectators: Spectators.VisibleNever);
@@ -186,21 +186,4 @@ if (MatchTime() % 60 >= 10)
         timer_color = Color.White;
     else
         timer_color = Color.Yellow;
-}
-
-rule: "Hide/Unhide HUD"
-Event.OngoingPlayer
-if (IsButtonHeld(player, Button.Interact))
-{
-    WaitIfTrue(0.5);
-
-    hide_hud = !hide_hud;
-    if (hide_hud)
-    {
-        hide_hud = true;
-    }
-    else
-    {
-        hide_hud = false;
-    }
 }
