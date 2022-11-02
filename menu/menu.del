@@ -110,7 +110,6 @@ if (IsInteractHeld())
     menu = !menu;
     if (menu)
     {
-        menu = true;
         DisallowButton(player, Button.PrimaryFire);
         DisallowButton(player, Button.SecondaryFire);
     }
@@ -118,7 +117,6 @@ if (IsInteractHeld())
     {
         AllowButton(player, Button.PrimaryFire);
         AllowButton(player, Button.SecondaryFire);
-        menu = false;
     }
 }
 
