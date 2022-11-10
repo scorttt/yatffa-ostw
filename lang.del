@@ -49,7 +49,10 @@ rule: "Set Language"
                        "Best Streak: " // 10
                        ];
 
-        LANG_STR[5] = " was kicked for not selecting a hero after 5 minutes";
+        LANG_STR[5] = [" was kicked for not selecting a hero after 5 minutes",
+                       "Navigate: Aim",
+                       "Select:",
+                       "Close: Release *"];
     }
     else if (s_lang == 1)
     {
@@ -87,6 +90,10 @@ rule: "Set Language"
                        "最高ストリーク：" // 10
                        ];
 
-        LANG_STR[5] = "は5分にヒーローを選択しなかったためにキックされる";
+        LANG_STR[5] = ["は5分にヒーローを選択しなかったためにキックされった", // 0
+                       "ナビる：狙う", // 1
+                       "選ぶ：", // 2
+                       "閉める：*放す" // 3
+                       ];
     }
 }
