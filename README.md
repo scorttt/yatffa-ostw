@@ -1,2 +1,2 @@
 # Yet Another Tryhard FFA
-that one controversial mode
+that one controversial tryhard ffa mode that people play
