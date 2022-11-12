@@ -25,75 +25,108 @@ Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
 rule: "Global Hud Text"
 {
     // timer
-    CreateHudText(all, null, null, 
-    <"<0><1><2>\n", 
-    MatchTime() >= 3600
-        ? <"<0>:", Floor(MatchTime() / 3600)> 
-        : "", 
-    MatchTime() >= 3600 && MatchTime() % 3600 / 60 < 10
-        ? <"0<0>:", Floor(MatchTime() % 3600 / 60)> 
-        : MatchTime() > 60 ? <"<0>:", Floor(MatchTime() % 3600 / 60)> : "", 
-    MatchTime() >= 60 && MatchTime() % 60 < 10
-        ? <"0<0>", Floor(MatchTime() % 60)> 
-        : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
-    Location.Top, -10000, TextColor: MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.VisibleNever);
-    timer_color = Color.White;
+    CreateHudText(
+        VisibleTo:      all,  
+        Text:           <"<0><1><2>\n", 
+                        MatchTime() >= 3600
+                            ? <"<0>:", Floor(MatchTime() / 3600)> 
+                            : "", 
+                        MatchTime() >= 3600 && MatchTime() % 3600 / 60 < 10
+                            ? <"0<0>:", Floor(MatchTime() % 3600 / 60)> 
+                            : MatchTime() > 60 ? <"<0>:", Floor(MatchTime() % 3600 / 60)> : "", 
+                        MatchTime() >= 60 && MatchTime() % 60 < 10
+                            ? <"0<0>", Floor(MatchTime() % 60)> 
+                            : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
+        Location:       Location.Top, 
+        SortOrder:      -10000, 
+        TextColor:      MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
 
-    // hide/show stats toggle
-    CreateHudText(FilteredArray(all, !Curr().menu), null, StringReplace(LANG_STR[0][0], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.2, Spectators: Spectators.VisibleNever);
-    CreateHudText(FilteredArray(all, Curr().menu), null, StringReplace(LANG_STR[0][1], "*", InputBindingString(Button.Interact)), null, Location.Right, 0.3, Spectators: Spectators.VisibleNever);
-    
-    // // random hero toggle
-    // CreateHudText(all, null, <"<0>   <1><2>\n", 
-    //     local.spawn_random ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-    //     StringReplace(LANG_STR[1][0], "*", InputBindingString(Button.Crouch)), StringReplace(LANG_STR[1][1], "*", InputBindingString(Button.Melee))>, // this is fucking ugly
-    //     null, Location.Right, 0.4, null, local.spawn_random ? Color.Green : CustomColor(255, 0, 0, 255), Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor, Spectators: Spectators.DefaultVisibility);
+        timer_color = Color.White;
+
+    // hide/show menu
+    CreateHudText(
+        VisibleTo:  FilteredArray(all, !Curr().menu), 
+        Subheader:  StringReplace(LANG_STR[0][0], "*", InputBindingString(Button.Interact)), 
+        Location:   Location.Right, 
+        SortOrder:  0.2, 
+        Spectators: Spectators.VisibleNever);
+    CreateHudText(
+        VisibleTo:  FilteredArray(all, Curr().menu), 
+        Subheader:  StringReplace(LANG_STR[0][1], "*", InputBindingString(Button.Interact)), 
+        Location:   Location.Right, 
+        SortOrder:  0.2, 
+        Spectators: Spectators.VisibleNever);
 
     // spacing for death info
-    CreateHudText(all, null, null, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", Location.Top, 10, null, null, null, Spectators: Spectators.VisibleNever);
+    CreateHudText(
+        VisibleTo:  all, 
+        Text:       " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 
+        Location:   Location.Top, 
+        SortOrder:  10, 
+        Spectators: Spectators.VisibleNever);
 
     // death info
     if (s_instant_respawn)
     {
-        CreateHudText(FilteredArray(all, IsDead(Curr())), null, StringReplace(LANG_STR[2][0], "*", InputBindingString(Button.Interact)), null, Location.Top, 10, null, Color.Yellow, null, Spectators: Spectators.VisibleNever);
-        CreateHudText(FilteredArray(all, IsDead(Curr())), null, <"<0>\n", LANG_STR[2][1]>, null, Location.Top, 11, null, Color.Yellow, null, Spectators: Spectators.VisibleNever);
+        CreateHudText(
+            VisibleTo:      FilteredArray(all, IsDead(Curr())), 
+            Subheader:      StringReplace(LANG_STR[2][0], "*", InputBindingString(Button.Interact)), 
+            Location:       Location.Top, 
+            SortOrder:      10,
+            SubheaderColor: Color.Yellow, 
+            Spectators:     Spectators.VisibleNever);
+
+        CreateHudText(
+            VisibleTo:      FilteredArray(all, IsDead(Curr())), 
+            Subheader:      <"<0>\n", LANG_STR[2][1]>, 
+            Location:       Location.Top, 
+            SortOrder:      11,
+            SubheaderColor: Color.Yellow, 
+            Spectators:     Spectators.VisibleNever);
     }
 
     // player stats
     if (s_player_stats)
     {
         // stats
-        CreateHudText(!local.hide_hud ? local : null, null,
-        <" \n\n\n\n\n<0> <1>\n<2><3><4><5><6><7><8><9><10><11><12>\n", 
+        CreateHudText(
+            VisibleTo: !local.hide_hud ? local : null, 
+            Subheader: <" \n\n\n\n\n<0> <1>\n<2><3><4><5><6><7><8><9><10><11><12>\n", 
 
-        HeroIconString(HeroOf(local)), // 0
+            HeroIconString(HeroOf(local)), // 0
 
-        HeroOf(local), // 1
+            HeroOf(local), // 1
 
-        <"<0><1>\n", LANG_STR[4][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
-        <"<0><1>\n", LANG_STR[4][1], DamageDealt(local) / DamageTaken(local)>, // 3
-        <"<0><1>\n", LANG_STR[4][2], DamageDealt(local)>, // 4
-        <"<0><1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
-        <"<0><1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
+            <"<0><1>\n", LANG_STR[4][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
+            <"<0><1>\n", LANG_STR[4][1], DamageDealt(local) / DamageTaken(local)>, // 3
+            <"<0><1>\n", LANG_STR[4][2], DamageDealt(local)>, // 4
+            <"<0><1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
+            <"<0><1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
 
-        !ArrayContains(critexc_arr, HeroOf(local)) // 7
-            ? <"<0><1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
+            !ArrayContains(critexc_arr, HeroOf(local)) // 7
+                ? <"<0><1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
 
-        ArrayContains(scope_arr, HeroOf(local)) // 8
-            ? <"<0><1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
+            ArrayContains(scope_arr, HeroOf(local)) // 8
+                ? <"<0><1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
 
-        ArrayContains(scope_crit_arr, HeroOf(local)) // 9
-            ? <"<0><1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
+            ArrayContains(scope_crit_arr, HeroOf(local)) // 9
+                ? <"<0><1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
 
-        EnvironmentalKills(local) != 0 || ArrayContains(enviro_arr, HeroOf(local)) // 10
-            ? <"<0><1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
+            EnvironmentalKills(local) != 0 || ArrayContains(enviro_arr, HeroOf(local)) // 10
+                ? <"<0><1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
 
-        <"<0><1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
+            <"<0><1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
 
-        local.best_streak != 0 // 12
-            ? <" \n<0><1>", LANG_STR[4][10], local.best_streak> : "">,
+            local.best_streak != 0 // 12
+                ? <" \n<0><1>", LANG_STR[4][10], local.best_streak> : "">,
 
-        null, Location.Left, 0.1, Color.White, Color.White, Color.White, HudTextRev.VisibleToSortOrderAndString, Spectators: Spectators.DefaultVisibility);
+            Location: Location.Left, 
+            SortOrder: 0.1, 
+            SubheaderColor: Color.White, 
+            Reevaluation: HudTextRev.VisibleToSortOrderAndString, 
+            Spectators: Spectators.DefaultVisibility);
     }
 }
 
@@ -102,32 +135,44 @@ Event.OngoingPlayer
 if (s_killstreak_hud)
 {
     // visible only to self
-    CreateHudText(show_streak && !hide_hud
-                    ? player 
-                    : null,
-    null, 
-    <"<0>  <1> <2>", HeroIconString(HeroOf()), player, LANG_STR[3][6]>, 
-    best_streak != 0 
-        ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
-        : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
-    Location.Left, 1, null, rainbow_color, Color.White, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.VisibleNever);
+    CreateHudText(
+        VisibleTo:      show_streak && !hide_hud ? player : null,
+
+        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, LANG_STR[3][6]>, 
+        Text:           best_streak != 0 
+                            ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
+                            : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
+        Location:       Location.Left, 
+        SortOrder:      1, 
+        SubheaderColor: rainbow_color, 
+        TextColor:      Color.White, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
 
     // visible to everyone excluding self
-    CreateHudText(show_streak 
-                    ? FilteredArray(RemoveFromArray(all, player), !Curr().hide_hud) 
-                    : null, 
-    null, 
-    <"<0>  <1>", HeroIconString(HeroOf()), player>, 
-    best_streak != 0 
-        ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
-        : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
-    Location.Left, SlotOf() + 1, null, health_color, Color.White, HudTextRev.VisibleToSortOrderStringAndColor, Spectators.DefaultVisibility);
+    CreateHudText(
+        VisibleTo:      show_streak ? FilteredArray(RemoveFromArray(all, player), !Curr().hide_hud) : null,
+
+        Subheader:      <"<0>  <1>", HeroIconString(HeroOf()), player>, 
+        Text:           best_streak != 0 
+                            ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
+                            : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
+        Location:       Location.Left, 
+        SortOrder:      SlotOf() + 1, 
+        SubheaderColor: health_color, 
+        TextColor:      Color.White, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.DefaultVisibility);
 
     // streak best
-    // CreateHudText(bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && !hide_hud 
-    //                 ? player 
-    //                 : null, null, 
-    // <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, null, Location.Right, 0.3, null, Color.Yellow, null);
+    CreateHudText(
+        VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && !hide_hud 
+                        ? player 
+                        : null,
+        Text:      <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, 
+        Location:  Location.Right, 
+        SortOrder: 0.3, 
+        TextColor: Color.Yellow);
 }
 
 rule: "Update Killstreak"
