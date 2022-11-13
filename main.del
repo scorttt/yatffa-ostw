@@ -26,11 +26,11 @@ globalvar Number s_lang;
 
 playervar Boolean spawn_random;
 
-Vector txt_location(in Number X, in Number Y): 
-Update(EyePosition(local) + 100 * 
-          (X * WorldVectorOf(Right(), local, LocalVector.Rotation) +
-          (Y - 0.200) 
-          * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) + 3 * Facing(local)));
+// Vector txt_location(in Number X, in Number Y): 
+// Update(EyePosition(local) + 100 * 
+//           (X * WorldVectorOf(Right(), local, LocalVector.Rotation) +
+//           (Y - 0.200) 
+//           * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) + 3 * Facing(local)));
 
 
 rule: "v1.3.0.221101 | Created by scort#12211" 
@@ -63,13 +63,15 @@ rule: "Initial Global"
 
     Number credit = WorkshopSettingCombo("Credit", "Created by", 0, ["scort#11221", "saruyo (JP Localization)", "BXRXY", "Please credit!"], 1000);
 
-    SetMatchTime(10);
+    SetMatchTime(1);
 }
 
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 {
     kill_streak = 0;
+    sel_item = Item.Invalid;
+    fav_item = Item.Invalid;
     DisableGameModeHud();
 }
 
