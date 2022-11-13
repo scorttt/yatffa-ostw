@@ -25,7 +25,7 @@ if (player == host || <"<0>", player> == "scort")
     Near(ServerLoad()), 
     Near(ServerLoadAverage()), 
     Near(ServerLoadPeak()), 
-    TextCount(), TextCount() - 1>, txt_location(3, -1.95), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
+    TextCount(), TextCount() - 1>, RenderPosOf(3, -2.15), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
 }
 
 // rule: "Bots"
@@ -75,11 +75,12 @@ if (player == host || <"<0>", player> == "scort")
 //     Resurrect();
 // }
 
-// rule: "Hud"
-//     Event.OngoingPlayer
-//     if (player == host)
-//     {
-//         CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Top, 10);
-//         CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Top, 11);
-//         CreateHudText(player, null, null, <"Raycast: <0>", RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100)>, Location.Top, 12);
-//     }
+rule: "Hud"
+Event.OngoingPlayer
+if (player == host)
+{
+    CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
+    CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
+    CreateHudText(player, null, null, <"Raycast: <0>", RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100)>, Location.Right, 12);
+    CreateHudText(player, null, null, <"(<0>, <1>) sel: <2>", CursorX(), CursorY(), sel_item>, Location.Right, 125);
+}
