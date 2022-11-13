@@ -105,16 +105,16 @@ rule: "Global Hud Text"
             <"<0><1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
             <"<0><1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
 
-            !ArrayContains(critexc_arr, HeroOf(local)) // 7
+            !critexc_arr.Contains(HeroOf(local)) // 7
                 ? <"<0><1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
 
-            ArrayContains(scope_arr, HeroOf(local)) // 8
+            scope_arr.Contains(HeroOf(local)) // 8
                 ? <"<0><1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
 
-            ArrayContains(scope_crit_arr, HeroOf(local)) // 9
+            scope_crit_arr.Contains(HeroOf(local)) // 9
                 ? <"<0><1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
 
-            EnvironmentalKills(local) != 0 || ArrayContains(enviro_arr, HeroOf(local)) // 10
+            enviro_arr.Contains(HeroOf(local)) || EnvironmentalKills(local) != 0 // 10
                 ? <"<0><1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
 
             <"<0><1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
