@@ -59,16 +59,15 @@ rule: "Set Language"
         LANG_STR[5] = [" was kicked for not selecting a hero after 5 minutes", // 0
                        "Navigate: Aim", // 1
                        "Select: ", // 2
-                       "Close: Release *", // 3
-                       "Bookmark: " // 4
+                       "Bookmark: " // 3
                        ];
 
         LANG_STR[6] = ["Hide Workshop HUD", // 0
                        "Hide Stats", // 1
                        "Hide Kill Streaks", // 2
-                       "Random Hero", // 3
-                       "Heal On Kill", // 4
-                       "", // 5
+                       "Heal On Kill", // 3
+                       "", // 4
+                       "Random Hero", // 5
                        "Language", // 6
                        "English", // 7
                        "日本語", // 8
