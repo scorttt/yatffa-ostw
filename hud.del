@@ -1,16 +1,15 @@
 import "main.del";
 
 globalvar Number[] strk_arr;
-playervar Boolean show_streak;
 globalvar Number t_left_yellow;
 globalvar Color timer_color;
-playervar Boolean hide_hud;
 playervar Number | String kill_streak;
 playervar Number | String  best_streak;
 globalvar Number | String bs_ser;
 globalvar Player | String bs_ser_usr;
 globalvar String bs_ser_hero;
 playervar String bs_hero;
+playervar Boolean streak;
 
 Color rainbow_color: CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
                                 128 + 127 * CosineFromDegrees((Time() * 150) + 120),
@@ -48,15 +47,23 @@ rule: "Global Hud Text"
     // hide/show menu
     CreateHudText(
         VisibleTo:  FilteredArray(all, !Curr().menu), 
-        Subheader:  StringReplace(LANG_STR[0][0], "*", InputBindingString(Button.Interact)), 
+        Subheader:  StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact)), 
         Location:   Location.Right, 
         SortOrder:  0.2, 
         Spectators: Spectators.VisibleNever);
     CreateHudText(
         VisibleTo:  FilteredArray(all, Curr().menu), 
-        Subheader:  StringReplace(LANG_STR[0][1], "*", InputBindingString(Button.Interact)), 
+        Subheader:  StringReplace(local.lang_str[0][1], "*", BindString(Button.Interact)), 
         Location:   Location.Right, 
         SortOrder:  0.2, 
+        Spectators: Spectators.VisibleNever);
+
+    // double tap for fav_item
+    CreateHudText(
+        VisibleTo:  local.fav_item != Item.Invalid ? local : null, 
+        Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + local.lang_str[5][local.fav_item], 
+        Location:   Location.Right, 
+        SortOrder:  0.3,
         Spectators: Spectators.VisibleNever);
 
     // spacing for death info
@@ -72,7 +79,7 @@ rule: "Global Hud Text"
     {
         CreateHudText(
             VisibleTo:      FilteredArray(all, IsDead(Curr())), 
-            Subheader:      StringReplace(LANG_STR[2][0], "*", InputBindingString(Button.Interact)), 
+            Subheader:      StringReplace(local.lang_str[1][0], "*", BindString(Button.Interact)), 
             Location:       Location.Top, 
             SortOrder:      10,
             SubheaderColor: Color.Yellow, 
@@ -80,7 +87,7 @@ rule: "Global Hud Text"
 
         CreateHudText(
             VisibleTo:      FilteredArray(all, IsDead(Curr())), 
-            Subheader:      <"<0>\n", LANG_STR[2][1]>, 
+            Subheader:      <"<0>\n", local.lang_str[1][1]>, 
             Location:       Location.Top, 
             SortOrder:      11,
             SubheaderColor: Color.Yellow, 
@@ -92,35 +99,35 @@ rule: "Global Hud Text"
     {
         // stats
         CreateHudText(
-            VisibleTo: !local.hide_hud ? local : null, 
+            VisibleTo: !local.hide_stats ? local : null, 
             Subheader: <" \n\n\n\n\n<0> <1>\n<2><3><4><5><6><7><8><9><10><11><12>\n", 
 
             HeroIconString(HeroOf(local)), // 0
 
             HeroOf(local), // 1
 
-            <"<0><1>\n", LANG_STR[4][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
-            <"<0><1>\n", LANG_STR[4][1], DamageDealt(local) / DamageTaken(local)>, // 3
-            <"<0><1>\n", LANG_STR[4][2], DamageDealt(local)>, // 4
-            <"<0><1>\n", LANG_STR[4][3], DamageTaken(local)>, // 5
-            <"<0><1>%\n", LANG_STR[4][4], Accuracy(local)>, // 6
+            <"<0><1>\n", local.lang_str[3][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
+            <"<0><1>\n", local.lang_str[3][1], DamageDealt(local) / DamageTaken(local)>, // 3
+            <"<0><1>\n", local.lang_str[3][2], DamageDealt(local)>, // 4
+            <"<0><1>\n", local.lang_str[3][3], DamageTaken(local)>, // 5
+            <"<0><1>%\n", local.lang_str[3][4], Accuracy(local)>, // 6
 
             !critexc_arr.Contains(HeroOf(local)) // 7
-                ? <"<0><1>%\n", LANG_STR[4][5], CritAccuracy(local)> : "",
+                ? <"<0><1>%\n", local.lang_str[3][5], CritAccuracy(local)> : "",
 
             scope_arr.Contains(HeroOf(local)) // 8
-                ? <"<0><1>%\n", LANG_STR[4][6], ScopedAccuracy(local)> : "", 
+                ? <"<0><1>%\n", local.lang_str[3][6], ScopedAccuracy(local)> : "", 
 
             scope_crit_arr.Contains(HeroOf(local)) // 9
-                ? <"<0><1>%\n", LANG_STR[4][7], ScopedCritAccuracy(local)> : "",
+                ? <"<0><1>%\n", local.lang_str[3][7], ScopedCritAccuracy(local)> : "",
 
             enviro_arr.Contains(HeroOf(local)) || EnvironmentalKills(local) != 0 // 10
-                ? <"<0><1>\n", LANG_STR[4][8], EnvironmentalKills(local)> : "",
+                ? <"<0><1>\n", local.lang_str[3][8], EnvironmentalKills(local)> : "",
 
-            <"<0><1>\n", LANG_STR[4][9], Ceiling(HealingTaken(local))>, // 11
+            <"<0><1>\n", local.lang_str[3][9], Ceiling(HealingTaken(local))>, // 11
 
             local.best_streak != 0 // 12
-                ? <" \n<0><1>", LANG_STR[4][10], local.best_streak> : "">,
+                ? <" \n<0><1>", local.lang_str[3][10], local.best_streak> : "">,
 
             Location: Location.Left, 
             SortOrder: 0.1, 
@@ -136,12 +143,12 @@ if (s_killstreak_hud)
 {
     // visible only to self
     CreateHudText(
-        VisibleTo:      show_streak && !hide_hud ? player : null,
+        VisibleTo:      streak ? player : null,
 
-        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, LANG_STR[3][6]>, 
+        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, lang_str[2][6]>, 
         Text:           best_streak != 0 
-                            ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
-                            : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
+                            ? <"<0> <1>/<2>", lang_str[2][0], kill_streak, best_streak> 
+                            : <"<0> <1>", lang_str[2][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      1, 
         SubheaderColor: rainbow_color, 
@@ -151,12 +158,12 @@ if (s_killstreak_hud)
 
     // visible to everyone excluding self
     CreateHudText(
-        VisibleTo:      show_streak ? FilteredArray(RemoveFromArray(all, player), !Curr().hide_hud) : null,
+        VisibleTo:      streak ? FilteredArray(RemoveFromArray(all, player), !Curr().hide_streak) : null,
 
         Subheader:      <"<0>  <1>", HeroIconString(HeroOf()), player>, 
         Text:           best_streak != 0 
-                            ? <"<0> <1>/<2>", LANG_STR[3][0], kill_streak, best_streak> 
-                            : <"<0> <1>", LANG_STR[3][0], kill_streak>, 
+                            ? <"<0> <1>/<2>", lang_str[2][0], kill_streak, best_streak> 
+                            : <"<0> <1>", lang_str[2][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      SlotOf() + 1, 
         SubheaderColor: health_color, 
@@ -166,7 +173,7 @@ if (s_killstreak_hud)
 
     // streak best
     CreateHudText(
-        VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && !hide_hud 
+        VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && !hide_streak 
                         ? player 
                         : null,
         Text:      <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, 
@@ -183,14 +190,14 @@ if (Attacker() != Victim())
     kill_streak++;
 
     if (kill_streak >= 5)
-        show_streak = true;
+        streak = true;
 }
 
 rule: "PLayer died, Reset Kills"
 Event.OnDeath
 {
     # disable interact until respawn to prevent instances like destroying Torb turret while trying to force a respawn
-    show_streak = false;
+    streak = false;
     DisallowButton(player, Button.Interact);
 
     if (kill_streak >= 5 && kill_streak > best_streak)
@@ -206,18 +213,18 @@ Event.OnDeath
             bs_ser = best_streak;
             bs_ser_usr = player;
             bs_ser_hero = bs_hero;
-            SmallMessage(!hide_hud ? player : null, <"   <0>", StringReplace(LANG_STR[3][3], "*", kill_streak)>);
+            SmallMessage(!hide_streak ? player : null, <"   <0>", StringReplace(lang_str[2][3], "*", kill_streak)>);
             Wait(0.1);
-            SmallMessage(FilteredArray(RemoveFromArray(all, player), !Curr().hide_hud), <"   <0> <1><2>", bs_ser_hero, StringReplace(LANG_STR[3][4], "*", bs_ser_usr), StringReplace(LANG_STR[3][5], "*", kill_streak)>);
+            SmallMessage(FilteredArray(RemoveFromArray(all, player), !Curr().hide_streak), <"   <0> <1><2>", bs_ser_hero, StringReplace(lang_str[2][4], "*", bs_ser_usr), StringReplace(lang_str[2][5], "*", kill_streak)>);
         }
         else 
         {
-            SmallMessage(!hide_hud ? player : null, <"   <0>", StringReplace(LANG_STR[3][2], "*", kill_streak)>);
+            SmallMessage(!hide_streak ? player : null, <"   <0>", StringReplace(lang_str[2][2], "*", kill_streak)>);
         }
     }
     else if (kill_streak >= 5)
     {
-        SmallMessage(!hide_hud ? player : null, <"   <0>", StringReplace(LANG_STR[3][1], "*", kill_streak)>);
+        SmallMessage(!hide_streak ? player : null, <"   <0>", StringReplace(lang_str[2][1], "*", kill_streak)>);
     }
 
     Wait(0.1);

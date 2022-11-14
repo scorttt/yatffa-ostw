@@ -1,21 +1,21 @@
 import "main.del";
 globalvar Boolean inspector;
-rule: "Inspector Toggle"
-if (IsButtonHeld(host, Button.Melee))
-if (IsButtonHeld(host, Button.Interact))
-{
-    inspector = !inspector;
-    if (inspector)
-    {
-        SmallMessage(host, "   Inspector enabled");
-        EnableInspectorRecording();
-    }
-    else
-    {
-        SmallMessage(host, "   Inspector disabled");
-        DisableInspectorRecording();
-    }
-}
+// rule: "Inspector Toggle"
+// if (IsButtonHeld(host, Button.Melee))
+// if (IsButtonHeld(host, Button.Interact))
+// {
+//     inspector = !inspector;
+//     if (inspector)
+//     {
+//         SmallMessage(host, "   Inspector enabled");
+//         EnableInspectorRecording();
+//     }
+//     else
+//     {
+//         SmallMessage(host, "   Inspector disabled");
+//         DisableInspectorRecording();
+//     }
+// }
 
 rule: "Show Server Load for host and scort if he joins"
 Event.OnPlayerJoin
@@ -82,5 +82,5 @@ if (player == host)
     CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
     CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
     CreateHudText(player, null, null, <"Raycast: <0>", RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100)>, Location.Right, 12);
-    CreateHudText(player, null, null, <"(<0>, <1>) sel: <2>", CursorX(), CursorY(), sel_item>, Location.Right, 125);
+    CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>", CursorX(), CursorY(), sel_item, fav_item>, Location.Right, 125);
 }
