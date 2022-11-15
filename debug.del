@@ -49,7 +49,7 @@ if (player == host || <"<0>", player> == "scort")
 //     for (Number i = 0; i < AllPlayers().Length; i++)
 //     {
 //         AllPlayers().kill_streak[i] = RandomInteger(5, 100);
-//         AllPlayers().show_streak = true;
+//         AllPlayers().streak = true;
 //     }
 // }
 
