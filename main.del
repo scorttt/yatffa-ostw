@@ -32,7 +32,7 @@ globalvar Number s_lang;
 //           * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) + 3 * Facing(local)));
 
 
-rule: "v1.3.0.221101 | Created by scort#12211" 
+rule: "v1.3.0.221115 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -68,17 +68,21 @@ rule: "Initial Global"
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 {
+    // todo: may need some optimization
     if (s_heal_on_kill)
     {
         heal_on_kill = true;
         HOK_amt = s_heal;
     }
 
+    if (s_player_stats && s_killstreak_hud)
+        show_all = true;
+
     if (s_player_stats)
-        hide_stats = false;
+        show_stats = true;
 
     if (s_killstreak_hud)
-        hide_streak = false;
+        show_streak = true;
 
     sel_item = Item.Invalid;
     fav_item = Item.Invalid;
@@ -97,13 +101,13 @@ Event.OnPlayerLeave
     kill_streak = 0;
     best_streak = 0;
 
-    if (player == bs_ser_usr)
-    {
-        Player[] streak_arr = all.FilteredArray(a => a.best_streak >= 5);
-        bs_ser_usr = streak_arr.SortedArray(a => a.best_streak).Last;
-        bs_ser = bs_ser_usr.best_streak;
-        bs_ser_hero = bs_ser_usr.bs_hero;
-    }
+    // if (player == bs_ser_usr)
+    // {
+    //     Player[] streak_arr = all.FilteredArray(a => a.best_streak >= 5);
+    //     bs_ser_usr = streak_arr.SortedArray(a => a.best_streak).Last;
+    //     bs_ser = bs_ser_usr.best_streak;
+    //     bs_ser_hero = bs_ser_usr.bs_hero;
+    // }
 
     // Wait(0.5);
     // strk_arr = SortedArray(all, best_streak);
@@ -121,7 +125,7 @@ if (!HasSpawned())
 {
     # 5 minutes
     WaitIfTrue(300);
-    SmallMessage(all, <"   <0><1>", player, lang_str[4]>);
+    SmallMessage(all, <"   <0><1>", player, local.lang_str[4]>);
     Wait(1);
     RemovePlayer(player);
 }
