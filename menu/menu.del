@@ -1,10 +1,12 @@
 import "../main.del";
 import "options.del";
+globalvar Number[] excl_fav;
 playervar Number sel_item;
 playervar Number fav_item;
 playervar Boolean menu;
 playervar Any cursor;
 playervar Vector facing;
+playervar Number toggles;
 
 enum Item
 {
@@ -23,7 +25,9 @@ enum Item
     EN = 7, // radio child
     JP = 8, // radio child
 
-    BalanceNotes = 9 // new menu
+    BalanceNotes = 9, // new menu
+
+    Secret = 69 // jp easter egg
 }
 
 enum OptionType
@@ -46,143 +50,172 @@ Number SCREEN_WIDTH:   3.65;
 Number SCREEN_HEIGHT:  2.125;
 
 Number SELECTION_AREA_WIDTH:  0.65;
-Number SELECTION_AREA_HEIGHT: 1.60;
+
+Number MAX_TOGGLES: 4;
 
 rule: "Menu : Create Frame and options"
 {
+    // excluded options from favoriting
+    excl_fav = [Item.HOKMod, Item.Language, Item.EN, Item.JP, Item.BalanceNotes, Item.Secret];
+
     // frame
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:    local.menu ? local : null,
-        Subheader:    <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓\n", 
+        Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
                       local.lang_str[4][1], local.lang_str[4][2], local.lang_str[4][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
-        Location:     Location.Top,
-        SortOrder:    -1000,
-        Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor,
+        Position:     RenderPosOf(0, 1.62), 
+        Scale:        1.35,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
         Spectators:   Spectators.VisibleNever
     );
 
     // contents
-    // Item.Option * 1 is used in the sort order so i can use the enum values to sort hud texts, wont matter since they only get created during lobby creation
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>   <1> ▼<2>", local.hide_stats && local.hide_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> ▼ <2>", local.show_stats && local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                         local.lang_str[5][Item.AllHUD],
                                         local.fav_item == Item.AllHUD ? " " + IconString(Icon.Asterisk) : "">,
-        Location:       Location.Top, 
-        SortOrder:      Item.AllHUD * 1,
-        SubheaderColor: local.sel_item == Item.AllHUD 
+        Position:       RenderPosOf(0, 1.52), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.AllHUD 
                             ? Color.Blue 
-                            : local.hide_stats && local.hide_streak
+                            : local.show_stats && local.show_streak
                                 ? Color.Green
                                 : CustomColor(255, 0, 0, 255),
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>   <1><2>", local.hide_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> <2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.HideStats],
                                     local.fav_item == Item.HideStats ? " " + IconString(Icon.Asterisk) : "">,
-        Location:       Location.Top, 
-        SortOrder:      Item.HideStats * 1,
-        SubheaderColor: local.sel_item == Item.HideStats 
+        Position:       RenderPosOf(0, 1.42), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.HideStats 
                             ? Color.Blue 
-                                : local.hide_stats
+                                : local.show_stats
                                     ? Color.Green
                                     : CustomColor(255, 0, 0, 255),
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>   <1><2>\n", local.hide_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> <2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.HideStreak],
                                     local.fav_item == Item.HideStreak ? " " + IconString(Icon.Asterisk) : "">,
-        Location:       Location.Top, 
-        SortOrder:      Item.HideStreak * 1,
-        SubheaderColor: local.sel_item == Item.HideStreak 
+        Position:       RenderPosOf(0, 1.32), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.HideStreak 
                             ? Color.Blue 
-                            : local.hide_streak
+                            : local.show_streak
                                 ? Color.Green
                                 : CustomColor(255, 0, 0, 255),
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
 
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>   <1> ▼ <2>", local.heal_on_kill ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> ▼ <2>", local.heal_on_kill ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.HOK],
                                     local.fav_item == Item.HOK ? " " + IconString(Icon.Asterisk) : "">,
-        Location:       Location.Top, 
-        SortOrder:      Item.HOK * 1,
-        SubheaderColor: local.sel_item == Item.HOK
+        Position:       RenderPosOf(0, 1.145), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.HOK
                             ? Color.Blue 
                             : local.heal_on_kill 
                                 ? Color.Green
                                 : CustomColor(255, 0, 0, 255),
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      local.sel_item == Item.HOKMod 
-                            ? <"<1>   -  <0>%  +   <2>\n", StringReplace(local.HOK_amt * 100, ".50", ".5"), BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
-                            : <"<0>%\n", StringReplace(local.HOK_amt * 100, ".50", ".5")>,
-        Location:       Location.Top, 
-        SortOrder:      Item.HOKMod * 1,
-        SubheaderColor: local.sel_item == Item.HOKMod ? Color.Blue : Color.White,
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Header:         local.sel_item == Item.HOKMod
+                            ? <"-   <1>  <0>%  <2>   +", StringReplace(local.HOK_amt * 100, ".50", ".5"), BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : <"<0>%", StringReplace(local.HOK_amt * 100, ".50", ".5")>,
+        Position:       RenderPosOf(0, 1.045), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.HOKMod 
+                            ? Color.Blue 
+                            : local.heal_on_kill 
+                                ? Color.White 
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
 
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>   <1><2>\n", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> <2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.Random],
                                     local.fav_item == Item.Random ? " " + IconString(Icon.Asterisk) : "">,
-        Location:       Location.Top, 
-        SortOrder:      Item.Random * 1,
-        SubheaderColor: local.sel_item == Item.Random 
+        Position:       RenderPosOf(0, 0.845), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.Random 
                             ? Color.Blue 
                             : local.random_hero 
                                 ? Color.Green
                                 : CustomColor(255, 0, 0, 255),
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
 
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0> ▼", local.lang_str[5][Item.Language]>,
-        Location:       Location.Top, 
-        SortOrder:      Item.Language * 1,
-        SubheaderColor: local.sel_item == Item.Language ? Color.Blue : Color.White,
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Header:         <"<0> ▼", local.lang_str[5][Item.Language]>,
+        Position:       RenderPosOf(0, 0.67), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.Language ? Color.Blue : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>", local.lang_str[5][Item.EN]>,
-        Location:       Location.Top, 
-        SortOrder:      Item.EN * 1,
-        SubheaderColor: local.sel_item == Item.EN ? Color.Blue : Color.White,
-        Reevaluation: HudTextRev.VisibleToSortOrderStringAndColor,
-        Spectators:   Spectators.VisibleNever);
-    CreateHudText(
+        Header:         <"<0>", local.lang_str[5][Item.EN]>,
+        Position:       RenderPosOf(0, 0.57), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.EN ? Color.Blue : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"<0>\n", local.lang_str[5][Item.JP]>,
-        Location:       Location.Top, 
-        SortOrder:      Item.JP * 1,
-        SubheaderColor: local.sel_item == Item.JP ? Color.Blue : Color.White,
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Header:         <"<0>", local.lang_str[5][Item.JP]>,
+        Position:       RenderPosOf(0, 0.47), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.JP ? Color.Blue : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
 
-    CreateHudText(
+    CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Subheader:      <"[ <0>]", local.lang_str[5][Item.BalanceNotes]>,
-        Location:       Location.Top, 
-        SortOrder:      Item.BalanceNotes * 1,
-        SubheaderColor: local.sel_item == Item.BalanceNotes ? Color.Blue : Color.White,
-        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor,
+        Header:         <"[ <0>]", local.lang_str[5][Item.BalanceNotes]>,
+        Position:       RenderPosOf(0, 0.29), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.BalanceNotes ? Color.Blue : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    // easter egg
+    CreateInWorldText(
+        VisibleTo:      local.menu && local.language == Lang.JP ? local : null, 
+        Header:         " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n自転車乗る人は「セクス」と言います",
+        Position:       RenderPosOf(0, -2.02), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.Secret ? rainbow_color : 0,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 }
 
@@ -216,6 +249,7 @@ if (Update(IsInteractHeld()))
 
     menu = false; // disable first
     DestroyInWorldText(cursor);
+    sel_item = Item.Invalid;
 
     MinWait();
 
@@ -244,21 +278,24 @@ if (menu)
 
         else if (cursY < 1.225 && cursY > 1.125)
             sel_item = Item.HOK;
-        else if (cursY < 1.125 && cursY > 1.025)
+        else if (heal_on_kill && (cursY < 1.125 && cursY > 1.025))
             sel_item = Item.HOKMod;
 
         else if (cursY < 0.925 && cursY > 0.825)
             sel_item = Item.Random;
 
-        else if (cursY < 0.725 && cursY > 0.625)
+        else if (cursY < 0.75 && cursY > 0.65)
             sel_item = Item.Language;
-        else if (cursY < 0.625 && cursY > 0.525)
+        else if (cursY < 0.65 && cursY > 0.55)
             sel_item = Item.EN;
-        else if (cursY < 0.525 && cursY > 0.425)
+        else if (cursY < 0.55 && cursY > 0.45)
             sel_item = Item.JP;
 
         else if (cursY < 0.37 && cursY > 0.27)
             sel_item = Item.BalanceNotes;
+
+        else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
+            sel_item = Item.Secret;
 
         else
             sel_item = Item.Invalid;
@@ -266,7 +303,7 @@ if (menu)
     else 
         sel_item = Item.Invalid;
 
-    MinWait();
+    Wait(0.048);
     LoopIfConditionIsTrue();
 }
 
@@ -292,27 +329,30 @@ if (!IsButtonHeld(player, Button.Interact))
 rule: "Menu : Select Item"
 Event.OngoingPlayer
 if (menu)
+if (sel_item != Item.Invalid)
+if (toggles <= MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
+    if (sel_item != Item.HOKMod)
+        WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
+
     async! SelectionHandler(sel_item);
 }
 
-rule: "Menu : Bookmark Item"
+rule: "Menu : Favorite Item"
 Event.OngoingPlayer
 if (menu)
+if (toggles <= MAX_TOGGLES)
 if (IsReloadHeld())
-if (sel_item != Item.HOKMod)
-if (sel_item != Item.Language)
-if (sel_item != Item.EN)
-if (sel_item != Item.JP)
-if (sel_item != Item.BalanceNotes)
+if (!excl_fav.Contains(sel_item))
 {
     fav_item = sel_item == fav_item ? Item.Invalid : sel_item;
 }
 
-rule: "Menu : Bookmark Toggle"
+rule: "Menu : Favorite Toggle"
 Event.OngoingPlayer
 if (!menu)
+if (toggles <= MAX_TOGGLES)
 if (interact_taps == 2)
 {
     async! SelectionHandler(fav_item);
@@ -326,5 +366,14 @@ if (Abs(CursorX(player)) > SCREEN_WIDTH || Abs(CursorY(player)) > SCREEN_HEIGHT)
     SetFacing(Direction: facing);
 
     MinWait();
+    LoopIfConditionIsTrue();
+}
+
+rule: "Menu : Decrement Toggle Counter"
+Event.OngoingPlayer
+if (toggles > 0)
+{
+    WaitIfTrue(2);
+    toggles--;
     LoopIfConditionIsTrue();
 }

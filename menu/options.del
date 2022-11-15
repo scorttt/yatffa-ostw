@@ -1,70 +1,69 @@
 import "../main.del";
 
-playervar Boolean hide_all;
-playervar Boolean hide_stats;
-playervar Boolean hide_streak;
+playervar Boolean show_all;
+playervar Boolean show_stats;
+playervar Boolean show_streak;
 playervar Boolean heal_on_kill;
 playervar Any HOK_amt;
-playervar Number prev_HOK_amt;
 playervar Boolean random_hero;
 
 playervar Number language;
 
 void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 {
-    hide_all = !hide_all;
-    if (hide_all)
-    {
-        hide_stats = true;
-        hide_streak = true;
+    toggles++;
+    show_all = !show_all;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), lang_str[7][0]>);
+    if (show_all)
+    {
+        show_stats = true;
+        show_streak = true;
+
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][0]>);
     }
     else 
     {
-        hide_stats = false;
-        hide_streak = false;
+        show_stats = false;
+        show_streak = false;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), lang_str[6][0]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][0]>);
     }
 }
 
 void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
 {
-    hide_stats = !hide_stats;
+    toggles++;
+    show_stats = !show_stats;
 
-    if (hide_stats)
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), lang_str[7][1]>);
+    if (show_stats)
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][1]>);
     else
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), lang_str[6][1]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][1]>);
 }
 
 void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
 {
-    hide_streak = !hide_streak;
+    toggles++;
+    show_streak = !show_streak;
 
-    if (hide_streak)
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), lang_str[7][2]>);
+    if (show_streak)
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][2]>);
     else
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), lang_str[6][2]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][2]>);
 }
 
 void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
 {
+    toggles++;
     heal_on_kill = !heal_on_kill;
+
     if (heal_on_kill)
     {
-        if (HOK_amt == 0)
-            HOK_amt = prev_HOK_amt;
-
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), lang_str[6][3]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][3]>);
     }
     else
     {
-        prev_HOK_amt = HOK_amt;
-        HOK_amt = 0;
-
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), lang_str[7][3]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][3]>);
     }
 }
 
@@ -75,27 +74,28 @@ void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
         HOK_amt += 0.025;
 
         if (HOK_amt > s_heal)
-            HOK_amt = 0;
+            HOK_amt = 0.025;
     }
     else if (IsSecondaryHeld())
     {
         HOK_amt -= 0.025;
 
-        if (HOK_amt < 0)
+        if (HOK_amt < 0.025)
             HOK_amt = s_heal;
     }
 }
 
 void RandomHero() playervar "Menu Option Sub : Random Hero"
 {
+    toggles++;
     random_hero = !random_hero;
     if (random_hero)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), lang_str[6][5]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][5]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), lang_str[7][5]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][5]>);
 
         # unsure if these are necessary
         ResetHeroAvailability();
@@ -105,6 +105,7 @@ void RandomHero() playervar "Menu Option Sub : Random Hero"
 
 void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 {
+    toggles++;
     language = Lang.EN;
 
     for (Number i = 0; i < EN_STR.Length; i++)
@@ -112,10 +113,13 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
         lang_str[i] = EN_STR[i];
         Wait(0.1);
     }
+
+    Wait(0.2);
 }
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
+    toggles++;
     language = Lang.JP;
 
     for (Number i = 0; i < JP_STR.Length; i++)
@@ -123,6 +127,8 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
         lang_str[i] = JP_STR[i];
         Wait(0.1);
     }
+
+    Wait(0.2);
 }
 
 void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
@@ -142,14 +148,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             async! ToggleHOK();
             break;
         case Item.HOKMod:
-
-            ModifyHOK();
-
-            if (HOK_amt == 0)
-                heal_on_kill = false;
-            else 
-                heal_on_kill = true;
-
+            async! ModifyHOK();
             break;
         case Item.Random:
             async! RandomHero();
@@ -168,9 +167,9 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
 
             break;
         case Item.BalanceNotes:
-            SmallMessage(player, "Patch Notes");
+            SmallMessage(player, "自転車乗る人は「セクス」と言います");
             break;
     }
 
-    Wait(0.05);
+    Wait(0.1);
 }
