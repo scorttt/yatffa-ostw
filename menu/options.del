@@ -3,7 +3,7 @@ import "../main.del";
 playervar Boolean show_all;
 playervar Boolean show_stats;
 playervar Boolean show_streak;
-playervar Boolean heal_on_kill;
+playervar Boolean hok;
 playervar Any HOK_amt;
 playervar Boolean random_hero;
 
@@ -12,8 +12,8 @@ playervar Number language;
 void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 {
     toggles++;
-    show_all = !show_all;
 
+    show_all = !show_all;
     if (show_all)
     {
         show_stats = true;
@@ -28,36 +28,45 @@ void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][0]>);
     }
+
 }
 
 void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
 {
     toggles++;
+    
     show_stats = !show_stats;
-
     if (show_stats)
+    {
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][1]>);
+    }
     else
+    {
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][1]>);
+    }
 }
 
 void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
 {
     toggles++;
-    show_streak = !show_streak;
 
+    show_streak = !show_streak;
     if (show_streak)
+    {
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][2]>);
+    }
     else
+    {
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][2]>);
+    }
 }
 
 void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
 {
     toggles++;
-    heal_on_kill = !heal_on_kill;
 
-    if (heal_on_kill)
+    hok = !hok;
+    if (hok)
     {
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][3]>);
     }
@@ -88,6 +97,7 @@ void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
 void RandomHero() playervar "Menu Option Sub : Random Hero"
 {
     toggles++;
+
     random_hero = !random_hero;
     if (random_hero)
     {
@@ -106,29 +116,29 @@ void RandomHero() playervar "Menu Option Sub : Random Hero"
 void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 {
     toggles++;
-    language = Lang.EN;
 
+    language = Lang.EN;
     for (Number i = 0; i < EN_STR.Length; i++)
     {
         lang_str[i] = EN_STR[i];
         Wait(0.1);
     }
 
-    Wait(0.2);
+    Wait(1);
 }
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
     toggles++;
-    language = Lang.JP;
 
+    language = Lang.JP;
     for (Number i = 0; i < JP_STR.Length; i++)
     {
         lang_str[i] = JP_STR[i];
         Wait(0.1);
     }
 
-    Wait(0.2);
+    Wait(1);
 }
 
 void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
@@ -136,38 +146,35 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
     switch (item)
     {
         case Item.AllHUD:
-            async! ToggleAllHud();
+            if (s_hud)
+                async! ToggleAllHud();
             break;
-        case Item.HideStats:
-            async! ToggleStats();
+        case Item.Stats:
+            if (s_hud)
+                async! ToggleStats();
             break;
-        case Item.HideStreak:
-            async! ToggleStreak();
+        case Item.Streak:
+            if (s_hud)
+                async! ToggleStreak();
             break;
         case Item.HOK:
-            async! ToggleHOK();
+            if (s_hok)
+                async! ToggleHOK();
             break;
         case Item.HOKMod:
-            async! ModifyHOK();
+            if (s_hok)
+                async! ModifyHOK();
             break;
         case Item.Random:
             async! RandomHero();
             break;
-        case Item.Language:
-            SmallMessage(player, "Language");
-            break;
         case Item.EN:
             if (language != Lang.EN)
                 async! SetEnglish();
-
             break;
         case Item.JP:
             if (language != Lang.JP)
                 async! SetJapanese();
-
-            break;
-        case Item.BalanceNotes:
-            SmallMessage(player, "自転車乗る人は「セクス」と言います");
             break;
     }
 

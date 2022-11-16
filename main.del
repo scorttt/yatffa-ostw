@@ -12,27 +12,29 @@ globalvar Hero[] scope_arr;
 globalvar Hero[] scope_crit_arr;
 globalvar Hero[] enviro_arr;
 globalvar Number s_match_time;
-globalvar Boolean s_player_stats;
-globalvar Boolean s_killstreak_hud;
-globalvar Boolean s_heal_on_kill;
+
+globalvar Boolean s_menu;
+globalvar Boolean s_def_hud;
+globalvar Boolean s_def_stats;
+globalvar Boolean s_def_streak;
+globalvar Boolean s_def_hok;
+globalvar Boolean s_def_random;
+
+globalvar Boolean s_hud;
+globalvar Boolean s_hok;
+globalvar Boolean s_random;
+
 globalvar Number s_hot_time;
 globalvar Boolean s_hot_interrupt;
 globalvar Boolean s_instant_respawn;
 globalvar Boolean s_score_win;
 globalvar Boolean s_auto_restart;
-globalvar Number s_score;
 globalvar Number s_heal;
 globalvar Number s_lang;
 
+playervar Boolean check_spawn;
 
-// Vector txt_location(in Number X, in Number Y): 
-// Update(EyePosition(local) + 100 * 
-//           (X * WorldVectorOf(Right(), local, LocalVector.Rotation) +
-//           (Y - 0.200) 
-//           * DirectionFromAngles(HorizontalAngleFromDirection(Facing(local)), VerticalAngleFromDirection(Facing(local)) - 90) + 3 * Facing(local)));
-
-
-rule: "v1.3.0.221115 | Created by scort#12211" 
+rule: "v2.0.0.221115 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -47,50 +49,56 @@ rule: "Initial Global"
     s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", "日本語"], 0);
 
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 45, 5, 60, 1) * 60;
-
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
-    s_killstreak_hud = WorkshopSettingToggle("Settings", "Show Kill Streaks", true, 3);
-    s_player_stats = WorkshopSettingToggle("Settings", "Show Player Stats", true, 4);
     s_auto_restart = WorkshopSettingToggle("Settings", "Automatically Restart Lobby After POTG", true, 6);
+    s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 1);
 
-    s_score_win = WorkshopSettingToggle("Score Win", "Enable Score Win Condition", true, 1);
+    s_menu = WorkshopSettingToggle("Menu", "Use Menu", true, 0);
 
-    s_heal_on_kill = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 1);
+    s_hud = WorkshopSettingToggle("HUD", "Allow Changing Workshop HUD", true, 1);
+    s_def_hud = WorkshopSettingToggle("HUD", "Show Workshop HUD", true, 2);
+    s_def_streak = WorkshopSettingToggle("HUD", "Show Kill Streaks", true, 4);
+    s_def_stats = WorkshopSettingToggle("HUD", "Show Player Stats", true, 6);
+
+    s_hok = WorkshopSettingToggle("Heal On Kill", "Allow Changing Heal On Kill", true, 7);
+    s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
     s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
     s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
     s_heal = WorkshopSettingInteger("Heal On Kill", "Heal Percentage based on enemies max health", 40, 0, 100, 4) / 100;
 
+    s_random = WorkshopSettingToggle("Random Hero", "Allow Changing Random Hero", true, 9);
+    s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
+
     Number credit = WorkshopSettingCombo("Credit", "Created by", 0, ["scort#11221", "saruyo (JP Localization)", "BXRXY", "Please credit!"], 1000);
 
-    SetMatchTime(1);
+    SetMatchTime(10);
 }
 
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 {
     // todo: may need some optimization
-    if (s_heal_on_kill)
+    if (s_hud && s_def_hud)
     {
-        heal_on_kill = true;
-        HOK_amt = s_heal;
+        show_all = true;
+        show_stats = true;
+        show_streak = true;
     }
 
-    if (s_player_stats && s_killstreak_hud)
-        show_all = true;
+    if (s_hok && s_def_hok)
+        hok = true;
 
-    if (s_player_stats)
-        show_stats = true;
-
-    if (s_killstreak_hud)
-        show_streak = true;
-
-    sel_item = Item.Invalid;
-    fav_item = Item.Invalid;
+    if (s_random && s_def_random)
+        random_hero = true;
 
     if (s_lang == Lang.EN)
         SetEnglish();
     else 
         SetJapanese();
+
+    sel_item = Item.Invalid;
+    fav_item = Item.Invalid;
+    HOK_amt = s_heal;
 
     DisableGameModeHud();
 }
@@ -207,6 +215,7 @@ if (IsAlive())
         SetAbilityResource(player, Button.Jump, 100);
 
     ResetHeroAvailability();
+    check_spawn = true;
 
     Wait(0.08);
 
@@ -216,6 +225,20 @@ if (IsAlive())
     SetAbilityCooldown(player, Button.Ability2, 0);
     SetAbilityCooldown(player, Button.PrimaryFire, 0);
     SetAbilityCooldown(player, Button.SecondaryFire, 0);
+}
+
+rule: "Change Spawn"
+Event.OngoingPlayer
+if (check_spawn)
+if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+{
+    check_spawn = false;
+
+    if (DistanceBetween(PositionOf(), Vector(177, 0, 51)) < 1)
+    {
+        LogToInspector(<"<0> spawned at the bad location, forcing a respawn", player>);
+        Respawn();
+    }
 }
 
 rule: "Force Respawn"

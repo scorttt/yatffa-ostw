@@ -12,30 +12,20 @@ enum Item
 {
     Invalid = -1,
 
-    AllHUD = 0, // bool dropdown
-    HideStats = 1, // bool child
-    HideStreak = 2, // bool child
+    AllHUD = 0,
+    Stats = 1,
+    Streak = 2,
 
-    HOK = 3, // bool dropdown
-    HOKMod = 4, // mod child
+    HOK = 3,
+    HOKMod = 4,
 
-    Random = 5, // bool
+    Random = 5,
 
-    Language = 6, // dropdown
-    EN = 7, // radio child
-    JP = 8, // radio child
-
-    BalanceNotes = 9, // new menu
+    Language = 6,
+    EN = 7,
+    JP = 8,
 
     Secret = 69 // jp easter egg
-}
-
-enum OptionType
-{
-    Toggle, // item is a toggle
-    Dropdown, // item is a dropdown
-    Mod, // item can be adjusted with a value
-    Radio // only one option can be selected within a dropdown
 }
 
 // cursor math credit to josbird
@@ -51,12 +41,13 @@ Number SCREEN_HEIGHT:  2.125;
 
 Number SELECTION_AREA_WIDTH:  0.65;
 
-Number MAX_TOGGLES: 4;
+Number MAX_TOGGLES: 5;
 
-rule: "Menu : Create Frame and options"
+rule: "Menu : Create Frame and options : Welcome to Hell"
+if (s_menu)
 {
     // excluded options from favoriting
-    excl_fav = [Item.HOKMod, Item.Language, Item.EN, Item.JP, Item.BalanceNotes, Item.Secret];
+    excl_fav = [Item.HOKMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
     // frame
     CreateInWorldText(
@@ -74,27 +65,34 @@ rule: "Menu : Create Frame and options"
     // contents
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>   <1> ▼ <2>", local.show_stats && local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                        local.lang_str[5][Item.AllHUD],
-                                        local.fav_item == Item.AllHUD ? " " + IconString(Icon.Asterisk) : "">,
+        Header:         <"<0>   <1> ▼<2>", local.show_stats && local.show_streak 
+                                                ? IconString(Icon.Checkmark) 
+                                                : local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
+                                                    ? IconString(Icon.Asterisk) 
+                                                    : IconString(Icon.No), 
+                                            local.lang_str[5][Item.AllHUD],
+                                            local.fav_item == Item.AllHUD ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.52), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.AllHUD 
                             ? Color.Blue 
-                            : local.show_stats && local.show_streak
-                                ? Color.Green
-                                : CustomColor(255, 0, 0, 255),
+                            : local.show_stats && local.show_streak 
+                                ? Color.Green 
+                                : local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
+                                    ? CustomColor(255, 255, 0, 255)
+                                    : CustomColor(255, 0, 0, 255), 
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
+
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>   <1> <2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.HideStats],
-                                    local.fav_item == Item.HideStats ? " " + IconString(Icon.Asterisk) : "">,
+        Header:         <"<0>   <1><2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    local.lang_str[5][Item.Stats],
+                                    local.fav_item == Item.Stats ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.42), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.HideStats 
+        TextColor:      local.sel_item == Item.Stats 
                             ? Color.Blue 
                                 : local.show_stats
                                     ? Color.Green
@@ -104,12 +102,12 @@ rule: "Menu : Create Frame and options"
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>   <1> <2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.HideStreak],
-                                    local.fav_item == Item.HideStreak ? " " + IconString(Icon.Asterisk) : "">,
+        Header:         <"<0>   <1><2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    local.lang_str[5][Item.Streak],
+                                    local.fav_item == Item.Streak ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.32), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.HideStreak 
+        TextColor:      local.sel_item == Item.Streak 
                             ? Color.Blue 
                             : local.show_streak
                                 ? Color.Green
@@ -121,14 +119,14 @@ rule: "Menu : Create Frame and options"
 
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>   <1> ▼ <2>", local.heal_on_kill ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1> ▼<2>", local.hok ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.HOK],
-                                    local.fav_item == Item.HOK ? " " + IconString(Icon.Asterisk) : "">,
+                                    local.fav_item == Item.HOK ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.145), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOK
                             ? Color.Blue 
-                            : local.heal_on_kill 
+                            : local.hok 
                                 ? Color.Green
                                 : CustomColor(255, 0, 0, 255),
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -143,7 +141,7 @@ rule: "Menu : Create Frame and options"
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
                             ? Color.Blue 
-                            : local.heal_on_kill 
+                            : local.hok 
                                 ? Color.White 
                                 : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -153,9 +151,9 @@ rule: "Menu : Create Frame and options"
 
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>   <1> <2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.Random],
-                                    local.fav_item == Item.Random ? " " + IconString(Icon.Asterisk) : "">,
+                                    local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 0.845), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
@@ -197,21 +195,11 @@ rule: "Menu : Create Frame and options"
         Spectators:     Spectators.VisibleNever);
 
 
-    CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
-        Header:         <"[ <0>]", local.lang_str[5][Item.BalanceNotes]>,
-        Position:       RenderPosOf(0, 0.29), 
-        Scale:          1.25,
-        TextColor:      local.sel_item == Item.BalanceNotes ? Color.Blue : Color.White,
-        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
-        Clipping:       Clipping.DoNotClip,
-        Spectators:     Spectators.VisibleNever);
-
     // easter egg
     CreateInWorldText(
         VisibleTo:      local.menu && local.language == Lang.JP ? local : null, 
         Header:         " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n自転車乗る人は「セクス」と言います",
-        Position:       RenderPosOf(0, -2.02), 
+        Position:       RenderPosOf(0, -2.04), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Secret ? rainbow_color : 0,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -221,6 +209,7 @@ rule: "Menu : Create Frame and options"
 
 rule: "Menu : Open/Close"
 Event.OngoingPlayer
+if (s_menu)
 if (IsAlive())
 if (Update(IsInteractHeld()))
 {
@@ -272,27 +261,22 @@ if (menu)
         if (cursY < 1.60 && cursY > 1.50)
             sel_item = Item.AllHUD;
         else if (cursY < 1.50 && cursY > 1.40)
-            sel_item = Item.HideStats;
+            sel_item = Item.Stats;
         else if (cursY < 1.40 && cursY > 1.30)
-            sel_item = Item.HideStreak;
+            sel_item = Item.Streak;
 
         else if (cursY < 1.225 && cursY > 1.125)
             sel_item = Item.HOK;
-        else if (heal_on_kill && (cursY < 1.125 && cursY > 1.025))
+        else if (hok && (cursY < 1.125 && cursY > 1.025))
             sel_item = Item.HOKMod;
 
         else if (cursY < 0.925 && cursY > 0.825)
             sel_item = Item.Random;
 
-        else if (cursY < 0.75 && cursY > 0.65)
-            sel_item = Item.Language;
         else if (cursY < 0.65 && cursY > 0.55)
             sel_item = Item.EN;
         else if (cursY < 0.55 && cursY > 0.45)
             sel_item = Item.JP;
-
-        else if (cursY < 0.37 && cursY > 0.27)
-            sel_item = Item.BalanceNotes;
 
         else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
             sel_item = Item.Secret;
@@ -303,7 +287,7 @@ if (menu)
     else 
         sel_item = Item.Invalid;
 
-    Wait(0.048);
+    Wait(0.032);
     LoopIfConditionIsTrue();
 }
 
@@ -330,7 +314,7 @@ rule: "Menu : Select Item"
 Event.OngoingPlayer
 if (menu)
 if (sel_item != Item.Invalid)
-if (toggles <= MAX_TOGGLES)
+if (toggles < MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
     if (sel_item != Item.HOKMod)
@@ -342,19 +326,21 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
 rule: "Menu : Favorite Item"
 Event.OngoingPlayer
 if (menu)
-if (toggles <= MAX_TOGGLES)
+if (toggles < MAX_TOGGLES)
 if (IsReloadHeld())
 if (!excl_fav.Contains(sel_item))
 {
+    toggles++;
     fav_item = sel_item == fav_item ? Item.Invalid : sel_item;
 }
 
 rule: "Menu : Favorite Toggle"
 Event.OngoingPlayer
 if (!menu)
-if (toggles <= MAX_TOGGLES)
+if (toggles < MAX_TOGGLES)
 if (interact_taps == 2)
 {
+    interact_taps = 0;
     async! SelectionHandler(fav_item);
 }
 
@@ -373,7 +359,7 @@ rule: "Menu : Decrement Toggle Counter"
 Event.OngoingPlayer
 if (toggles > 0)
 {
-    WaitIfTrue(2);
+    WaitIfTrue(1);
     toggles--;
     LoopIfConditionIsTrue();
 }

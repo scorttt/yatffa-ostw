@@ -44,27 +44,30 @@ rule: "Global Hud Text"
 
         timer_color = Color.White;
 
-    // hide/show menu
-    CreateHudText(
-        VisibleTo:  FilteredArray(all, !Curr().menu), 
-        Subheader:  StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact)), 
-        Location:   Location.Right, 
-        SortOrder:  0.2, 
-        Spectators: Spectators.VisibleNever);
-    CreateHudText(
-        VisibleTo:  FilteredArray(all, Curr().menu), 
-        Subheader:  StringReplace(local.lang_str[0][1], "*", BindString(Button.Interact)), 
-        Location:   Location.Right, 
-        SortOrder:  0.2, 
-        Spectators: Spectators.VisibleNever);
+    if (s_menu)
+    {
+        // hide/show menu
+        CreateHudText(
+            VisibleTo:  FilteredArray(all, !Curr().menu), 
+            Subheader:  StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact)), 
+            Location:   Location.Right, 
+            SortOrder:  0.2, 
+            Spectators: Spectators.VisibleNever);
+        CreateHudText(
+            VisibleTo:  FilteredArray(all, Curr().menu), 
+            Subheader:  StringReplace(local.lang_str[0][1], "*", BindString(Button.Interact)), 
+            Location:   Location.Right, 
+            SortOrder:  0.2, 
+            Spectators: Spectators.VisibleNever);
 
-    // double tap for fav_item
-    CreateHudText(
-        VisibleTo:  local.fav_item != Item.Invalid ? local : null, 
-        Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + "\"" + local.lang_str[5][local.fav_item] + "\"", 
-        Location:   Location.Right, 
-        SortOrder:  0.3,
-        Spectators: Spectators.VisibleNever);
+        // double tap for fav_item
+        CreateHudText(
+            VisibleTo:  local.fav_item != Item.Invalid ? local : null, 
+            Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + "\"" + local.lang_str[5][local.fav_item] + "\"", 
+            Location:   Location.Right, 
+            SortOrder:  0.3,
+            Spectators: Spectators.VisibleNever);
+    }
 
     // spacing for death info
     CreateHudText(
@@ -95,7 +98,7 @@ rule: "Global Hud Text"
     }
 
     // player stats
-    if (s_player_stats)
+    if (s_hud)
     {
         // stats
         CreateHudText(
@@ -139,7 +142,7 @@ rule: "Global Hud Text"
 
 rule: "Player Streak HUD"
 Event.OngoingPlayer
-if (s_killstreak_hud)
+if (s_hud)
 {
     // visible only to self
     CreateHudText(
@@ -172,14 +175,14 @@ if (s_killstreak_hud)
         Spectators:     Spectators.DefaultVisibility);
 
     // streak best
-    CreateHudText(
-        VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && show_streak 
-                        ? player 
-                        : null,
-        Text:      <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, // todo: localize this string
-        Location:  Location.Right, 
-        SortOrder: 0.3, 
-        TextColor: Color.Yellow);
+    // CreateHudText(
+    //     VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && show_streak 
+    //                     ? player 
+    //                     : null,
+    //     Text:      <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, // todo: localize this string
+    //     Location:  Location.Right, 
+    //     SortOrder: 0.3, 
+    //     TextColor: Color.Yellow);
 }
 
 rule: "Update Killstreak"

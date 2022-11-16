@@ -21,12 +21,21 @@ rule: "Show Server Load for host and scort if he joins"
 Event.OnPlayerJoin
 if (player == host || <"<0>", player> == "scort")
 {
-    CreateInWorldText(player, <"C: <0>%, A: <1>%, P: <2>%, T: <3> (<4>)\n", 
+    CreateInWorldText(player, <"C: <0>%, A: <1>%, P: <2>%, T: <3> (<4>)", 
     Near(ServerLoad()), 
     Near(ServerLoadAverage()), 
     Near(ServerLoadPeak()), 
-    TextCount(), TextCount() - 1>, RenderPosOf(3, -2.15), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
+    TextCount(), TextCount() - 1>, RenderPosOf(3, -2.05), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
 }
+
+// rule: "Show OW Spawn Points"
+// if (HasSpawned(host))
+// {
+//     for (Number i = 0; i < SpawnPoints(Team.All).Length; i++)
+//     {
+//         CreateEffect(all, Effect.Sphere, Color.White, RayCastHitPosition(SpawnPoints(Team.All)[Once(i)], SpawnPoints(Team.All)[Once(i)] + Down(), null, null), 0.5, EffectRev.VisibleToPositionRadiusAndColor);
+//     }
+// }
 
 // rule: "Bots"
 // Event.OngoingPlayer
@@ -77,10 +86,8 @@ if (player == host || <"<0>", player> == "scort")
 
 rule: "Hud"
 Event.OngoingPlayer
-if (player == host)
 {
     CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
     CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
-    CreateHudText(player, null, null, <"Raycast: <0>", RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100)>, Location.Right, 12);
-    CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>", CursorX(), CursorY(), sel_item, fav_item>, Location.Right, 125);
+    CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 125);
 }

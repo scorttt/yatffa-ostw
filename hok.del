@@ -4,7 +4,7 @@ playervar Any hot;
 playervar Boolean healing;
 rule: "Heal On Kill"
 Event.OnFinalBlow
-if (s_heal_on_kill && heal_on_kill) 
+if (s_hok && hok) 
 if (!IsDuplicating()) 
 if (Health() < MaxHealth())
 {
