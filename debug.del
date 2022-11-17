@@ -84,10 +84,10 @@ if (player == host || <"<0>", player> == "scort")
 //     Resurrect();
 // }
 
-rule: "Hud"
-Event.OngoingPlayer
-{
-    CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
-    CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
-    CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 125);
-}
+// rule: "Hud"
+// Event.OngoingPlayer
+// {
+//     CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
+//     CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
+//     CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 125);
+// }
