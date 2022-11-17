@@ -70,6 +70,7 @@
         "Ultimate Ability (Configuration: Artillery)": false
       },
       "Echo": {
+        "Focusing Beam": false,
         "Ultimate Ability (Duplicate)": false
       },
       "Torbjörn": {
@@ -111,6 +112,7 @@
       },
       "Symmetra":
       {
+        "Health": 88.8888,
         "Sentry Turret": false,
         "Teleporter": false,
         "Ultimate Ability (Photon Barrier)": false
@@ -123,13 +125,17 @@
         "Ultimate Ability (Barrage)": false
       },
       "Lúcio": {
+        "Ultimate Ability (Sound Barrier)": false,
         "Healing Dealt": 20
       },
       "Kiriko": {
-        "Protection Suzu Cooldown Time": 115
+        "Protection Suzu": false
+      },
+      "Zenyatta": {
+        "Ultimate Ability (Transcendence)": false
       }
     }
   },
   "Mode Name": "<FGFF00FFFF>Tryhard FFA (YATFFA)",
-  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\nv2.0.0 | 11/15/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
+  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\nv2.0.0 | 11/16/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
 }
