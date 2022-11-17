@@ -49,7 +49,7 @@ if (s_menu)
     // excluded options from favoriting
     excl_fav = [Item.HOKMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
-    // frame
+    // frame top
     CreateInWorldText(
         VisibleTo:    local.menu ? local : null,
         Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
@@ -76,11 +76,13 @@ if (s_menu)
         Scale:          1.25,
         TextColor:      local.sel_item == Item.AllHUD 
                             ? Color.Blue 
-                            : local.show_stats && local.show_streak 
+                            : local.show_stats && local.show_streak && s_hud
                                 ? Color.Green 
-                                : local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
-                                    ? CustomColor(255, 255, 0, 255)
-                                    : CustomColor(255, 0, 0, 255), 
+                                : s_hud 
+                                    ? local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
+                                        ? CustomColor(255, 255, 0, 255)
+                                        : CustomColor(255, 0, 0, 255)
+                                    : Color.Gray, 
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -94,9 +96,11 @@ if (s_menu)
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Stats 
                             ? Color.Blue 
-                                : local.show_stats
+                            : s_hud 
+                                ? local.show_stats
                                     ? Color.Green
-                                    : CustomColor(255, 0, 0, 255),
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -109,9 +113,11 @@ if (s_menu)
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Streak 
                             ? Color.Blue 
-                            : local.show_streak
-                                ? Color.Green
-                                : CustomColor(255, 0, 0, 255),
+                            : s_hud 
+                                ? local.show_streak
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -126,9 +132,11 @@ if (s_menu)
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOK
                             ? Color.Blue 
-                            : local.hok 
-                                ? Color.Green
-                                : CustomColor(255, 0, 0, 255),
+                            : s_hok
+                                ? local.hok 
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -158,9 +166,11 @@ if (s_menu)
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
                             ? Color.Blue 
-                            : local.random_hero 
-                                ? Color.Green
-                                : CustomColor(255, 0, 0, 255),
+                            : s_hok
+                                ? local.random_hero 
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -168,7 +178,7 @@ if (s_menu)
 
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0> ▼", local.lang_str[5][Item.Language]>,
+        Header:         local.lang_prog_str == "" ? <"<0> ▼", local.lang_str[5][Item.Language]> : local.lang_prog_str,
         Position:       RenderPosOf(0, 0.67), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Language ? Color.Blue : Color.White,
@@ -258,19 +268,19 @@ if (menu)
     // if (Abs(CursorX(player) - MENU_CENTER_X) <= SELECTION_AREA_WIDTH)
     if (Abs(CursorX(player)) <= SELECTION_AREA_WIDTH)
     {
-        if (cursY < 1.60 && cursY > 1.50)
+        if (s_hud && cursY < 1.60 && cursY > 1.50)
             sel_item = Item.AllHUD;
-        else if (cursY < 1.50 && cursY > 1.40)
+        else if (s_hud && cursY < 1.50 && cursY > 1.40)
             sel_item = Item.Stats;
-        else if (cursY < 1.40 && cursY > 1.30)
+        else if (s_hud && cursY < 1.40 && cursY > 1.30)
             sel_item = Item.Streak;
 
-        else if (cursY < 1.225 && cursY > 1.125)
+        else if (s_hok && cursY < 1.225 && cursY > 1.125)
             sel_item = Item.HOK;
         else if (hok && (cursY < 1.125 && cursY > 1.025))
             sel_item = Item.HOKMod;
 
-        else if (cursY < 0.925 && cursY > 0.825)
+        else if (s_random && cursY < 0.925 && cursY > 0.825)
             sel_item = Item.Random;
 
         else if (cursY < 0.65 && cursY > 0.55)
@@ -306,7 +316,7 @@ Event.OngoingPlayer
 if (fav_item != Item.Invalid)
 if (!IsButtonHeld(player, Button.Interact))
 {
-    WaitIfTrue(0.15);
+    WaitIfTrue(0.1);
     interact_taps = 0;
 }
 

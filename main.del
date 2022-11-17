@@ -34,7 +34,7 @@ globalvar Number s_lang;
 
 playervar Boolean check_spawn;
 
-rule: "v2.0.0.221115 | Created by scort#12211" 
+rule: "v2.0.0.221116 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -55,40 +55,41 @@ rule: "Initial Global"
 
     s_menu = WorkshopSettingToggle("Menu", "Use Menu", true, 0);
 
-    s_hud = WorkshopSettingToggle("HUD", "Allow Changing Workshop HUD", true, 1);
+    s_hud = WorkshopSettingToggle("HUD", "Allow Modifying Workshop HUD toggle", true, 1);
     s_def_hud = WorkshopSettingToggle("HUD", "Show Workshop HUD", true, 2);
     s_def_streak = WorkshopSettingToggle("HUD", "Show Kill Streaks", true, 4);
     s_def_stats = WorkshopSettingToggle("HUD", "Show Player Stats", true, 6);
 
-    s_hok = WorkshopSettingToggle("Heal On Kill", "Allow Changing Heal On Kill", true, 7);
+    s_hok = WorkshopSettingToggle("Heal On Kill", "Allow Modifying Heal On Kill toggle", true, 7);
     s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
     s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
     s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
-    s_heal = WorkshopSettingInteger("Heal On Kill", "Heal Percentage based on enemies max health", 40, 0, 100, 4) / 100;
+    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 7, 
+             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"], 4) + 1) * 0.05;
 
-    s_random = WorkshopSettingToggle("Random Hero", "Allow Changing Random Hero", true, 9);
+    s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
 
-    Number credit = WorkshopSettingCombo("Credit", "Created by", 0, ["scort#11221", "saruyo (JP Localization)", "BXRXY", "Please credit!"], 1000);
+    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "Josbird (Cursor math)", "BXRXY", "Please credit!"], 1000);
 
-    SetMatchTime(10);
+    SetMatchTime(1);
 }
 
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 {
     // todo: may need some optimization
-    if (s_hud && s_def_hud)
+    if (s_def_hud)
     {
         show_all = true;
         show_stats = true;
         show_streak = true;
     }
 
-    if (s_hok && s_def_hok)
+    if (s_def_hok)
         hok = true;
 
-    if (s_random && s_def_random)
+    if (s_def_random)
         random_hero = true;
 
     if (s_lang == Lang.EN)
@@ -101,6 +102,13 @@ Event.OnPlayerJoin
     HOK_amt = s_heal;
 
     DisableGameModeHud();
+}
+
+rule: "Player Spawned"
+Event.OngoingPlayer
+if (HasSpawned())
+{
+    SmallMessage(player, <"   <0><1>", local.lang_str[4][4], StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact))>);
 }
 
 rule: "Player Leave"
@@ -236,6 +244,7 @@ if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
 
     if (DistanceBetween(PositionOf(), Vector(177, 0, 51)) < 1)
     {
+        # honestly not sure why players dont repeatedly keep spawning at the same bad location, might be ow's spawn logic doing the hard part for me
         LogToInspector(<"<0> spawned at the bad location, forcing a respawn", player>);
         Respawn();
     }

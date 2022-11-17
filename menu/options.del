@@ -8,6 +8,8 @@ playervar Any HOK_amt;
 playervar Boolean random_hero;
 
 playervar Number language;
+playervar String lang_prog_str;
+playervar Boolean lang_swap;
 
 void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 {
@@ -117,28 +119,38 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 {
     toggles++;
 
+    lang_swap = true;
     language = Lang.EN;
     for (Number i = 0; i < EN_STR.Length; i++)
     {
         lang_str[i] = EN_STR[i];
-        Wait(0.1);
+        lang_prog_str =  <"Loading: <0>%", Near(i / EN_STR.Length * 100)>;
+        Wait(0.25);
     }
 
-    Wait(1);
+    lang_prog_str = "Done!";
+    Wait(2);
+    lang_prog_str = "";
+    lang_swap = false;
 }
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
     toggles++;
 
+    lang_swap = true;
     language = Lang.JP;
     for (Number i = 0; i < JP_STR.Length; i++)
     {
         lang_str[i] = JP_STR[i];
-        Wait(0.1);
+        lang_prog_str =  <"読み込み：<0>%", Near(i / JP_STR.Length * 100)>;
+        Wait(0.25);
     }
 
-    Wait(1);
+    lang_prog_str = "完了！";
+    Wait(2);
+    lang_prog_str = "";
+    lang_swap = false;
 }
 
 void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
@@ -162,18 +174,18 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
                 async! ToggleHOK();
             break;
         case Item.HOKMod:
-            if (s_hok)
+            if (hok)
                 async! ModifyHOK();
             break;
         case Item.Random:
             async! RandomHero();
             break;
         case Item.EN:
-            if (language != Lang.EN)
+            if (language != Lang.EN && !lang_swap)
                 async! SetEnglish();
             break;
         case Item.JP:
-            if (language != Lang.JP)
+            if (language != Lang.JP && !lang_swap)
                 async! SetJapanese();
             break;
     }

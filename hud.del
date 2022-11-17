@@ -1,6 +1,6 @@
 import "main.del";
 
-globalvar Number[] strk_arr;
+// globalvar Number[] strk_arr;
 globalvar Number t_left_yellow;
 globalvar Color timer_color;
 playervar Number | String kill_streak;
@@ -44,7 +44,7 @@ rule: "Global Hud Text"
 
         timer_color = Color.White;
 
-    if (s_menu)
+    if (s_menu || s_def_hud)
     {
         // hide/show menu
         CreateHudText(
@@ -98,7 +98,7 @@ rule: "Global Hud Text"
     }
 
     // player stats
-    if (s_hud)
+    if (s_hud || s_def_hud)
     {
         // stats
         CreateHudText(
@@ -142,7 +142,7 @@ rule: "Global Hud Text"
 
 rule: "Player Streak HUD"
 Event.OngoingPlayer
-if (s_hud)
+if (s_hud || s_def_hud)
 {
     // visible only to self
     CreateHudText(
@@ -207,14 +207,14 @@ Event.OnDeath
     {
         best_streak = kill_streak;
 
-        strk_arr = SortedArray(all, best_streak);
-        strk_arr = MappedArray(strk_arr, Curr().best_streak);
+        // strk_arr = SortedArray(all, best_streak);
+        // strk_arr = MappedArray(strk_arr, Curr().best_streak);
         bs_hero = HeroIconString(HeroOf());
 
         if (best_streak > bs_ser)
         {
             bs_ser = best_streak;
-            bs_ser_usr = player;
+            // bs_ser_usr = player;
             bs_ser_hero = bs_hero;
             SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][3], "*", kill_streak)>);
             Wait(0.1);

@@ -56,7 +56,8 @@ rule: "Init Language Strings"
     EN_STR[4] = [" was kicked for not selecting a hero after 5 minutes", // 0
                  "Navigate: Aim", // 1
                  "Select: ", // 2
-                 "Favorite: " // 3
+                 "Favorite: ", // 3
+                 "Welcome! " // 4
                  ];
 
     EN_STR[5] = ["Show Workshop HUD", // 0
@@ -67,8 +68,7 @@ rule: "Init Language Strings"
                  "Random Hero", // 5
                  "Language", // 6
                  "English", // 7
-                 "日本語", // 8
-                 "Balance Notes " // 9
+                 "日本語" // 8
                  ];
 
     EN_STR[6] = ["Workshop HUD shown!", 
@@ -125,7 +125,8 @@ rule: "Init Language Strings"
     JP_STR[4] = ["は5分にヒーローを選択しなかったためにキックされった", // 0
                  "ナビる：狙う", // 1
                  "選ぶ：", // 2
-                 "愛用:" // 3
+                 "愛用:", // 3
+                 "ようこそ！" // 4
                  ];
 
     JP_STR[5] = ["HUDを見せる", // 0
@@ -136,8 +137,7 @@ rule: "Init Language Strings"
                  "ランダムのヒーロー", // 5
                  "言語", // 6
                  "English", // 7
-                 "日本語", // 8
-                 " バランスノート（英語）" // 9
+                 "日本語" // 8
                  ];
 
     JP_STR[6] = ["HUDを見る!", 
