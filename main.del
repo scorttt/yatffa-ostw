@@ -10,7 +10,6 @@ import "menu/menu.del";
 globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
 globalvar Hero[] scope_crit_arr;
-globalvar Hero[] enviro_arr;
 globalvar Number s_match_time;
 
 globalvar Boolean s_menu;
@@ -44,7 +43,6 @@ rule: "Initial Global"
     critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
     scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scope_crit_arr = [Hero.Widowmaker, Hero.Ashe];
-    enviro_arr = [Hero.Doomfist, Hero.Pharah, Hero.Lucio, Hero.WreckingBall, Hero.Orisa, Hero.Brigitte, Hero.Junkrat, Hero.Winston, Hero.Sigma, Hero.Zenyatta, Hero.JunkerQueen];
 
     s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", "日本語"], 0);
 
@@ -64,8 +62,8 @@ rule: "Initial Global"
     s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
     s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
     s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
-    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 7, 
-             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"], 4) + 1) * 0.05;
+    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 9, 
+             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"], 4) + 1) * 0.05;
 
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
@@ -78,6 +76,12 @@ rule: "Initial Global"
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 {
+    DisableGameModeHud();
+
+    sel_item = Item.Invalid;
+    fav_item = Item.Invalid;
+    HOK_amt = s_heal;
+
     // todo: may need some optimization
     if (s_def_hud)
     {
@@ -96,18 +100,13 @@ Event.OnPlayerJoin
         SetEnglish();
     else 
         SetJapanese();
-
-    sel_item = Item.Invalid;
-    fav_item = Item.Invalid;
-    HOK_amt = s_heal;
-
-    DisableGameModeHud();
 }
 
 rule: "Player Spawned"
 Event.OngoingPlayer
 if (HasSpawned())
 {
+    Wait(1);
     SmallMessage(player, <"   <0><1>", local.lang_str[4][4], StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact))>);
 }
 
@@ -157,7 +156,6 @@ if (IsGameInProgress())
 
     Wait(0.08);
     SetMatchTime(s_match_time);
-    t_left_yellow = s_match_time / 4;
 }
 
 void EndMatch() globalvar "End Match Sub"
@@ -242,7 +240,7 @@ if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
 {
     check_spawn = false;
 
-    if (DistanceBetween(PositionOf(), Vector(177, 0, 51)) < 1)
+    if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
     {
         # honestly not sure why players dont repeatedly keep spawning at the same bad location, might be ow's spawn logic doing the hard part for me
         LogToInspector(<"<0> spawned at the bad location, forcing a respawn", player>);
