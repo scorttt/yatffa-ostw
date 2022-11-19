@@ -18,12 +18,13 @@ enum Item
 
     HOK = 3,
     HOKMod = 4,
+    HOKDurMod = 5,
 
-    Random = 5,
+    Random = 6,
 
-    Language = 6,
-    EN = 7,
-    JP = 8,
+    Language = 7,
+    EN = 8,
+    JP = 9,
 
     Secret = 69 // jp easter egg
 }
@@ -50,7 +51,7 @@ rule: "Menu : Create Frame and options : Welcome to Hell"
 if (s_menu)
 {
     // excluded options from favoriting
-    excl_fav = [Item.HOKMod, Item.Language, Item.EN, Item.JP, Item.Secret];
+    excl_fav = [Item.HOKMod, Item.HOKDurMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
     // frame top
     CreateInWorldText(
@@ -158,6 +159,21 @@ if (s_menu)
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
+    CreateInWorldText(
+        VisibleTo:      local.menu ? local : null, 
+        Header:         local.sel_item == Item.HOKDurMod
+                            ? <"<2>    -  <0><1>  +    <3>", StringReplace(local.HOK_dur, ".50", ".5"), local.lang_str[5][Item.HOKDurMod], BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : <"<0><1>", StringReplace(local.HOK_dur, ".50", ".5"), local.lang_str[5][Item.HOKDurMod]>,
+        Position:       RenderPosOf(0, 0.945), 
+        Scale:          1.25,
+        TextColor:      local.sel_item == Item.HOKDurMod 
+                            ? SelectedPulse() 
+                            : local.hok 
+                                ? Color.White 
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
 
 
     CreateInWorldText(
@@ -165,7 +181,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[5][Item.Random],
                                     local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 0.845), 
+        Position:       RenderPosOf(0, 0.745), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
                             ? SelectedPulse() 
@@ -184,7 +200,7 @@ if (s_menu)
         Header:         local.lang_prog_str == "" 
                             ? <"<0> ▼", local.lang_str[5][Item.Language]> 
                             : local.lang_prog_str,
-        Position:       RenderPosOf(0, 0.67), 
+        Position:       RenderPosOf(0, 0.57), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Language ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -193,7 +209,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>", local.lang_str[5][Item.EN]>,
-        Position:       RenderPosOf(0, 0.57), 
+        Position:       RenderPosOf(0, 0.47), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.EN ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -202,7 +218,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>", local.lang_str[5][Item.JP]>,
-        Position:       RenderPosOf(0, 0.47), 
+        Position:       RenderPosOf(0, 0.37), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.JP ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -234,7 +250,7 @@ if (Update(IsInteractHeld()))
         VisibleTo:      local,
         Header:         "↖",
         Position:       RenderPosOf(CursorX() + 0.05, CursorY() - 0.105),
-        TextColor:      sel_item != Item.Invalid ? SelectedPulse() : Color.White,
+        TextColor:      sel_item == Item.Invalid ? Rainbow() : SelectedPulse(),
         Scale:          3,
         Clipping:       Clipping.DoNotClip,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor
@@ -283,13 +299,15 @@ if (menu)
             sel_item = Item.HOK;
         else if (hok && (cursY < 1.125 && cursY > 1.025))
             sel_item = Item.HOKMod;
+        else if (hok && (cursY < 1.025 && cursY > 0.925))
+            sel_item = Item.HOKDurMod;
 
-        else if (s_random && cursY < 0.925 && cursY > 0.825)
+        else if (s_random && cursY < 0.825 && cursY > 0.725)
             sel_item = Item.Random;
 
-        else if (cursY < 0.65 && cursY > 0.55)
-            sel_item = Item.EN;
         else if (cursY < 0.55 && cursY > 0.45)
+            sel_item = Item.EN;
+        else if (cursY < 0.45 && cursY > 0.35)
             sel_item = Item.JP;
 
         else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
@@ -324,6 +342,7 @@ if (!IsButtonHeld(player, Button.Interact))
     interact_taps = 0;
 }
 
+playervar Button button;
 rule: "Menu : Select Item"
 Event.OngoingPlayer
 if (menu)
@@ -331,9 +350,12 @@ if (sel_item != Item.Invalid)
 if (toggles < MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
-    if (sel_item != Item.HOKMod)
-        WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
+    if (IsPrimaryHeld())
+        button = Button.PrimaryFire;
+    else if (IsSecondaryHeld())
+        button = Button.SecondaryFire;
 
+    WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
     async! SelectionHandler(sel_item);
 }
 

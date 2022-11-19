@@ -66,21 +66,24 @@ rule: "Init Language Strings"
                  "Show Kill Streaks", // 2
                  "Heal On Kill", // 3
                  "", // 4
-                 "Random Hero", // 5
-                 "Language", // 6
-                 "English", // 7
-                 "日本語" // 8
+                 " secs", // 5
+                 "Random Hero", // 6
+                 "Language", // 7
+                 "English", // 8
+                 "日本語" // 9
                  ];
 
-    EN_STR[6] = ["Workshop HUD shown!", 
-                 "Stats shown!", 
-                 "Kill Streaks shown!", 
-                 "Heal on Kill Enabled!",
-                 "",
-                 "Random Hero Enabled!",
-                 "",
-                 "",
-                 ""];
+    EN_STR[6] = ["Workshop HUD shown!", // 0
+                 "Stats shown!", // 1
+                 "Kill Streaks shown!", // 2
+                 "Heal on Kill Enabled!", // 3
+                 "", // 4
+                 "", // 5
+                 "Random Hero Enabled!", // 6 
+                 "", // 7
+                 "", // 8
+                 "" // 9
+                 ]; 
 
     EN_STR[7] = ["Workshop HUD Hidden!", 
                  "Stats Hidden!", 
@@ -95,7 +98,7 @@ rule: "Init Language Strings"
     EN_STR[8] = ["\"", "\""];
 
 
-    JP_STR[0] = ["*を押しメニューを開く", // 0
+    JP_STR[0] = ["*を押す続けるメニュー開く", // 0
                  "*を放すメニューを非表示する", // 1
                  "*をダブルタップして" // 2
                  ];
@@ -137,16 +140,18 @@ rule: "Init Language Strings"
                  "キルストリークを見せる", // 2
                  "キルヒーリング", // 3
                  "", // 4
-                 "ランダムのヒーロー", // 5
-                 "言語", // 6
-                 "English", // 7
-                 "日本語" // 8
+                 "秒", // 5
+                 "ランダムのヒーロー", // 6
+                 "言語", // 7
+                 "English", // 8
+                 "日本語" // 9
                  ];
 
     JP_STR[6] = ["HUDを見る!", 
                  "統計を見る!", 
                  "キルストリークを見る!", 
                  "ヒールオンキルの有効！",
+                 "",
                  "",
                  "ランダムヒーローの有効！",
                  "",

@@ -33,7 +33,7 @@ globalvar Number s_lang;
 
 playervar Boolean check_spawn;
 
-rule: "v2.0.0.221117 | Created by scort#12211" 
+rule: "v2.1.0.221118 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -81,6 +81,7 @@ Event.OnPlayerJoin
     sel_item = Item.Invalid;
     fav_item = Item.Invalid;
     HOK_amt = s_heal;
+    HOK_dur = s_hot_time;
 
     // todo: may need some optimization
     if (s_def_hud)

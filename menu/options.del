@@ -5,6 +5,7 @@ playervar Boolean show_stats;
 playervar Boolean show_streak;
 playervar Boolean hok;
 playervar Any HOK_amt;
+playervar Any HOK_dur;
 playervar Boolean random_hero;
 
 playervar Number language;
@@ -21,14 +22,14 @@ void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
         show_stats = true;
         show_streak = true;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][0]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.AllHUD]>);
     }
     else 
     {
         show_stats = false;
         show_streak = false;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][0]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.AllHUD]>);
     }
 
 }
@@ -40,11 +41,11 @@ void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
     show_stats = !show_stats;
     if (show_stats)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][1]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Stats]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][1]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Stats]>);
     }
 }
 
@@ -55,11 +56,11 @@ void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
     show_streak = !show_streak;
     if (show_streak)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][2]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Streak]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][2]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Streak]>);
     }
 }
 
@@ -70,29 +71,47 @@ void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
     hok = !hok;
     if (hok)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][3]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.HOK]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][3]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.HOK]>);
     }
 }
 
 void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
 {
-    if (IsPrimaryHeld())
+    if (button == Button.PrimaryFire)
     {
         HOK_amt += 0.025;
 
         if (HOK_amt > s_heal)
             HOK_amt = 0.025;
     }
-    else if (IsSecondaryHeld())
+    else if (button == Button.SecondaryFire)
     {
         HOK_amt -= 0.025;
 
         if (HOK_amt < 0.025)
             HOK_amt = s_heal;
+    }
+}
+
+void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
+{
+    if (button == Button.PrimaryFire)
+    {
+        HOK_dur += 0.50;
+
+        if (HOK_dur > s_hot_time * 3)
+            HOK_dur = s_hot_time;
+    }
+    else if (button == Button.SecondaryFire)
+    {
+        HOK_dur -= 0.50;
+
+        if (HOK_dur < s_hot_time)
+            HOK_dur = s_hot_time * 3;
     }
 }
 
@@ -103,11 +122,11 @@ void RandomHero() playervar "Menu Option Sub : Random Hero"
     random_hero = !random_hero;
     if (random_hero)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][5]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Random]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][5]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Random]>);
 
         # unsure if these are necessary
         ResetHeroAvailability();
@@ -176,6 +195,10 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
         case Item.HOKMod:
             if (hok)
                 async! ModifyHOK();
+            break;
+        case Item.HOKDurMod:
+            if (hok)
+                async! ModifyHOKDur();
             break;
         case Item.Random:
             async! RandomHero();

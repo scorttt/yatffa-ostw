@@ -13,10 +13,10 @@ if (Health() < MaxHealth())
 
     StopHealOverTime(hot);
 
-    StartHealOverTime(Attacker(), null, s_hot_time, heal_amt / s_hot_time);
+    StartHealOverTime(Attacker(), null, HOK_dur, heal_amt / HOK_dur);
     hot = LastHealOverTime();
 
-    Wait(s_hot_time, WaitBehavior.RestartWhenTrue);
+    Wait(HOK_dur, WaitBehavior.RestartWhenTrue);
 
     StopHealOverTime(hot);
     healing = false;
