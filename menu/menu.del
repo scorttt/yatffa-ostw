@@ -323,6 +323,50 @@ if (menu)
     LoopIfConditionIsTrue();
 }
 
+void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
+{
+    switch (item)
+    {
+        case Item.AllHUD:
+            if (s_hud)
+                async! ToggleAllHud();
+            break;
+        case Item.Stats:
+            if (s_hud)
+                async! ToggleStats();
+            break;
+        case Item.Streak:
+            if (s_hud)
+                async! ToggleStreak();
+            break;
+        case Item.HOK:
+            if (s_hok)
+                async! ToggleHOK();
+            break;
+        case Item.HOKMod:
+            if (hok)
+                async! ModifyHOK();
+            break;
+        case Item.HOKDurMod:
+            if (hok)
+                async! ModifyHOKDur();
+            break;
+        case Item.Random:
+            async! RandomHero();
+            break;
+        case Item.EN:
+            if (language != Lang.EN && !lang_swap)
+                async! SetEnglish();
+            break;
+        case Item.JP:
+            if (language != Lang.JP && !lang_swap)
+                async! SetJapanese();
+            break;
+    }
+
+    Wait(0.1);
+}
+
 // bit clunky but it works
 playervar Number interact_taps;
 rule: "Menu : Interact Taps"
