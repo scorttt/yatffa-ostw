@@ -44,6 +44,7 @@
         "Zenyatta"
       ],
       "Ana": {
+        "Ultimate Ability (Nano Boost)": false,
         "Sleep Dart Cooldown Time": 80
       },
       "Cassidy": {
@@ -129,6 +130,7 @@
         "Healing Dealt": 20
       },
       "Kiriko": {
+        "Ultimate Ability (Kitsune Rush)": false,
         "Protection Suzu": false
       },
       "Zenyatta": {
