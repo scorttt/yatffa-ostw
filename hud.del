@@ -1,8 +1,6 @@
 import "main.del";
 
 // globalvar Number[] strk_arr;
-globalvar Number t_left_yellow;
-globalvar Color timer_color;
 playervar Number | String kill_streak;
 playervar Number | String best_streak;
 globalvar Number | String bs_ser;
@@ -11,11 +9,12 @@ globalvar String bs_ser_hero;
 playervar String bs_hero;
 playervar Boolean streak;
 
-Color rainbow_color: CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
-                                128 + 127 * CosineFromDegrees((Time() * 150) + 120),
-                                128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
-                                250);
-Color health_color: CustomColor(r, g, 0, 255);
+Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
+                             128 + 127 * CosineFromDegrees((Time() * 150) + 120),
+                             128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
+                             250);
+
+Color HealthColor(): CustomColor(r, g, 0, 255);
 Number percentage: (NormalizedHealth() * 100);
 Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
 Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
@@ -26,7 +25,7 @@ rule: "Global Hud Text"
     // timer
     CreateHudText(
         VisibleTo:      all, 
-        Text:           <"<0><1><2>\n", 
+        Subheader:           <"<0><1><2>\n", 
                         MatchTime() >= 3600
                             ? <"<0>:", Floor(MatchTime() / 3600)> 
                             : "", 
@@ -38,11 +37,13 @@ rule: "Global Hud Text"
                             : <"<0>", MatchTime() > 60 ? Floor(MatchTime() % 60) : MatchTime() % 60>>, 
         Location:       Location.Top, 
         SortOrder:      -10000, 
-        TextColor:      MatchTime() >= 60 ? timer_color : CustomColor(255, PingPong(500, 255), 0, 255), 
+        SubheaderColor: MatchTime() >= 60 
+                            ? MatchTime() <= s_match_time / 4 
+                                ? CustomColor(255, 255, PingPong(250, 255), 255)
+                                : Color.White
+                            : CustomColor(255, PingPong(500, 255), 0, 255), 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
         Spectators:     Spectators.VisibleNever);
-
-        timer_color = Color.White;
 
     if (s_menu || s_def_hud)
     {
@@ -63,7 +64,7 @@ rule: "Global Hud Text"
         // double tap for fav_item
         CreateHudText(
             VisibleTo:  local.fav_item != Item.Invalid ? local : null, 
-            Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + "\"" + local.lang_str[5][local.fav_item] + "\"", 
+            Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + local.lang_str[8][0] + local.lang_str[5][local.fav_item] + local.lang_str[8][1], 
             Location:   Location.Right, 
             SortOrder:  0.3,
             Spectators: Spectators.VisibleNever);
@@ -124,7 +125,7 @@ rule: "Global Hud Text"
             scope_crit_arr.Contains(HeroOf(local)) // 9
                 ? <"<0><1>%\n", local.lang_str[3][7], ScopedCritAccuracy(local)> : "",
 
-            enviro_arr.Contains(HeroOf(local)) || EnvironmentalKills(local) != 0 // 10
+            EnvironmentalKills(local) != 0 // 10
                 ? <"<0><1>\n", local.lang_str[3][8], EnvironmentalKills(local)> : "",
 
             <"<0><1>\n", local.lang_str[3][9], Ceiling(HealingTaken(local))>, // 11
@@ -154,7 +155,7 @@ if (s_hud || s_def_hud)
                             : <"<0> <1>", local.lang_str[2][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      1, 
-        SubheaderColor: rainbow_color, 
+        SubheaderColor: Rainbow(), 
         TextColor:      Color.White, 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
         Spectators:     Spectators.VisibleNever);
@@ -169,7 +170,7 @@ if (s_hud || s_def_hud)
                             : <"<0> <1>", local.lang_str[2][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      SlotOf() + 1, 
-        SubheaderColor: health_color, 
+        SubheaderColor: HealthColor(), 
         TextColor:      Color.White, 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
         Spectators:     Spectators.DefaultVisibility);
@@ -214,7 +215,7 @@ Event.OnDeath
         if (best_streak > bs_ser)
         {
             bs_ser = best_streak;
-            // bs_ser_usr = player;
+            bs_ser_usr = player;
             bs_ser_hero = bs_hero;
             SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][3], "*", kill_streak)>);
             Wait(0.1);
@@ -232,13 +233,4 @@ Event.OnDeath
 
     Wait(0.1);
     kill_streak = 0;
-}
-
-rule: "Timer Color"
-if (MatchTime() % 60 >= 10)
-{
-    if (MatchTime() > t_left_yellow)
-        timer_color = Color.White;
-    else
-        timer_color = Color.Yellow;
 }
