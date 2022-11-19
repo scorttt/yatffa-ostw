@@ -28,6 +28,9 @@ enum Item
     Secret = 69 // jp easter egg
 }
 
+Color SelectedPulse(): 
+    CustomColor(Oscillate(500, 0, 116), Oscillate(500, 153, 199), 255, 255);
+
 // cursor math credit to josbird
 Number CursorX(Player p = local): AngleDifference(HorizontalAngleFromDirection(Facing(p)), HorizontalAngleFromDirection(p.facing));
 Number CursorY(Player p = local): AngleDifference(VerticalAngleFromDirection(Facing(p)), VerticalAngleFromDirection(p.facing));
@@ -75,7 +78,7 @@ if (s_menu)
         Position:       RenderPosOf(0, 1.52), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.AllHUD 
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : local.show_stats && local.show_streak && s_hud
                                 ? Color.Green 
                                 : s_hud 
@@ -95,7 +98,7 @@ if (s_menu)
         Position:       RenderPosOf(0, 1.42), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Stats 
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : s_hud 
                                 ? local.show_stats
                                     ? Color.Green
@@ -112,7 +115,7 @@ if (s_menu)
         Position:       RenderPosOf(0, 1.32), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Streak 
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : s_hud 
                                 ? local.show_streak
                                     ? Color.Green
@@ -131,7 +134,7 @@ if (s_menu)
         Position:       RenderPosOf(0, 1.145), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOK
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : s_hok
                                 ? local.hok 
                                     ? Color.Green
@@ -143,12 +146,12 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         local.sel_item == Item.HOKMod
-                            ? <"-   <1>  <0>%  <2>   +", StringReplace(local.HOK_amt * 100, ".50", ".5"), BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            ? <"<1>    -  <0>%  +    <2>", StringReplace(local.HOK_amt * 100, ".50", ".5"), BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
                             : <"<0>%", StringReplace(local.HOK_amt * 100, ".50", ".5")>,
         Position:       RenderPosOf(0, 1.045), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : local.hok 
                                 ? Color.White 
                                 : Color.Gray,
@@ -165,7 +168,7 @@ if (s_menu)
         Position:       RenderPosOf(0, 0.845), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
-                            ? Color.Blue 
+                            ? SelectedPulse() 
                             : s_hok
                                 ? local.random_hero 
                                     ? Color.Green
@@ -178,10 +181,12 @@ if (s_menu)
 
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         local.lang_prog_str == "" ? <"<0> ▼", local.lang_str[5][Item.Language]> : local.lang_prog_str,
+        Header:         local.lang_prog_str == "" 
+                            ? <"<0> ▼", local.lang_str[5][Item.Language]> 
+                            : local.lang_prog_str,
         Position:       RenderPosOf(0, 0.67), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.Language ? Color.Blue : Color.White,
+        TextColor:      local.sel_item == Item.Language ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -190,7 +195,7 @@ if (s_menu)
         Header:         <"<0>", local.lang_str[5][Item.EN]>,
         Position:       RenderPosOf(0, 0.57), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.EN ? Color.Blue : Color.White,
+        TextColor:      local.sel_item == Item.EN ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -199,11 +204,10 @@ if (s_menu)
         Header:         <"<0>", local.lang_str[5][Item.JP]>,
         Position:       RenderPosOf(0, 0.47), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.JP ? Color.Blue : Color.White,
+        TextColor:      local.sel_item == Item.JP ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-
 
     // easter egg
     CreateInWorldText(
@@ -211,7 +215,7 @@ if (s_menu)
         Header:         " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n自転車乗る人は「セクス」と言います",
         Position:       RenderPosOf(0, -2.04), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.Secret ? rainbow_color : 0,
+        TextColor:      local.sel_item == Item.Secret ? Rainbow() : 0,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -229,8 +233,8 @@ if (Update(IsInteractHeld()))
     CreateInWorldText(
         VisibleTo:      local,
         Header:         "↖",
-        Position:       RenderPosOf(CursorX() + 0.05, CursorY() - 0.10),
-        TextColor:      rainbow_color,
+        Position:       RenderPosOf(CursorX() + 0.05, CursorY() - 0.105),
+        TextColor:      sel_item != Item.Invalid ? SelectedPulse() : Color.White,
         Scale:          3,
         Clipping:       Clipping.DoNotClip,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor
