@@ -32,9 +32,7 @@ if (player == host || <"<0>", player> == "scort")
 // if (HasSpawned(host))
 // {
 //     for (Number i = 0; i < SpawnPoints(Team.All).Length; i++)
-//     {
 //         CreateEffect(all, Effect.Sphere, Color.White, RayCastHitPosition(SpawnPoints(Team.All)[Once(i)], SpawnPoints(Team.All)[Once(i)] + Down(), null, null), 0.5, EffectRev.VisibleToPositionRadiusAndColor);
-//     }
 // }
 
 // rule: "Bots"
@@ -90,4 +88,6 @@ if (player == host || <"<0>", player> == "scort")
 //     CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
 //     CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
 //     CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 125);
+
+//     CreateEffect(player, Effect.Sphere, Color.White, Vector(177, 0, 51.5), 1);
 // }
