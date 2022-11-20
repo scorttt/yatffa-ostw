@@ -29,9 +29,9 @@ if (player == host || <"<0>", player> == "scort")
 
     if (<"<0>", player> == "scort")
     {
-        CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 0.3);
-        CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 0.4);
-        CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 0.5);
+        CreateHudText(player, null, <" \nPos: <0>", PositionOf()>, null, Location.Right, 0.3);
+        CreateHudText(player, null, <"Facing: <0>", FacingDirectionOf()>, null, Location.Right, 0.4);
+        CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, null, Location.Right, 0.5);
     }
 }
 
