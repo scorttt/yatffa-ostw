@@ -62,7 +62,7 @@ rule: "Initial Global"
     s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
     s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
     s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
-    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 9, 
+    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 8, 
              ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"], 4) + 1) * 0.05;
 
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
@@ -182,6 +182,10 @@ Event.OngoingPlayer
 if (HasSpawned())
 if (IsAlive())
 {
+    // workaround for characters spawning with one less hp
+    if (Health() != MaxHealth())
+        Heal(player, null, MaxHealth());
+
     AllowButton(player, Button.Interact);
 
     if (random_hero)
@@ -196,10 +200,6 @@ if (IsAlive())
         # add the previous hero back to the hero array
         hero_arr = AllowedHeroes() + prev_hero;
     }
-
-    // workaround for characters spawning with one less hp
-    if (Health() != MaxHealth())
-        Heal(player, null, MaxHealth());
 
     // tracer / sym
     if (IsHero(Hero.Tracer) || IsHero(Hero.Symmetra))
