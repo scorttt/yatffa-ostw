@@ -144,7 +144,7 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     {
         lang_str[i] = EN_STR[i];
         lang_prog_str =  <"Loading: <0>%", Near(i / EN_STR.Length * 100)>;
-        Wait(0.25);
+        Wait(0.15);
     }
 
     lang_prog_str = "Done!";
@@ -163,7 +163,7 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     {
         lang_str[i] = JP_STR[i];
         lang_prog_str =  <"読み込み：<0>%", Near(i / JP_STR.Length * 100)>;
-        Wait(0.25);
+        Wait(0.15);
     }
 
     lang_prog_str = "完了！";
