@@ -1,0 +1,144 @@
+{
+    "Lobby": {
+      "Allow Players Who Are In Queue": true,
+      "Match Voice Chat": true,
+      "Map Rotation": "After A Game",
+      "Max FFA Players": 12,
+      "Max Spectators": 3,
+      "Return To Lobby": "Never"
+    },
+    "Modes": {
+      "All": {
+        "Game Mode Start": "Immediately",
+        "Hero Limit": "Off"
+      },
+      "Deathmatch": {
+        "Enabled Maps": ["Château Guillard"],
+        "Score To Win": 75
+    }
+  },
+  "Heroes": {
+    "General": {
+      "Enabled Heroes": [
+        "Ana",
+        "Ashe",
+        "Baptiste",
+        "Bastion",
+        "Doomfist",
+        "Genji",
+        "Hanzo",
+        "Junker Queen",
+        "Lúcio",
+        "Cassidy",
+        "Mei",
+        "Echo",
+        "Kiriko",
+        "Sombra",
+        "Pharah",
+        "Soldier: 76",
+        "Sojourn",
+        "Symmetra",
+        "Tracer",
+        "Torbjörn",
+        "Widowmaker",
+        "Zenyatta"
+      ],
+      "Ana": {
+        "Ultimate Ability (Nano Boost)": false,
+        "Sleep Dart Cooldown Time": 80
+      },
+      "Cassidy": {
+        "Secondary Fire": false,
+        "Magnetic Grenade": false,
+        "Ultimate Ability (Deadeye)": false
+      },
+      "D.va": {
+        "Boosters": false,
+        "Defense Matrix": false,
+        "Micro Missiles": false,
+        "Spawn Without Mech": true,
+        "Ultimate Ability (Self-Destruct)": false
+      },
+      "Doomfist": {
+        "Health": 61.1111,
+        "Ultimate Ability (Meteor Strike)": false
+      },
+      "Baptiste": {
+        "Ultimate Ability (Amplification Matrix)": false,
+        "Immortality Field": false
+      },
+      "Bastion": {
+        "Reconfigure": false,
+        "Ultimate Ability (Configuration: Artillery)": false
+      },
+      "Echo": {
+        "Focusing Beam": false,
+        "Ultimate Ability (Duplicate)": false
+      },
+      "Torbjörn": {
+        "Deploy Turret": false,
+        "Ultimate Ability (Molten Core)": false
+      },
+      "Mei": {
+        "No Ammunition Requirement": true,
+        "Cryo-Freeze": false,
+        "Ice Wall": false,
+        "Primary Fire": false,
+        "Ultimate Ability (Blizzard)": false
+      },
+      "Hanzo": {
+        "Ultimate Ability (Dragonstrike)": false
+      },
+      "Junker Queen": {
+        "Health": 70.5882,
+        "Commanding Shout": false,
+        "Carnage": false,
+        "Jagged Blade Cooldown Time": 75,
+        "Ultimate Ability (Rampage)": false
+      },
+      "Genji": {
+        "Ultimate Ability (Dragonblade)": false
+      },
+      "Sombra": {
+        "Hack": false,
+        "Stealth": false,
+        "Ultimate Ability (EMP)": false
+      },
+      "Soldier: 76": {
+        "Healing Dealt": 70,
+        "Ultimate Ability (Tactical Visor)": false
+      },
+      "Sojourn": {
+        "Disruptor Shot": false,
+        "Ultimate Ability (Overclock)": false
+      },
+      "Symmetra":
+      {
+        "Health": 88.8888,
+        "Sentry Turret": false,
+        "Teleporter": false,
+        "Ultimate Ability (Photon Barrier)": false
+      },
+      "Ashe": {
+        "Ultimate Ability (B.O.B.)": false,
+        "Dynamite": false
+      },
+      "Pharah": {
+        "Ultimate Ability (Barrage)": false
+      },
+      "Lúcio": {
+        "Ultimate Ability (Sound Barrier)": false,
+        "Healing Dealt": 20
+      },
+      "Kiriko": {
+        "Ultimate Ability (Kitsune Rush)": false,
+        "Protection Suzu": false
+      },
+      "Zenyatta": {
+        "Ultimate Ability (Transcendence)": false
+      }
+    }
+  },
+  "Mode Name": "<FGFF00FFFF>トライハードFFA",
+  "Description": "トライハードFFA\nコード：<FGFF00FFFF>5RKYY</FG>\n開発元：scort#11221\nv2.1.1｜2022/11/20"
+}
