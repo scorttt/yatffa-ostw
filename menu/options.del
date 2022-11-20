@@ -44,10 +44,16 @@ void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
     show_stats = !show_stats;
     if (show_stats)
     {
+        if (show_streak)
+            show_all = true;
+
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Stats]>);
     }
     else
     {
+        if (show_streak)
+            show_all = false;
+
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Stats]>);
     }
 }
@@ -59,10 +65,16 @@ void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
     show_streak = !show_streak;
     if (show_streak)
     {
+        if (show_stats)
+            show_all = true;
+
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Streak]>);
     }
     else
     {
+        if (show_stats)
+            show_all = false;
+
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Streak]>);
     }
 }
