@@ -51,7 +51,7 @@ void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
     }
     else
     {
-        if (show_streak)
+        if (!show_streak)
             show_all = false;
 
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Stats]>);
@@ -72,7 +72,7 @@ void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
     }
     else
     {
-        if (show_stats)
+        if (!show_stats)
             show_all = false;
 
         SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Streak]>);
