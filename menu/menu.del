@@ -258,6 +258,7 @@ if (Update(IsInteractHeld()))
     cursor = LastTextID(); // store to destroy just in case theres performance issues when menu is not open
 
     menu = true;
+    interact_taps = 0;
     facing = Facing();
     SetAimSpeed(player, 10);
     DisallowButton(player, Button.PrimaryFire);
