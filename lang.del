@@ -90,6 +90,7 @@ rule: "Init Language Strings"
                  "Kill Streaks Hidden!", 
                  "Heal on Kill Disabled!",
                  "",
+                 "", // 5
                  "Random Hero Disabled!",
                  "",
                  "",
@@ -162,6 +163,7 @@ rule: "Init Language Strings"
                  "統計を隠した！", 
                  "キルストリークを隠した！", 
                  "ヒールオンキルの無効！",
+                 "",
                  "",
                  "ランダムヒーローの無効！",
                  "",
