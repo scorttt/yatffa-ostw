@@ -17,7 +17,7 @@ globalvar Boolean inspector;
 //     }
 // }
 
-rule: "Show Server Load for host and scort if he joins"
+rule: "Show Server Load for host and show scort debug info"
 Event.OnPlayerJoin
 if (player == host || <"<0>", player> == "scort")
 {
@@ -26,6 +26,13 @@ if (player == host || <"<0>", player> == "scort")
     Near(ServerLoadAverage()), 
     Near(ServerLoadPeak()), 
     TextCount(), TextCount() - 1>, RenderPosOf(3, -2.05), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
+
+    if (<"<0>", player> == "scort")
+    {
+        CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 0.3);
+        CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 0.4);
+        CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 0.5);
+    }
 }
 
 // rule: "Show OW Spawn Points"
@@ -82,12 +89,8 @@ if (player == host || <"<0>", player> == "scort")
 //     Resurrect();
 // }
 
-// rule: "Hud"
+// rule: "Bad Spawn Sphere"
 // Event.OngoingPlayer
 // {
-//     CreateHudText(player, null, null, <" \nPos: <0>", PositionOf()>, Location.Right, 10);
-//     CreateHudText(player, null, null, <"Facing: <0>", FacingDirectionOf()>, Location.Right, 11);
-//     CreateHudText(player, null, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, Location.Right, 125);
-
 //     CreateEffect(player, Effect.Sphere, Color.White, Vector(177, 0, 51.5), 1);
 // }

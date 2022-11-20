@@ -209,18 +209,30 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>", local.lang_str[5][Item.EN]>,
-        Position:       RenderPosOf(0, 0.47), 
+        Position:       RenderPosOf(-0.15, 0.47), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.EN ? SelectedPulse() : Color.White,
+        TextColor:      local.sel_item == Item.EN 
+                            ? SelectedPulse() 
+                                : !local.lang_swap 
+                                    ? local.language == Lang.EN 
+                                        ? Color.Blue
+                                        : Color.White 
+                                    : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>", local.lang_str[5][Item.JP]>,
-        Position:       RenderPosOf(0, 0.37), 
+        Position:       RenderPosOf(0.15, 0.47), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.JP ? SelectedPulse() : Color.White,
+        TextColor:      local.sel_item == Item.JP 
+                            ? SelectedPulse() 
+                                : !local.lang_swap 
+                                    ? local.language == Lang.JP 
+                                        ? Color.Blue
+                                        : Color.White 
+                                    : Color.Gray,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -235,6 +247,10 @@ if (s_menu)
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
+
+    // HOST SHIT
+
+
 }
 
 rule: "Menu : Open/Close"
@@ -267,7 +283,7 @@ if (Update(IsInteractHeld()))
 
     WaitUntil(!IsInteractHeld() || IsDead(), 99999);
 
-    menu = false; // disable first
+    menu = false;
     DestroyInWorldText(cursor);
     sel_item = Item.Invalid;
 
@@ -280,77 +296,93 @@ if (Update(IsInteractHeld()))
     Wait(0.1);
 }
 
-rule: "Menu : Hover Item"
+rule: "Menu : Get Hovered Item"
 Event.OngoingPlayer
 if (menu)
 {
+    Number cursX: CursorX(player);
     Number cursY: CursorY(player);
 
-    // if (Abs(CursorX(player) - MENU_CENTER_X) <= SELECTION_AREA_WIDTH)
     if (Abs(CursorX(player)) <= SELECTION_AREA_WIDTH)
     {
-        if (s_hud && cursY < 1.60 && cursY > 1.50)
+        if (s_hud && (Abs(cursX) < lang_x[Item.AllHUD]) && cursY < 1.60 && cursY > 1.50)
+        {
             sel_item = Item.AllHUD;
-        else if (s_hud && cursY < 1.50 && cursY > 1.40)
+        }
+        else if (s_hud && (Abs(cursX) < lang_x[Item.Stats]) && cursY < 1.50 && cursY > 1.40)
+        {
             sel_item = Item.Stats;
-        else if (s_hud && cursY < 1.40 && cursY > 1.30)
+        }
+        else if (s_hud && (Abs(cursX) < lang_x[Item.Streak]) && cursY < 1.40 && cursY > 1.30)
+        {
             sel_item = Item.Streak;
+        }
 
-        else if (s_hok && cursY < 1.225 && cursY > 1.125)
+        else if (s_hok && (Abs(cursX) < lang_x[Item.HOK]) && cursY < 1.225 && cursY > 1.125)
+        {
             sel_item = Item.HOK;
-        else if (hok && (cursY < 1.125 && cursY > 1.025))
+        }
+
+        else if (hok && (Abs(cursX) < lang_x[Item.HOKMod]) && cursY < 1.125 && cursY > 1.025)
+        {
             sel_item = Item.HOKMod;
-        else if (hok && (cursY < 1.025 && cursY > 0.925))
+        }
+        else if (hok && (Abs(cursX) < lang_x[Item.HOKDurMod]) && cursY < 1.025 && cursY > 0.925)
+        {
             sel_item = Item.HOKDurMod;
+        }
 
-        else if (s_random && cursY < 0.825 && cursY > 0.725)
+        else if (s_random && (Abs(cursX) < lang_x[Item.Random]) && cursY < 0.825 && cursY > 0.725)
+        {
             sel_item = Item.Random;
+        }
 
-        else if (cursY < 0.55 && cursY > 0.45)
+        else if (language != Lang.EN && !lang_swap && (cursX > -0.30 && cursX < 0) && cursY < 0.55 && cursY > 0.47)
+        {
             sel_item = Item.EN;
-        else if (cursY < 0.45 && cursY > 0.35)
+        }
+        else if (language != Lang.JP && !lang_swap && (cursX > 0 && cursX < 0.25) && cursY < 0.55 && cursY > 0.47)
+        {
             sel_item = Item.JP;
+        }
 
         else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
             sel_item = Item.Secret;
 
         else
+        {
             sel_item = Item.Invalid;
+        }
     }
     else 
         sel_item = Item.Invalid;
 
-    Wait(0.032);
+    Wait(0.048);
     LoopIfConditionIsTrue();
 }
 
 void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
 {
+
     switch (item)
     {
         case Item.AllHUD:
-            if (s_hud)
-                async! ToggleAllHud();
+            async! ToggleAllHud();
             break;
         case Item.Stats:
-            if (s_hud)
-                async! ToggleStats();
+            async! ToggleStats();
             break;
         case Item.Streak:
-            if (s_hud)
-                async! ToggleStreak();
+            async! ToggleStreak();
             break;
         case Item.HOK:
-            if (s_hok)
-                async! ToggleHOK();
+            async! ToggleHOK();
             break;
         case Item.HOKMod:
-            if (hok)
-                async! ModifyHOK();
+            async! ModifyHOK();
             break;
         case Item.HOKDurMod:
-            if (hok)
-                async! ModifyHOKDur();
+            async! ModifyHOKDur();
             break;
         case Item.Random:
             async! RandomHero();
@@ -367,6 +399,24 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
 
     Wait(0.1);
 }
+
+playervar Button button;
+rule: "Menu : Select Hovered Item"
+Event.OngoingPlayer
+if (menu)
+if (sel_item != Item.Invalid)
+if (toggles < MAX_TOGGLES)
+if (IsPrimaryHeld() || IsSecondaryHeld())
+{
+    if (IsPrimaryHeld())
+        button = Button.PrimaryFire;
+    else if (IsSecondaryHeld())
+        button = Button.SecondaryFire;
+
+    WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
+    async! SelectionHandler(sel_item);
+}
+
 
 // bit clunky but it works
 playervar Number interact_taps;
@@ -385,23 +435,6 @@ if (!IsButtonHeld(player, Button.Interact))
 {
     WaitIfTrue(0.1);
     interact_taps = 0;
-}
-
-playervar Button button;
-rule: "Menu : Select Item"
-Event.OngoingPlayer
-if (menu)
-if (sel_item != Item.Invalid)
-if (toggles < MAX_TOGGLES)
-if (IsPrimaryHeld() || IsSecondaryHeld())
-{
-    if (IsPrimaryHeld())
-        button = Button.PrimaryFire;
-    else if (IsSecondaryHeld())
-        button = Button.SecondaryFire;
-
-    WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
-    async! SelectionHandler(sel_item);
 }
 
 rule: "Menu : Favorite Item"

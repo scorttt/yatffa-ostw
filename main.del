@@ -27,13 +27,12 @@ globalvar Number s_hot_time;
 globalvar Boolean s_hot_interrupt;
 globalvar Boolean s_instant_respawn;
 globalvar Boolean s_score_win;
-globalvar Boolean s_auto_restart;
 globalvar Number s_heal;
 globalvar Number s_lang;
 
 playervar Boolean check_spawn;
 
-rule: "v2.1.0.221118 | Created by scort#12211" 
+rule: "v2.1.1.221120 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -48,7 +47,6 @@ rule: "Initial Global"
 
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 45, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
-    s_auto_restart = WorkshopSettingToggle("Settings", "Automatically Restart Lobby After POTG", true, 6);
     s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 1);
 
     s_menu = WorkshopSettingToggle("Menu", "Use Menu", true, 0);
@@ -108,6 +106,7 @@ Event.OngoingPlayer
 if (HasSpawned())
 {
     Wait(1);
+    WaitUntil(!lang_swap, 1);
     SmallMessage(player, <"   <0><1>", local.lang_str[4][4], StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact))>);
 }
 
@@ -159,22 +158,12 @@ if (IsGameInProgress())
     SetMatchTime(s_match_time);
 }
 
-void EndMatch() globalvar "End Match Sub"
-{
-    EnableCompletion();
-
-    if (s_auto_restart)
-    {
-        Wait(25);
-        RestartMatch();
-    }
-}
 
 rule: "End Game"
 if (MatchTime() <= 0)
 {
     WaitIfTrue(0.5); // just in case something breaks and somehow puts lobbies into a restart loop
-    EndMatch();
+    EnableCompletion();
 }
 
 rule: "Respawn"
