@@ -16,8 +16,6 @@ playervar Number[] lang_x;
 
 void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 {
-    toggles++;
-
     show_all = show_stats && show_streak ? !show_all : true;
 
     if (show_all)
@@ -39,8 +37,6 @@ void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
 
 void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
 {
-    toggles++;
-    
     show_stats = !show_stats;
     if (show_stats)
     {
@@ -60,8 +56,6 @@ void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
 
 void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
 {
-    toggles++;
-
     show_streak = !show_streak;
     if (show_streak)
     {
@@ -81,8 +75,6 @@ void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
 
 void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
 {
-    toggles++;
-
     hok = !hok;
     if (hok)
     {
@@ -132,8 +124,6 @@ void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
 
 void RandomHero() playervar "Menu Option Sub : Random Hero"
 {
-    toggles++;
-
     random_hero = !random_hero;
     if (random_hero)
     {
@@ -151,8 +141,6 @@ void RandomHero() playervar "Menu Option Sub : Random Hero"
 
 void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 {
-    toggles++;
-
     lang_swap = true;
     language = Lang.EN;
     for (Number i = 0; i < EN_STR.Length; i++)
@@ -179,8 +167,6 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
-    toggles++;
-
     lang_swap = true;
     language = Lang.JP;
     for (Number i = 0; i < JP_STR.Length; i++)

@@ -263,7 +263,7 @@ if (Update(IsInteractHeld()))
 
     // cursor
     CreateInWorldText(
-        VisibleTo:      local,
+        VisibleTo:      player,
         Header:         "↖",
         Position:       RenderPosOf(CursorX() + 0.05, CursorY() - 0.105),
         TextColor:      sel_item == Item.Invalid ? Rainbow() : SelectedPulse(),
@@ -306,53 +306,32 @@ if (menu)
     if (Abs(CursorX(player)) <= SELECTION_AREA_WIDTH)
     {
         if (s_hud && (Abs(cursX) < lang_x[Item.AllHUD]) && cursY < 1.60 && cursY > 1.50)
-        {
             sel_item = Item.AllHUD;
-        }
         else if (s_hud && (Abs(cursX) < lang_x[Item.Stats]) && cursY < 1.50 && cursY > 1.40)
-        {
             sel_item = Item.Stats;
-        }
         else if (s_hud && (Abs(cursX) < lang_x[Item.Streak]) && cursY < 1.40 && cursY > 1.30)
-        {
             sel_item = Item.Streak;
-        }
 
         else if (s_hok && (Abs(cursX) < lang_x[Item.HOK]) && cursY < 1.225 && cursY > 1.125)
-        {
             sel_item = Item.HOK;
-        }
-
         else if (hok && (Abs(cursX) < lang_x[Item.HOKMod]) && cursY < 1.125 && cursY > 1.025)
-        {
             sel_item = Item.HOKMod;
-        }
         else if (hok && (Abs(cursX) < lang_x[Item.HOKDurMod]) && cursY < 1.025 && cursY > 0.925)
-        {
             sel_item = Item.HOKDurMod;
-        }
 
         else if (s_random && (Abs(cursX) < lang_x[Item.Random]) && cursY < 0.825 && cursY > 0.725)
-        {
             sel_item = Item.Random;
-        }
 
         else if (language != Lang.EN && !lang_swap && (cursX > -0.30 && cursX < 0) && cursY < 0.55 && cursY > 0.47)
-        {
             sel_item = Item.EN;
-        }
         else if (language != Lang.JP && !lang_swap && (cursX > 0 && cursX < 0.25) && cursY < 0.55 && cursY > 0.47)
-        {
             sel_item = Item.JP;
-        }
 
         else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
             sel_item = Item.Secret;
 
         else
-        {
             sel_item = Item.Invalid;
-        }
     }
     else 
         sel_item = Item.Invalid;
@@ -363,7 +342,6 @@ if (menu)
 
 void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
 {
-
     switch (item)
     {
         case Item.AllHUD:
@@ -414,9 +392,12 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
         button = Button.SecondaryFire;
 
     WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
+
+    if ((sel_item != Item.HOKMod) && (sel_item != Item.HOKDurMod))
+        toggles++;
+
     async! SelectionHandler(sel_item);
 }
-
 
 // bit clunky but it works
 playervar Number interact_taps;
@@ -446,6 +427,7 @@ if (!excl_fav.Contains(sel_item))
 {
     toggles++;
     fav_item = sel_item == fav_item ? Item.Invalid : sel_item;
+    Wait(0.1);
 }
 
 rule: "Menu : Favorite Toggle"

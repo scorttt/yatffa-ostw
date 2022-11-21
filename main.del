@@ -1,4 +1,5 @@
 import "settings.json";
+// import "jpsettings.json";
 import "../workshop-scripts/macros.del";
 
 import "lang.del";
