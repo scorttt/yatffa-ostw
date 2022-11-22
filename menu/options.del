@@ -88,14 +88,14 @@ void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
 
 void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
 {
-    if (button == Button.PrimaryFire)
+    if (!sec)
     {
         HOK_amt += 0.025;
 
         if (HOK_amt > s_heal)
             HOK_amt = 0.025;
     }
-    else if (button == Button.SecondaryFire)
+    else
     {
         HOK_amt -= 0.025;
 
@@ -106,14 +106,14 @@ void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
 
 void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
 {
-    if (button == Button.PrimaryFire)
+    if (!sec)
     {
         HOK_dur += 0.50;
 
         if (HOK_dur > s_hot_time * 3)
             HOK_dur = s_hot_time;
     }
-    else if (button == Button.SecondaryFire)
+    else
     {
         HOK_dur -= 0.50;
 

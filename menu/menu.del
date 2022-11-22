@@ -257,7 +257,7 @@ rule: "Menu : Open/Close"
 Event.OngoingPlayer
 if (s_menu)
 if (IsAlive())
-if (Update(IsInteractHeld()))
+if (IsInteractHeld())
 {
     WaitIfTrue(0.2);
 
@@ -300,34 +300,34 @@ rule: "Menu : Get Hovered Item"
 Event.OngoingPlayer
 if (menu)
 {
-    Number cursX: CursorX(player);
-    Number cursY: CursorY(player);
+    Number X: CursorX(player);
+    Number Y: CursorY(player);
 
     if (Abs(CursorX(player)) <= SELECTION_AREA_WIDTH)
     {
-        if (s_hud && (Abs(cursX) < lang_x[Item.AllHUD]) && cursY < 1.60 && cursY > 1.50)
+        if (s_hud && (Abs(X) < lang_x[Item.AllHUD]) && Y < 1.60 && Y > 1.50)
             sel_item = Item.AllHUD;
-        else if (s_hud && (Abs(cursX) < lang_x[Item.Stats]) && cursY < 1.50 && cursY > 1.40)
+        else if (s_hud && (Abs(X) < lang_x[Item.Stats]) && Y < 1.50 && Y > 1.40)
             sel_item = Item.Stats;
-        else if (s_hud && (Abs(cursX) < lang_x[Item.Streak]) && cursY < 1.40 && cursY > 1.30)
+        else if (s_hud && (Abs(X) < lang_x[Item.Streak]) && Y < 1.40 && Y > 1.30)
             sel_item = Item.Streak;
 
-        else if (s_hok && (Abs(cursX) < lang_x[Item.HOK]) && cursY < 1.225 && cursY > 1.125)
+        else if (s_hok && (Abs(X) < lang_x[Item.HOK]) && Y < 1.225 && Y > 1.125)
             sel_item = Item.HOK;
-        else if (hok && (Abs(cursX) < lang_x[Item.HOKMod]) && cursY < 1.125 && cursY > 1.025)
+        else if (hok && (Abs(X) < lang_x[Item.HOKMod]) && Y < 1.125 && Y > 1.025)
             sel_item = Item.HOKMod;
-        else if (hok && (Abs(cursX) < lang_x[Item.HOKDurMod]) && cursY < 1.025 && cursY > 0.925)
+        else if (hok && (Abs(X) < lang_x[Item.HOKDurMod]) && Y < 1.025 && Y > 0.925)
             sel_item = Item.HOKDurMod;
 
-        else if (s_random && (Abs(cursX) < lang_x[Item.Random]) && cursY < 0.825 && cursY > 0.725)
+        else if (s_random && (Abs(X) < lang_x[Item.Random]) && Y < 0.825 && Y > 0.725)
             sel_item = Item.Random;
 
-        else if (language != Lang.EN && !lang_swap && (cursX > -0.30 && cursX < 0) && cursY < 0.55 && cursY > 0.47)
+        else if (language != Lang.EN && !lang_swap && (X > -0.30 && X < 0) && Y < 0.55 && Y > 0.47)
             sel_item = Item.EN;
-        else if (language != Lang.JP && !lang_swap && (cursX > 0 && cursX < 0.25) && cursY < 0.55 && cursY > 0.47)
+        else if (language != Lang.JP && !lang_swap && (X > 0 && X < 0.25) && Y < 0.55 && Y > 0.47)
             sel_item = Item.JP;
 
-        else if (language == Lang.JP && cursY < -1.90 && cursY > -2.00)
+        else if (language == Lang.JP && Y < -1.90 && Y > -2.00)
             sel_item = Item.Secret;
 
         else
@@ -378,7 +378,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
     Wait(0.1);
 }
 
-playervar Button button;
+playervar Boolean sec;
 rule: "Menu : Select Hovered Item"
 Event.OngoingPlayer
 if (menu)
@@ -386,10 +386,7 @@ if (sel_item != Item.Invalid)
 if (toggles < MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
-    if (IsPrimaryHeld())
-        button = Button.PrimaryFire;
-    else if (IsSecondaryHeld())
-        button = Button.SecondaryFire;
+    sec = IsSecondaryHeld();
 
     WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
 
@@ -425,6 +422,8 @@ if (toggles < MAX_TOGGLES)
 if (IsReloadHeld())
 if (!excl_fav.Contains(sel_item))
 {
+    WaitUntil(!IsReloadHeld(), 99999);
+
     toggles++;
     fav_item = sel_item == fav_item ? Item.Invalid : sel_item;
     Wait(0.1);
@@ -436,6 +435,8 @@ if (!menu)
 if (toggles < MAX_TOGGLES)
 if (interact_taps == 2)
 {
+    WaitUntil(!IsReloadHeld(), 99999);
+
     interact_taps = 0;
     async! SelectionHandler(fav_item);
 }

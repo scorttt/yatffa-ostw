@@ -46,7 +46,7 @@ if (player == host || <"<0>", player> == "scort")
 // Event.OngoingPlayer
 // if (player == host && IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
 // {
-//     CreateDummyBot(RandomValueInArray(AllHeroes()), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
+//     CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
 // }
 
 // rule: "Destroy Bots"

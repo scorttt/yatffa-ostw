@@ -14,7 +14,7 @@
       },
       "Deathmatch": {
         "Enabled Maps": ["Château Guillard"],
-        "Score To Win": 75
+        "Score To Win": 65
     }
   },
   "Heroes": {
@@ -28,6 +28,7 @@
         "Genji",
         "Hanzo",
         "Junker Queen",
+        "Orisa",
         "Lúcio",
         "Cassidy",
         "Mei",
@@ -96,6 +97,13 @@
         "Jagged Blade Cooldown Time": 75,
         "Ultimate Ability (Rampage)": false
       },
+      "Orisa": {
+        "Health": 54.5454,
+        "Fortify": false,
+        "Javelin Spin": false,
+        "Energy Javelin Cooldown Time": 83.3333,
+        "Ultimate Ability (Terra Surge)": false
+      },
       "Genji": {
         "Ultimate Ability (Dragonblade)": false
       },
@@ -110,6 +118,7 @@
       },
       "Sojourn": {
         "Disruptor Shot": false,
+        "Railgun Alt Fire Energy Charge Rate": 73.5,
         "Ultimate Ability (Overclock)": false
       },
       "Symmetra":
@@ -140,5 +149,5 @@
     }
   },
   "Mode Name": "<FGFF00FFFF>Tryhard FFA (YATFFA)",
-  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\nv2.1.1 | 11/20/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
+  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\nv2.1.1 | 11/22/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
 }

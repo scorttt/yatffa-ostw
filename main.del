@@ -33,7 +33,7 @@ globalvar Number s_lang;
 
 playervar Boolean check_spawn;
 
-rule: "v2.1.1.221120 | Created by scort#12211" 
+rule: "v2.1.1.221122 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -48,7 +48,7 @@ rule: "Initial Global"
 
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 45, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
-    s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 1);
+    s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 3);
 
     s_menu = WorkshopSettingToggle("Menu", "Use Menu", true, 0);
 
@@ -69,7 +69,10 @@ rule: "Initial Global"
 
     Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "Josbird (Cursor math)", "BXRXY", "Please credit!"], 1000);
 
+    DisableAnnouncer();
     SetMatchTime(1);
+    Wait(2);
+    EnableAnnouncer();
 }
 
 rule: "Initial Player Join"
@@ -172,9 +175,12 @@ Event.OngoingPlayer
 if (HasSpawned())
 if (IsAlive())
 {
-    // workaround for characters spawning with one less hp
+    # dumb workaround for characters spawning with one less hp
     if (Health() != MaxHealth())
+    {
+        Damage(player, null, Health() - 1);
         Heal(player, null, MaxHealth());
+    }
 
     AllowButton(player, Button.Interact);
 
@@ -216,6 +222,8 @@ if (IsAlive())
 
     Wait(0.08);
 
+    check_spawn = false;
+
     SetAmmo(player, 0, MaxAmmo());
     SetAmmo(player, 1, MaxAmmo());
     SetAbilityCooldown(player, Button.Ability1, 0);
@@ -224,22 +232,19 @@ if (IsAlive())
     SetAbilityCooldown(player, Button.SecondaryFire, 0);
 }
 
-rule: "Change Spawn"
+rule: "Spawning : Remove Chateau \"Dock/Pier\" Spawn"
 Event.OngoingPlayer
 if (check_spawn)
 if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
 {
     check_spawn = false;
 
-    if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
-    {
-        # honestly not sure why players dont repeatedly keep spawning at the same bad location, might be ow's spawn logic doing the hard part for me
-        LogToInspector(<"<0> spawned at the bad location, forcing a respawn", player>);
-        Respawn();
-    }
+    LogToInspector(<"<0> spawned at the bad location, forcing a respawn", player>);
+    Respawn();
 }
 
-rule: "Force Respawn"
+rule: "Spawning : Force Respawn Hotkey"
 Event.OngoingPlayer
 if (s_instant_respawn)
 if (IsButtonHeld(player, Button.Interact))
