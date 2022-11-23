@@ -208,7 +208,7 @@ if (s_menu)
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>", local.lang_str[5][Item.EN]>,
+        Header:         "English",
         Position:       RenderPosOf(-0.15, 0.47), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.EN 
@@ -223,7 +223,7 @@ if (s_menu)
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
-        Header:         <"<0>", local.lang_str[5][Item.JP]>,
+        Header:         "日本語",
         Position:       RenderPosOf(0.15, 0.47), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.JP 
@@ -386,12 +386,20 @@ if (sel_item != Item.Invalid)
 if (toggles < MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
-    sec = IsSecondaryHeld();
-
-    WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
-
     if ((sel_item != Item.HOKMod) && (sel_item != Item.HOKDurMod))
+    {
+        WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
         toggles++;
+    }
+    else 
+    {
+        while (IsPrimaryHeld() || IsSecondaryHeld())
+        {
+            sec = IsSecondaryHeld();
+            async! SelectionHandler(sel_item);
+            WaitIfTrue(0.225);
+        }
+    }
 
     async! SelectionHandler(sel_item);
 }
