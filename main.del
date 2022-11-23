@@ -33,7 +33,7 @@ globalvar Number s_lang;
 
 playervar Boolean check_spawn;
 
-rule: "v2.1.1.221122 | Created by scort#12211" 
+rule: "v2.1.2.221123 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
