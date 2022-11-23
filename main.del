@@ -122,7 +122,6 @@ Event.OnPlayerLeave
 
     if (player == bs_ser_usr)
     {
-        // for some reason this errors if i do bs_ser_usr.best_streak instead of this
         Player new_player = strk_arr.First;
         bs_ser_usr = new_player;
         bs_ser = new_player.best_streak;
