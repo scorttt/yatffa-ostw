@@ -4,10 +4,12 @@ import "main.del";
 playervar Number | String kill_streak;
 playervar Number | String best_streak;
 globalvar Number | String bs_ser;
-globalvar Player | String bs_ser_usr;
-globalvar String bs_ser_hero;
-playervar String bs_hero;
+globalvar Number | String bs_ser_usr;
+globalvar Number | String bs_ser_hero;
+playervar Number | String bs_hero;
 playervar Boolean streak;
+globalvar Player[] strk_arr;
+
 
 Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
                              128 + 127 * CosineFromDegrees((Time() * 150) + 120),
@@ -131,7 +133,7 @@ rule: "Global Hud Text"
             <"<0><1>\n", local.lang_str[3][9], Ceiling(HealingTaken(local))>, // 11
 
             local.best_streak != 0 // 12
-                ? <" \n<0><1>", local.lang_str[3][10], local.best_streak> : "">,
+                ? <" \n<0>", StringReplace(local.lang_str[3][10], "*", local.best_streak)> : "">,
 
             Location: Location.Left, 
             SortOrder: 0.1, 
@@ -176,15 +178,18 @@ if (s_hud || s_def_hud)
         Spectators:     Spectators.DefaultVisibility);
 
     // streak best
-    // CreateHudText(
-    //     VisibleTo: bs_ser >= 5 && (EntityExists(bs_ser_usr) && bs_ser_usr != 0) && show_streak 
-    //                     ? player 
-    //                     : null,
-    //     Text:      <"Best Streak: <0> by <2><1>", bs_ser, bs_ser_usr, bs_ser_hero>, // todo: localize this string
-    //     Location:  Location.Right, 
-    //     SortOrder: 0.3, 
-    //     TextColor: Color.Yellow);
+    CreateHudText(
+        VisibleTo:      bs_ser >= 5 && show_streak && !StringContains(bs_ser_usr, "Entity ")
+                             ? player 
+                             : null,
+        Subheader:      StringReplace(StringReplace( // im gonna hurl
+                                        local.lang_str[2][7], "*", bs_ser), 
+                                        "@", bs_ser_hero + " " + bs_ser_usr), 
+        Location:       Location.Right, 
+        SortOrder:      0.4, 
+        SubheaderColor: Color.Yellow);
 }
+
 
 rule: "Update Killstreak"
 Event.OnFinalBlow
@@ -208,8 +213,7 @@ Event.OnDeath
     {
         best_streak = kill_streak;
 
-        // strk_arr = SortedArray(all, best_streak);
-        // strk_arr = MappedArray(strk_arr, Curr().best_streak);
+        strk_arr = SortedArray(all, best_streak);
         bs_hero = HeroIconString(HeroOf());
 
         if (best_streak > bs_ser)
@@ -219,11 +223,11 @@ Event.OnDeath
             bs_ser_hero = bs_hero;
             SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][3], "*", kill_streak)>);
             Wait(0.1);
-            SmallMessage(FilteredArray(RemoveFromArray(all, player), Curr().show_streak), <"   <0> <1><2>", bs_ser_hero, StringReplace(local.lang_str[2][4], "*", bs_ser_usr), StringReplace(local.lang_str[2][5], "*", kill_streak)>);
+            SmallMessage(FilteredArray(all.Remove(player), Curr().show_streak), <"   <0> <1><2>", bs_ser_hero, StringReplace(local.lang_str[2][4], "*", bs_ser_usr), StringReplace(local.lang_str[2][5], "*", kill_streak)>);
         }
         else 
         {
-            SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][2], "*", kill_streak)>);
+            SmallMessage(show_streak ? player : null, <"   <0> <1>", bs_hero, StringReplace(local.lang_str[2][2], "*", kill_streak)>);
         }
     }
     else if (kill_streak >= 5)

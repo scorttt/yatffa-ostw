@@ -45,7 +45,8 @@ rule: "Init Language Strings"
                  "* player killstreak! Your personal best!", // 2
                  "* player killstreak! The lobby's best!", // 3
                  "* got a", /* 4 */ " * player killstreak! The lobby's best!", // 5
-                 " (You)" // 6
+                 " (You)", // 6
+                 "Best Streak: * by @" // 7
                  ];
     
     EN_STR[3] = ["KDR: ", // 0
@@ -58,7 +59,7 @@ rule: "Init Language Strings"
                  "Scope Crit Accuracy: ", // 7
                  "Environment Kills: ", // 8
                  "Healing: ", // 9
-                 "Best Streak: " // 10
+                 "Best Streak: *" // 10
                  ];
 
     EN_STR[4] = [" was kicked for not selecting a hero after 5 minutes", // 0
@@ -76,9 +77,7 @@ rule: "Init Language Strings"
                  "", // 4
                  " secs", // 5
                  "Random Hero", // 6
-                 "Language", // 7
-                 "English", // 8
-                 "日本語" // 9
+                 "Language" // 7
                  ];
 
     EN_STR[6] = ["Workshop HUD shown!", // 0
@@ -161,10 +160,11 @@ rule: "Init Language Strings"
 
     JP_STR[2] = ["ストリーク:", // 0
                  "*人キルストリーク！", // 1
-                 "*人キルストリーク！あなたのベスト記録！", // 2
-                 "* プレヤーのキルストリーク！このロビーで最高！", // 3
+                 "*人キルストリーク！あなたの自己最高！", // 2
+                 "*人キルストリーク！このロビーで最高！", // 3
                  "*は", /* 4 */ "*人キルストリークを得ました！このロビーで最高！", // 5
-                 "（あなた）"
+                 "（あなた）", // 6
+                 "最高ストリーク：@の*人" // 7
                  ];
 
     JP_STR[3] = ["キル・デス率：", // 0
@@ -177,7 +177,7 @@ rule: "Init Language Strings"
                  "スコープCRIT精度：", // 7
                  "環境のキル：", // 8
                  "ヒーリング：", // 9
-                 "最高ストリーク：" // 10
+                 "最高ストリーク：*人" // 10
                  ];
 
     JP_STR[4] = ["は5分にヒーローを選択しなかったためにキックされった", // 0
@@ -195,9 +195,7 @@ rule: "Init Language Strings"
                  "", // 4
                  "秒", // 5
                  "ランダムのヒーロー", // 6
-                 "言語", // 7
-                 "English", // 8
-                 "日本語" // 9
+                 "言語" // 7
                  ];
 
     JP_STR[6] = ["HUDを見る!", 

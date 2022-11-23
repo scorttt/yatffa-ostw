@@ -46,7 +46,7 @@ rule: "Initial Global"
 
     s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", "日本語"], 0);
 
-    s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 45, 5, 60, 1) * 60;
+    s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
     s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 3);
 
@@ -120,22 +120,13 @@ Event.OnPlayerLeave
     kill_streak = 0;
     best_streak = 0;
 
-    // if (player == bs_ser_usr)
-    // {
-    //     Player[] streak_arr = all.FilteredArray(a => a.best_streak >= 5);
-    //     bs_ser_usr = streak_arr.SortedArray(a => a.best_streak).Last;
-    //     bs_ser = bs_ser_usr.best_streak;
-    //     bs_ser_hero = bs_ser_usr.bs_hero;
-    // }
-
-    // Wait(0.5);
-    // strk_arr = SortedArray(all, best_streak);
-    // strk_arr = MappedArray(strk_arr, Curr().best_streak);
-    // bs_hero = HeroIconString(HeroOf());
-
-    // bs_ser = LastOf(strk_arr);
-    // bs_ser_usr = LastOf(SortedArray(all, Curr().best_streak));
-    // bs_ser_hero = bs_ser_usr.bs_hero;
+    if (player == bs_ser_usr)
+    {
+        // for some reason this errors if i do bs_ser_usr.best_streak instead of this
+        bs_ser_usr = strk_arr.First;
+        bs_ser = strk_arr.First.best_streak;
+        bs_ser_hero = strk_arr.First.bs_hero;
+    }
 }
 
 rule: "Kick players who havent selected a hero"
