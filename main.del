@@ -114,20 +114,18 @@ if (HasSpawned())
     SmallMessage(player, <"   <0><1>", local.lang_str[4][4], StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact))>);
 }
 
-rule: "Player Leave"
-Event.OnPlayerLeave
-{
-    kill_streak = 0;
-    best_streak = 0;
+// rule: "Player Leave"
+// Event.OnPlayerLeave
+// {
+//     if (player == bs_ser_usr)
+//     {
+//         Player[] strk_players = all.FilteredArray(a => a.best_streak >= 5);
+//         bs_ser_usr = strk_players.Length > 0 ? strk_players.SortedArray(a => a.best_streak).First : null;
 
-    if (player == bs_ser_usr)
-    {
-        Player new_player = strk_arr.First;
-        bs_ser_usr = new_player;
-        bs_ser = new_player.best_streak;
-        bs_ser_hero = new_player.bs_hero;
-    }
-}
+//         bs_ser = strk_players.First.best_streak;
+//         bs_ser_hero = strk_players.First.bs_hero;
+//     }
+// }
 
 rule: "Kick players who havent selected a hero"
 Event.OngoingPlayer

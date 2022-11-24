@@ -8,7 +8,6 @@ globalvar Number | String bs_ser_usr;
 globalvar Number | String bs_ser_hero;
 playervar Number | String bs_hero;
 playervar Boolean streak;
-globalvar Player[] strk_arr;
 
 
 Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
@@ -141,6 +140,19 @@ rule: "Global Hud Text"
             Reevaluation: HudTextRev.VisibleToSortOrderAndString, 
             Spectators: Spectators.DefaultVisibility);
     }
+
+    // if (s_hud || s_def_hud)
+    // {
+    //     // streak best
+    //     CreateHudText(
+    //         VisibleTo:      bs_ser >= 5 && local.show_streak && !StringContains(bs_ser_usr, "Entity ")
+    //                             ? local 
+    //                             : null,
+    //         Subheader:      MultiStringReplace(local.lang_str[2][7], "*", "@", bs_ser, bs_ser_hero + " " + bs_ser_usr),
+    //         Location:       Location.Right, 
+    //         SortOrder:      0.4, 
+    //         SubheaderColor: Color.Yellow);
+    // }
 }
 
 rule: "Player Streak HUD"
@@ -176,18 +188,6 @@ if (s_hud || s_def_hud)
         TextColor:      Color.White, 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
         Spectators:     Spectators.DefaultVisibility);
-
-    // streak best
-    CreateHudText(
-        VisibleTo:      bs_ser >= 5 && show_streak && !StringContains(bs_ser_usr, "Entity ")
-                             ? player 
-                             : null,
-        Subheader:      StringReplace(StringReplace( // im gonna hurl
-                                        local.lang_str[2][7], "*", bs_ser), 
-                                        "@", bs_ser_hero + " " + bs_ser_usr), 
-        Location:       Location.Right, 
-        SortOrder:      0.4, 
-        SubheaderColor: Color.Yellow);
 }
 
 
@@ -213,7 +213,6 @@ Event.OnDeath
     {
         best_streak = kill_streak;
 
-        strk_arr = SortedArray(all, best_streak);
         bs_hero = HeroIconString(HeroOf());
 
         if (best_streak > bs_ser)
