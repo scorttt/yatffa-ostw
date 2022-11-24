@@ -27,9 +27,10 @@ enum Lang
 
 rule: "Init Language Strings"
 {
-    //////////////////////
-    // EN strings start //
-    //////////////////////
+    ////////////////////////
+    // EN strings start   //
+    // translator: ME     //
+    ////////////////////////
 
     EN_STR[0] = ["Hold * to open menu", // 0
                  "Release * to hide menu", // 1
@@ -145,9 +146,10 @@ rule: "Init Language Strings"
     //              "Random Hero default set to disabled" // 10
     //              ];
 
-    //////////////////////
-    // JP strings start //
-    //////////////////////
+    ////////////////////////
+    // JP strings start   //
+    // translator: saruyo //
+    ////////////////////////
 
     JP_STR[0] = ["*を押す続けるメニュー開く", // 0
                  "*を放すメニューを非表示する", // 1
