@@ -240,7 +240,7 @@ if (s_menu)
     // easter egg
     CreateInWorldText(
         VisibleTo:      local.menu && local.language == Lang.JP ? local : null, 
-        Header:         " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n自転車乗る人は「セクス」と言います",
+        Header:         "自転車乗る人は「セクス」と言います",
         Position:       RenderPosOf(0, -2.04), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Secret ? Rainbow() : 0,
