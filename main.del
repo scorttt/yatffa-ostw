@@ -71,7 +71,7 @@ rule: "Initial Global"
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
 
-    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "Josbird (Cursor math)", "BXRXY", "Please credit!"], 1000);
+    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "Josbird (Cursor math)", "BXRXY", "5RKYY (JP)", "Please credit!"], 1000);
 
     DisableAnnouncer();
     SetMatchTime(1);
