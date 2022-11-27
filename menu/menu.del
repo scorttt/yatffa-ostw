@@ -47,7 +47,7 @@ Number SELECTION_AREA_WIDTH:  0.65;
 
 Number MAX_TOGGLES: 5;
 
-rule: "Menu : Create Frame and options : Welcome to Hell"
+rule: "Menu : Create Menu Options : Welcome to Hell"
 if (s_menu)
 {
     // excluded options from favoriting
