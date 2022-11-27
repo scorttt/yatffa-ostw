@@ -19,7 +19,7 @@ globalvar Boolean inspector;
 
 rule: "Show Server Load for host and show scort debug info"
 Event.OnPlayerJoin
-if (player == host || <"<0>", player> == "scort")
+if (player == host || dbg_usrs.Contains(<"<0>", player>))
 {
     CreateInWorldText(player, <"C: <0>%, A: <1>%, P: <2>%, T: <3> (<4>)", 
     Near(ServerLoad()), 
@@ -27,7 +27,7 @@ if (player == host || <"<0>", player> == "scort")
     Near(ServerLoadPeak()), 
     TextCount(), TextCount() - 1>, RenderPosOf(3, -2.05), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
 
-    if (<"<0>", player> == "scort")
+    if (dbg_usrs.Contains(<"<0>", player>))
     {
         CreateHudText(player, null, <" \nPos: <0>", PositionOf()>, null, Location.Right, 0.5);
         CreateHudText(player, null, <"Facing: <0>", FacingDirectionOf()>, null, Location.Right, 0.6);

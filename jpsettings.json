@@ -99,9 +99,7 @@
         "Ultimate Ability (Rampage)": false
       },
       "Orisa": {
-        "Health": 54.5454,
-        "Fortify": false,
-        "Javelin Spin": false,
+        "Health": 50,
         "Energy Javelin Cooldown Time": 83.3333,
         "Ultimate Ability (Terra Surge)": false
       },
@@ -148,5 +146,5 @@
     }
   },
   "Mode Name": "<FGFF00FFFF>トライハードFFA",
-  "Description": "トライハードFFA\nコード：<FGFF00FFFF>5RKYY</FG>\n作家：scort#11221\nv2.1.2｜2022/11/23"
+  "Description": "トライハードFFA\nコード：<FGFF00FFFF>5RKYY</FG>\n作家：scort#11221（英語しか話）\n2.1.3｜2022/11/27"
 }

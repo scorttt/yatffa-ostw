@@ -51,13 +51,13 @@ rule: "Global Hud Text"
         // hide/show menu
         CreateHudText(
             VisibleTo:  FilteredArray(all, !Curr().menu), 
-            Subheader:  StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact)), 
+            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact)), 
             Location:   Location.Right, 
             SortOrder:  0.2, 
             Spectators: Spectators.VisibleNever);
         CreateHudText(
             VisibleTo:  FilteredArray(all, Curr().menu), 
-            Subheader:  StringReplace(local.lang_str[0][1], "*", BindString(Button.Interact)), 
+            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][1], "*", BindString(Button.Interact)), 
             Location:   Location.Right, 
             SortOrder:  0.2, 
             Spectators: Spectators.VisibleNever);
@@ -65,7 +65,7 @@ rule: "Global Hud Text"
         // double tap for fav_item
         CreateHudText(
             VisibleTo:  local.fav_item != Item.Invalid ? local : null, 
-            Subheader:  StringReplace(local.lang_str[0][2], "*", BindString(Button.Interact)) + local.lang_str[8][0] + local.lang_str[5][local.fav_item] + local.lang_str[8][1], 
+            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][2], "*", BindString(Button.Interact)) + local.lang_str[LStr.Quotes][0] + local.lang_str[LStr.Items][local.fav_item] + local.lang_str[LStr.Quotes][1], 
             Location:   Location.Right, 
             SortOrder:  0.3,
             Spectators: Spectators.VisibleNever);
@@ -84,7 +84,7 @@ rule: "Global Hud Text"
     {
         CreateHudText(
             VisibleTo:      FilteredArray(all, IsDead(Curr())), 
-            Subheader:      StringReplace(local.lang_str[1][0], "*", BindString(Button.Interact)), 
+            Subheader:      StringReplace(local.lang_str[LStr.Death][0], "*", BindString(Button.Interact)), 
             Location:       Location.Top, 
             SortOrder:      101,
             SubheaderColor: Color.Yellow, 
@@ -92,7 +92,7 @@ rule: "Global Hud Text"
 
         CreateHudText(
             VisibleTo:      FilteredArray(all, IsDead(Curr())), 
-            Subheader:      <"<0>\n", local.lang_str[1][1]>, 
+            Subheader:      <"<0>\n", local.lang_str[LStr.Death][1]>, 
             Location:       Location.Top, 
             SortOrder:      102,
             SubheaderColor: Color.Yellow, 
@@ -111,28 +111,28 @@ rule: "Global Hud Text"
 
             HeroOf(local), // 1
 
-            <"<0><1>\n", local.lang_str[3][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
-            <"<0><1>\n", local.lang_str[3][1], DamageDealt(local) / DamageTaken(local)>, // 3
-            <"<0><1>\n", local.lang_str[3][2], DamageDealt(local)>, // 4
-            <"<0><1>\n", local.lang_str[3][3], DamageTaken(local)>, // 5
-            <"<0><1>%\n", local.lang_str[3][4], Accuracy(local)>, // 6
+            <"<0><1>\n", local.lang_str[LStr.Stats][0], Deaths(local) > 0 ? Kills(local) / Deaths(local) : Kills(local)>, // 2
+            <"<0><1>\n", local.lang_str[LStr.Stats][1], DamageDealt(local) / DamageTaken(local)>, // 3
+            <"<0><1>\n", local.lang_str[LStr.Stats][2], DamageDealt(local)>, // 4
+            <"<0><1>\n", local.lang_str[LStr.Stats][3], DamageTaken(local)>, // 5
+            <"<0><1>%\n", local.lang_str[LStr.Stats][4], Accuracy(local)>, // 6
 
             !critexc_arr.Contains(HeroOf(local)) // 7
-                ? <"<0><1>%\n", local.lang_str[3][5], CritAccuracy(local)> : "",
+                ? <"<0><1>%\n", local.lang_str[LStr.Stats][5], CritAccuracy(local)> : "",
 
             scope_arr.Contains(HeroOf(local)) // 8
-                ? <"<0><1>%\n", local.lang_str[3][6], ScopedAccuracy(local)> : "", 
+                ? <"<0><1>%\n", local.lang_str[LStr.Stats][6], ScopedAccuracy(local)> : "", 
 
             scope_crit_arr.Contains(HeroOf(local)) // 9
-                ? <"<0><1>%\n", local.lang_str[3][7], ScopedCritAccuracy(local)> : "",
+                ? <"<0><1>%\n", local.lang_str[LStr.Stats][7], ScopedCritAccuracy(local)> : "",
 
             EnvironmentalKills(local) != 0 // 10
-                ? <"<0><1>\n", local.lang_str[3][8], EnvironmentalKills(local)> : "",
+                ? <"<0><1>\n", local.lang_str[LStr.Stats][8], EnvironmentalKills(local)> : "",
 
-            <"<0><1>\n", local.lang_str[3][9], Ceiling(HealingTaken(local))>, // 11
+            <"<0><1>\n", local.lang_str[LStr.Stats][9], Ceiling(HealingTaken(local))>, // 11
 
             local.best_streak != 0 // 12
-                ? <" \n<0>", StringReplace(local.lang_str[3][10], "*", local.best_streak)> : "">,
+                ? <" \n<0>", StringReplace(local.lang_str[LStr.Stats][10], "#", local.best_streak)> : "">,
 
             Location: Location.Left, 
             SortOrder: 0.1, 
@@ -148,7 +148,7 @@ rule: "Global Hud Text"
     //         VisibleTo:      bs_ser >= 5 && local.show_streak && !StringContains(bs_ser_usr, "Entity ")
     //                             ? local 
     //                             : null,
-    //         Subheader:      MultiStringReplace(local.lang_str[2][7], "*", "@", bs_ser, bs_ser_hero + " " + bs_ser_usr),
+    //         Subheader:      MultiStringReplace(local.lang_str[LStr.Streak][7], "*", "@", bs_ser, bs_ser_hero + " " + bs_ser_usr),
     //         Location:       Location.Right, 
     //         SortOrder:      0.4, 
     //         SubheaderColor: Color.Yellow);
@@ -163,10 +163,10 @@ if (s_hud || s_def_hud)
     CreateHudText(
         VisibleTo:      streak && show_streak ? player : null,
 
-        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, local.lang_str[2][6]>, 
+        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, local.lang_str[LStr.Streak][5]>, 
         Text:           best_streak != 0 
-                            ? <"<0> <1>/<2>", local.lang_str[2][0], kill_streak, best_streak> 
-                            : <"<0> <1>", local.lang_str[2][0], kill_streak>, 
+                            ? <"<0> <1>/<2>", local.lang_str[LStr.Streak][0], kill_streak, best_streak> 
+                            : <"<0> <1>", local.lang_str[LStr.Streak][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      1, 
         SubheaderColor: Rainbow(), 
@@ -180,8 +180,8 @@ if (s_hud || s_def_hud)
 
         Subheader:      <"<0>  <1>", HeroIconString(HeroOf()), player>, 
         Text:           best_streak != 0 
-                            ? <"<0> <1>/<2>", local.lang_str[2][0], kill_streak, best_streak> 
-                            : <"<0> <1>", local.lang_str[2][0], kill_streak>, 
+                            ? <"<0> <1>/<2>", local.lang_str[LStr.Streak][0], kill_streak, best_streak> 
+                            : <"<0> <1>", local.lang_str[LStr.Streak][0], kill_streak>, 
         Location:       Location.Left, 
         SortOrder:      SlotOf() + 1, 
         SubheaderColor: HealthColor(), 
@@ -220,18 +220,19 @@ Event.OnDeath
             bs_ser = best_streak;
             bs_ser_usr = player;
             bs_ser_hero = bs_hero;
-            SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][3], "*", kill_streak)>);
+            SmallMessage(show_streak ? player : null, "   " + StringReplace(local.lang_str[LStr.Streak][3], "#", kill_streak));
             Wait(0.1);
-            SmallMessage(FilteredArray(all.Remove(player), Curr().show_streak), <"   <0> <1><2>", bs_ser_hero, StringReplace(local.lang_str[2][4], "*", bs_ser_usr), StringReplace(local.lang_str[2][5], "*", kill_streak)>);
+            SmallMessage(FilteredArray(all.Remove(player), Curr().show_streak), 
+            <"   <0> <1>", bs_ser_hero, MultiStringReplace(local.lang_str[LStr.Streak][4], "@", "#", bs_ser_usr, kill_streak)>);
         }
         else 
         {
-            SmallMessage(show_streak ? player : null, <"   <0> <1>", bs_hero, StringReplace(local.lang_str[2][2], "*", kill_streak)>);
+            SmallMessage(show_streak ? player : null, "   " + <"<0> <1>", bs_hero, StringReplace(local.lang_str[LStr.Streak][2], "#", kill_streak)>);
         }
     }
     else if (kill_streak >= 5)
     {
-        SmallMessage(show_streak ? player : null, <"   <0>", StringReplace(local.lang_str[2][1], "*", kill_streak)>);
+        SmallMessage(show_streak ? player : null, "   " + StringReplace(local.lang_str[LStr.Streak][1], "#", kill_streak));
     }
 
     Wait(0.1);

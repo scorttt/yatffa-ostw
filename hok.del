@@ -9,16 +9,24 @@ if (!IsDuplicating())
 if (Health() < MaxHealth())
 {
     healing = true;
-    heal_amt = Max((MaxHealth(Victim()) * HOK_amt), 200 * HOK_amt);
+    heal_amt = HOK_amt <= 1 ? Max((MaxHealth(Victim()) * HOK_amt), 200 * HOK_amt) : MaxHealth(Attacker());
 
-    StopHealOverTime(hot);
+    if (HOK_dur >= 1)
+    {
+        StopHealOverTime(hot);
 
-    StartHealOverTime(Attacker(), null, HOK_dur, heal_amt / HOK_dur);
-    hot = LastHealOverTime();
+        StartHealOverTime(Attacker(), null, HOK_dur, heal_amt / HOK_dur);
+        hot = LastHealOverTime();
 
-    Wait(HOK_dur, WaitBehavior.RestartWhenTrue);
+        Wait(HOK_dur, WaitBehavior.RestartWhenTrue);
 
-    StopHealOverTime(hot);
+        StopHealOverTime(hot);
+    }
+    else 
+    {
+        Heal(player, null, heal_amt);
+    }
+
     healing = false;
 }
 

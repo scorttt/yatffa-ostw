@@ -23,14 +23,14 @@ void ToggleAllHud() playervar "Menu Option Sub : Toggle All HUD"
         show_stats = true;
         show_streak = true;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.AllHUD]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[LStr.Enabled][Item.AllHUD]>);
     }
     else 
     {
         show_stats = false;
         show_streak = false;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.AllHUD]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[LStr.Disabled][Item.AllHUD]>);
     }
 
 }
@@ -43,14 +43,14 @@ void ToggleStats() playervar "Menu Option Sub : Toggle Stats"
         if (show_streak)
             show_all = true;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Stats]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[LStr.Enabled][Item.Stats]>);
     }
     else
     {
         if (!show_streak)
             show_all = false;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Stats]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[LStr.Disabled][Item.Stats]>);
     }
 }
 
@@ -62,14 +62,14 @@ void ToggleStreak() playervar "Menu Option Sub : Toggle Streak"
         if (show_stats)
             show_all = true;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Streak]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[LStr.Enabled][Item.Streak]>);
     }
     else
     {
         if (!show_stats)
             show_all = false;
 
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Streak]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[LStr.Disabled][Item.Streak]>);
     }
 }
 
@@ -78,11 +78,11 @@ void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
     hok = !hok;
     if (hok)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.HOK]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[LStr.Enabled][Item.HOK]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.HOK]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[LStr.Disabled][Item.HOK]>);
     }
 }
 
@@ -110,7 +110,7 @@ void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
     {
         HOK_dur += 0.50;
 
-        if (HOK_dur > s_hot_time * 3)
+        if (HOK_dur > 12)
             HOK_dur = s_hot_time;
     }
     else
@@ -118,7 +118,7 @@ void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
         HOK_dur -= 0.50;
 
         if (HOK_dur < s_hot_time)
-            HOK_dur = s_hot_time * 3;
+            HOK_dur = 12;
     }
 }
 
@@ -127,11 +127,11 @@ void RandomHero() playervar "Menu Option Sub : Random Hero"
     random_hero = !random_hero;
     if (random_hero)
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[6][Item.Random]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), local.lang_str[LStr.Enabled][Item.Random]>);
     }
     else
     {
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[7][Item.Random]>);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), local.lang_str[LStr.Disabled][Item.Random]>);
 
         # unsure if these are necessary
         ResetHeroAvailability();

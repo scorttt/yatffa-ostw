@@ -31,15 +31,19 @@ globalvar Boolean s_score_win;
 globalvar Number s_heal;
 globalvar Number s_lang;
 
+globalvar Any[] dbg_usrs;
+
 playervar Boolean check_spawn;
 
-rule: "v2.1.2.221123 | Created by scort#12211" 
+rule: "v2.1.3.221127 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
 
 rule: "Initial Global"
 {
+    dbg_usrs = ["scort", "NAFFA", "EUFFA", "JPFFA"];
+
     critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
     scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scope_crit_arr = [Hero.Widowmaker, Hero.Ashe];
@@ -59,10 +63,10 @@ rule: "Initial Global"
 
     s_hok = WorkshopSettingToggle("Heal On Kill", "Allow Modifying Heal On Kill toggle", true, 7);
     s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
-    s_hot_time = WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration", 4, 1, 10, 2);
+    s_hot_time = Max(Near(WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration (Values lower than 1 is instant)", 4, 0, 10, 2) * 2) / 2, 0.5);
     s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
-    s_heal = (WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 8, 
-             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"], 4) + 1) * 0.05;
+    s_heal = Min((WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 8, 
+             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%", "Maximum"], 4) + 1) * 0.05, 1.025);
 
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
@@ -111,7 +115,7 @@ if (HasSpawned())
 {
     Wait(1);
     WaitUntil(!lang_swap, 1);
-    SmallMessage(player, <"   <0><1>", local.lang_str[4][4], StringReplace(local.lang_str[0][0], "*", BindString(Button.Interact))>);
+    SmallMessage(player, <"   <0><1>", local.lang_str[LStr.Misc][4], StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact))>);
 }
 
 // rule: "Player Leave"
@@ -133,7 +137,7 @@ if (!HasSpawned())
 {
     # 5 minutes
     WaitIfTrue(300);
-    SmallMessage(all, <"   <0><1>", player, local.lang_str[4]>);
+    SmallMessage(all, <"   <0><1>", player, local.lang_str[LStr.Misc][0]>);
     Wait(1);
     RemovePlayer(player);
 }

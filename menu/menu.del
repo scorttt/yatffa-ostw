@@ -57,7 +57,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:    local.menu ? local : null,
         Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
-                      local.lang_str[4][1], local.lang_str[4][2], local.lang_str[4][3], 
+                      local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
         Position:     RenderPosOf(0, 1.62), 
         Scale:        1.35,
@@ -74,7 +74,7 @@ if (s_menu)
                                                 : local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
                                                     ? IconString(Icon.Asterisk) 
                                                     : IconString(Icon.No), 
-                                            local.lang_str[5][Item.AllHUD],
+                                            local.lang_str[LStr.Items][Item.AllHUD],
                                             local.fav_item == Item.AllHUD ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.52), 
         Scale:          1.25,
@@ -94,7 +94,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>   <1><2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.Stats],
+                                    local.lang_str[LStr.Items][Item.Stats],
                                     local.fav_item == Item.Stats ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.42), 
         Scale:          1.25,
@@ -111,7 +111,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>   <1><2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.Streak],
+                                    local.lang_str[LStr.Items][Item.Streak],
                                     local.fav_item == Item.Streak ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.32), 
         Scale:          1.25,
@@ -130,7 +130,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>   <1> ▼<2>", local.hok ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.HOK],
+                                    local.lang_str[LStr.Items][Item.HOK],
                                     local.fav_item == Item.HOK ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 1.145), 
         Scale:          1.25,
@@ -147,8 +147,13 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         local.sel_item == Item.HOKMod
-                            ? <"<1>    -  <0>%  +    <2>", StringReplace(local.HOK_amt * 100, ".50", ".5"), BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
-                            : <"<0>%", StringReplace(local.HOK_amt * 100, ".50", ".5")>,
+                            ? <"<1>    -   <0>   +    <2>", local.HOK_amt <= 1 
+                                                                ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5")+ "%"
+                                                                : local.lang_str[LStr.Misc][6], 
+                                                            BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : local.HOK_amt <= 1 
+                                ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5") + "%"
+                                : local.lang_str[LStr.Misc][6],
         Position:       RenderPosOf(0, 1.045), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
@@ -162,8 +167,13 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         local.sel_item == Item.HOKDurMod
-                            ? <"<2>    -  <0><1>  +    <3>", StringReplace(local.HOK_dur, ".50", ".5"), local.lang_str[5][Item.HOKDurMod], BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
-                            : <"<0><1>", StringReplace(local.HOK_dur, ".50", ".5"), local.lang_str[5][Item.HOKDurMod]>,
+                            ? <"<1>    -   <0>   +    <2>", local.HOK_dur >= 1
+                                                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
+                                                                : local.lang_str[LStr.Misc][7],
+                                                            BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : local.HOK_dur >= 1 
+                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
+                                : local.lang_str[LStr.Misc][7],
         Position:       RenderPosOf(0, 0.945), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKDurMod 
@@ -179,7 +189,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
-                                    local.lang_str[5][Item.Random],
+                                    local.lang_str[LStr.Items][Item.Random],
                                     local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
         Position:       RenderPosOf(0, 0.745), 
         Scale:          1.25,
@@ -198,7 +208,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         local.lang_prog_str == "" 
-                            ? <"<0> ▼", local.lang_str[5][Item.Language]> 
+                            ? <"<0> ▼", local.lang_str[LStr.Items][Item.Language]> 
                             : local.lang_prog_str,
         Position:       RenderPosOf(0, 0.57), 
         Scale:          1.25,
