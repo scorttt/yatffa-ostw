@@ -356,15 +356,19 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
     {
         case Item.AllHUD:
             async! ToggleAllHud();
+            LogToInspector(<"<0> toggled All HUD", player>);
             break;
         case Item.Stats:
             async! ToggleStats();
+            LogToInspector(<"<0> toggled Stats", player>);
             break;
         case Item.Streak:
             async! ToggleStreak();
+            LogToInspector(<"<0> toggled Streak HUD", player>);
             break;
         case Item.HOK:
             async! ToggleHOK();
+            LogToInspector(<"<0> toggled HOK", player>);
             break;
         case Item.HOKMod:
             async! ModifyHOK();
@@ -374,14 +378,17 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             break;
         case Item.Random:
             async! RandomHero();
+            LogToInspector(<"<0> toggled Random Hero", player>);
             break;
         case Item.EN:
             if (language != Lang.EN && !lang_swap)
                 async! SetEnglish();
+            LogToInspector(<"<0> set language to English", player>);
             break;
         case Item.JP:
             if (language != Lang.JP && !lang_swap)
                 async! SetJapanese();
+            LogToInspector(<"<0> set language to Japanese", player>);
             break;
     }
 
