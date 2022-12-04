@@ -2,11 +2,16 @@ import "settings.json";
 // import "jpsettings.json";
 import "../workshop-scripts/macros.del";
 
-import "lang.del";
 import "hok.del";
 import "hud.del";
 import "debug.del";
+
 import "menu/menu.del";
+
+import "lang/en.del";
+import "lang/jp.del";
+import "lang/es.del";
+
 
 globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
@@ -26,29 +31,56 @@ globalvar Boolean s_random;
 
 globalvar Number s_hot_time;
 globalvar Boolean s_hot_interrupt;
+globalvar Number s_hot_mindamage;
 globalvar Boolean s_instant_respawn;
 globalvar Boolean s_score_win;
 globalvar Number s_heal;
 globalvar Number s_lang;
 
+globalvar Vector[] bot_loc;
+
+
 globalvar Any[] dbg_usrs;
 
 playervar Boolean check_spawn;
+playervar String[] lang_str;
 
-rule: "v2.1.3.221127 | Created by scort#12211" 
+enum LStr
+{
+    MenuStatus, // 0
+    Death, // 1
+    Streak, // 2
+    Stats, // 3
+    Misc, // 4
+    Items, // 5
+    Enabled, // 6
+    Disabled, // 7
+    Quotes, // 8
+    HItems, // 9 
+    HEnabled, // 10
+    HDisabled // 11
+}
+enum Lang
+{
+    EN,
+    ESMX,
+    JP
+}
+
+rule: "v2.2.0.221206 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
 
 rule: "Initial Global"
 {
-    dbg_usrs = ["scort", "NAFFA", "EUFFA", "JPFFA"];
+    dbg_usrs = ["scort", "gigaballs", "NAFFA", "EUFFA", "JPFFA"];
 
     critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
     scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scope_crit_arr = [Hero.Widowmaker, Hero.Ashe];
 
-    s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", "日本語"], 0);
+    s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", /* "Español (AL)",  */"日本語"], 0);
 
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
@@ -61,17 +93,18 @@ rule: "Initial Global"
     s_def_streak = WorkshopSettingToggle("HUD", "Show Kill Streaks", true, 4);
     s_def_stats = WorkshopSettingToggle("HUD", "Show Player Stats", true, 6);
 
-    s_hok = WorkshopSettingToggle("Heal On Kill", "Allow Modifying Heal On Kill toggle", true, 7);
-    s_def_hok = WorkshopSettingToggle("Heal On Kill", "Heal On Kill", true, 8);
-    s_hot_time = Max(Near(WorkshopSettingReal("Heal On Kill", "Heal On Kill Duration (Values lower than 1 is instant)", 4, 0, 10, 2) * 2) / 2, 0.5);
-    s_hot_interrupt = WorkshopSettingToggle("Heal On Kill", "Interrupt Heal On Kill upon taking damage", true, 3);
-    s_heal = Min((WorkshopSettingCombo("Heal On Kill", "Heal Percentage based on enemies max health", 8, 
-             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%", "Maximum"], 4) + 1) * 0.05, 1.025);
+    s_hok = WorkshopSettingToggle("Heal on Kill", "Allow Modifying Heal on Kill toggle", true, 0);
+    s_def_hok = WorkshopSettingToggle("Heal on Kill", "Heal on Kill", true, 1);
+    s_hot_time = Max(Near(WorkshopSettingReal("Heal on Kill", "Heal on Kill Duration (Values lower than 1 is instant)", 4, 0, 10, 2) * 2) / 2, 0.5);
+    s_hot_interrupt = WorkshopSettingToggle("Heal on Kill", "Interrupt Heal on Kill upon taking damage", true, 3);
+    s_hot_mindamage = WorkshopSettingReal("Heal on Kill", "Minimum Damage to Interrupt Heal on Kill", 1, 0, 200, 4);
+    s_heal = Min((WorkshopSettingCombo("Heal on Kill", "Heal Percentage based on enemies max health", 8, 
+             ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%", "Maximum"], 5) + 1) * 0.05, 1.025);
 
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
 
-    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "Josbird (Cursor math)", "BXRXY", "5RKYY (JP)", "Please credit!"], 1000);
+    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "jaskfy (ES MX Localization)", "Josbird (Cursor math)", "BXRXY", "5RKYY (JP)", "Please credit!"], 1000);
 
     DisableAnnouncer();
     SetMatchTime(1);
@@ -81,6 +114,7 @@ rule: "Initial Global"
 
 rule: "Initial Player Join"
 Event.OnPlayerJoin
+if (!IsDummyBot())
 {
     DisableGameModeHud();
 
@@ -105,7 +139,7 @@ Event.OnPlayerJoin
 
     if (s_lang == Lang.EN)
         SetEnglish();
-    else 
+    else if (s_lang == Lang.JP)
         SetJapanese();
 }
 
@@ -190,6 +224,8 @@ if (IsAlive())
         hero_arr = AllowedHeroes() + prev_hero;
     }
 
+    MinWait();
+
     // tracer / sym
     if (IsHero(Hero.Tracer) || IsHero(Hero.Symmetra))
         SetAbilityCharge(player, Button.Ability1, 3);
@@ -244,4 +280,60 @@ if (IsButtonHeld(player, Button.Interact))
 if (IsDead())
 {
     Respawn();
+}
+
+globalvar Player bot;
+
+rule: "Bot : Create Bot to Destroy Railings, this is ugly and stupid"
+if (IsGameInProgress())
+if (all.Length < 12)
+{
+    bot_loc = [VectorZero(),
+               Vector(168.67, 9.00,  64.65),
+               Vector(173.40, 12.01, 57.62),
+               Vector(181.38, 10.00, 57.89),
+               Vector(185.10, 8.00,  73.51),
+               Vector(215.74, 13.98, 45.41),
+               Vector(218.19, 13.98, 53.51),
+               Vector(216.68, 16.00, 61.58),
+               Vector(229.02, 14.29, 67.35),
+               Vector(224.24, 10.55, 76.55),
+               Vector(219.20, 10.00, 80.37),
+               Vector(200.37, 11.00, 80.98),
+               Vector(179.51, 8.00,  90.74),
+               Vector(172.81, 7.97,  81.15),
+               Vector(203.67, 10.00, 110.78),
+               Vector(224.47, 7.00,  113.47),
+               Vector(233.25, 6.00,  108.16),
+               Vector(238.16, 4.16,  98.27),
+               Vector(233.52, 4.00,  89.21)];
+
+    Wait(0.25);
+
+    CreateDummyBot(Hero.Pharah, Team.All, -1, bot_loc[0], Down());
+    bot = LastCreatedEntity();
+
+    SetDamageDealt(bot, 0);
+    SetKnockbackDealt(bot, 0);
+    SetKnockbackReceived(bot, 0);
+    SetGravity(bot, 0);
+    SetInvisible(bot, InvisibleTo.All);
+    SetStatus(bot, null, Status.PhasedOut, 99999);
+
+    Wait(1);
+
+    for (Number i = 0; i < bot_loc.Length; i++)
+    {
+        Teleport(bot, bot_loc[i]);
+        SetFacing(bot, Down());
+        SetAbilityCooldown(bot, Button.Ability2, 0);
+        PressButton(bot, Button.Ability2);
+        Wait(0.165);
+        CancelPrimaryAction(bot);
+    }
+
+    Wait(1);
+
+    DestroyDummyBot(bot);
+    bot = null;
 }
