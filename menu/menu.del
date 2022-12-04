@@ -334,7 +334,6 @@ rule: "Menu : Open Animation"
 Event.OngoingPlayer
 if (menu && !close_anim)
 {
-    close_anim = false;
     anim = true;
 
     for (Number i = 0; i < ITEM_DEST.Length; i++)
@@ -378,7 +377,7 @@ if (!menu)
             if (item_pos[i] != anim_start)
                 item_pos[i] += (anim_start - item_pos[i]) * 0.3;
 
-            if (FilteredArray(item_pos, Curr() >= anim_start - 0.05).Length == ITEM_DEST.Length)
+            if (FilteredArray(item_pos, Curr() >= anim_start - 0.025).Length == ITEM_DEST.Length)
             {
                 anim = false;
                 break;
