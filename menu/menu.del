@@ -339,7 +339,7 @@ if (menu)
             if (item_pos[i] != ITEM_DEST[i])
                 item_pos[i] += (ITEM_DEST[i] - item_pos[i]) * 0.3;
 
-            if (IsTrueForAll(item_pos, item_pos[i] == ITEM_DEST[i]))
+            if (FilteredArray(item_pos, Curr() == ITEM_DEST[i]))
             {
                 anim = false;
                 break;
