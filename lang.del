@@ -1,0 +1,306 @@
+import "main.del";
+playervar String[] lang_str;
+globalvar String[] EN_STR;
+globalvar String[] JP_STR;
+
+// index guide
+// 0 = menu status
+// 1 = death info
+// 2 = kill streaks
+// 3 = stats
+// 4 = misc
+// 5 = menu items
+// 6 = menu toggle enabled toasts
+// 7 = menu toggle disabled toasts
+// 8 = language quotes todo: dont do this
+
+// 9 = host only menu items
+// 10 = host menu toggle enabled toasts
+// 11 = host menu toggle disabled toasts
+
+
+enum LStr
+{
+    MenuStatus, // 0
+    Death, // 1
+    Streak, // 2
+    Stats, // 3
+    Misc, // 4
+    Items, // 5
+    Enabled, // 6
+    Disabled, // 7
+    Quotes, // 8
+    HostItems, // 9 
+    HostEnabled, // 10
+    HostDisabled // 11
+}
+enum Lang
+{
+    EN,
+    JP
+}
+
+rule: "Init Language Strings"
+{
+    ////////////////////////
+    //     EN strings     //
+    //   translator: ME   //
+    ////////////////////////
+
+    EN_STR[LStr.MenuStatus] = 
+                ["Hold * to open menu", // 0
+                 "Release * to hide menu", // 1
+                 "Double tap * to toggle " // 2
+                 ];
+
+    EN_STR[LStr.Death] = 
+                ["* to respawn instantly", // 0
+                 "Use normal hero select to change hero" // 1
+                 ];
+
+    EN_STR[LStr.Streak] =
+                ["Streak:", // 0
+                 "# player killstreak!", // 1
+                 "# player killstreak! Your personal best!", // 2
+                 "# player killstreak! The lobby's best!", // 3
+                 "@ got a # player killstreak! The lobby's best!", // 4
+                 " (You)", // 5
+                 "Best Streak: # by @" // 6
+                 ];
+    
+    EN_STR[LStr.Stats] = 
+                ["KDR: ", // 0
+                 "DMG Ratio: ", // 1
+                 "DMG Out: ", // 2
+                 "DMG In: ", // 3
+                 "Accuracy: ", // 4
+                 "Crit Accuracy: ", // 5
+                 "Scope Accuracy: ", // 6
+                 "Scope Crit Accuracy: ", // 7
+                 "Environment Kills: ", // 8
+                 "Healing: ", // 9
+                 "Best Streak: #" // 10
+                 ];
+
+    EN_STR[LStr.Misc] = 
+                [" was kicked for not selecting a hero after 5 minutes", // 0
+                 "Navigate: Aim", // 1
+                 "Select: ", // 2
+                 "Favorite: ", // 3
+                 "Welcome! ", // 4
+                 "Host Only", // 5
+                 "Maximum", // 6
+                 "Instant" // 7
+                 ];
+
+    EN_STR[LStr.Items] = 
+                ["Show Workshop HUD", // 0
+                 "Show Stats", // 1
+                 "Show Kill Streaks", // 2
+                 "Heal On Kill", // 3
+                 null, // 4
+                 " secs", // 5
+                 "Random Hero", // 6
+                 "Language" // 7
+                 ];
+
+    EN_STR[LStr.Enabled] = 
+                ["Workshop HUD shown!", // 0
+                 "Stats shown!", // 1
+                 "Kill Streaks shown!", // 2
+                 "Heal on Kill Enabled!", // 3
+                 null, // 4
+                 null, // 5
+                 "Random Hero Enabled!", // 6 
+                 null, // 7
+                 null, // 8
+                 null // 9
+                 ]; 
+
+    EN_STR[LStr.Disabled] = 
+                ["Workshop HUD Hidden!", 
+                 "Stats Hidden!", 
+                 "Kill Streaks Hidden!", 
+                 "Heal on Kill Disabled!",
+                 null,
+                 null,
+                 "Random Hero Disabled!",
+                 null,
+                 null,
+                 null
+                 ];
+
+    EN_STR[LStr.Quotes] = ["\"", "\""];
+
+    // EN_STR[LStr.HostItems] = 
+    //             ["Default player Language", // 0
+    //              "Allow players to modify Workshop HUD", // 1
+    //              "Workshop HUD default toggle", // 2
+    //              "Kill Streaks default toggle", // 3
+    //              "Player Stats default toggle", // 4
+    //              "ALlow players to modify Heal On Kill", // 5
+    //              "Heal On Kill default toggle", // 6
+    //              "Heal On Kill default amount", // 7
+    //              "Heal On Kill default duration", // 8
+    //              "Allow players to modify Random Hero", // 9
+    //              "Random Hero default toggle" // 10
+    //              ];
+    
+    // EN_STR[LStr.HostEnabled] = 
+    //             ["Default player language set to #", // 0
+    //              "Workshop HUD modification enabled", // 1
+    //              "Workshop HUD default set to enabled", // 2
+    //              "Kill Streaks default set to enabled", // 3
+    //              "Player Stats default set to enabled", // 4
+    //              "Heal On Kill modification enabled", // 5
+    //              "Heal On Kill default set to enabled", // 6
+    //              null, // 7
+    //              null, // 8
+    //              "Random Hero modification enabled", // 9
+    //              "Random Hero default set to enabled" // 10
+    //              ];
+    
+    // EN_STR[LStr.HostDisabled] =
+    //             [null, // 0
+    //              "Workshop HUD modification disabled", // 1
+    //              "Workshop HUD default set to disabled", // 2
+    //              "Kill Streaks default set to disabled", // 3
+    //              "Player Stats default set to disabled", // 4
+    //              "Heal On Kill modification disabled", // 5
+    //              "Heal On Kill default set to disabled", // 6
+    //              null, // 7
+    //              null, // 8
+    //              "Random Hero modification disabled", // 9
+    //              "Random Hero default set to disabled" // 10
+    //              ];
+
+    ////////////////////////
+    //     JP strings     //
+    // translator: saruyo //
+    ////////////////////////
+
+    JP_STR[LStr.MenuStatus] = 
+                ["*を押す続けるメニュー開く", // 0
+                 "*を放すメニューを非表示する", // 1
+                 "*をダブルタップして" // 2
+                 ];
+
+    JP_STR[LStr.Death] = 
+                ["*を押す直ぐにリスポーンする", // 0
+                 "普通ヒーローセレクトで変更する" // 1
+                 ];
+
+    JP_STR[LStr.Streak] =
+                 ["ストリーク:", // 0
+                 "#人キルストリーク！", // 1
+                 "#人キルストリーク！あなたの自己最高！", // 2
+                 "#人キルストリーク！このロビーで最高！", // 3
+                 "@さんは#人キルストリークを得ました！このロビーで最高！", // 4
+                 "（あなた）", // 5
+                 "最高ストリーク：@さん#人殺した" // 6
+                 ];
+
+    JP_STR[LStr.Stats] = 
+                ["キル・デス率：", // 0
+                 "ダメージ率：", // 1
+                 "合計ダメージ：", // 2
+                 "受けたダメージ：", // 3
+                 "精度：", // 4
+                 "CRIT精度：", // 5
+                 "スコープ精度：", // 6
+                 "スコープCRIT精度：", // 7
+                 "環境のキル：", // 8
+                 "ヒーリング：", // 9
+                 "最高ストリーク：#人" // 10
+                 ];
+
+    JP_STR[LStr.Misc] = 
+                ["さんは5分にヒーローを選択しなかったためにキックされった", // 0
+                 "ナビる：狙う", // 1
+                 "選ぶ：", // 2
+                 "愛用：", // 3
+                 "ようこそ！", // 4
+                 "ホストのみ", // 5
+                 "マックス", // 6
+                 "今すぐ" // 7
+                 ];
+
+    JP_STR[LStr.Items] = 
+                ["HUDを見せる", // 0
+                 "統計を見せる", // 1
+                 "キルストリークを見せる", // 2
+                 "キルヒーリング", // 3
+                 null, // 4
+                 "秒", // 5
+                 "ランダムのヒーロー", // 6
+                 "言語" // 7
+                 ];
+
+    JP_STR[LStr.Enabled] = 
+                ["HUDを見る!", 
+                 "統計を見る!", 
+                 "キルストリークを見る!", 
+                 "キルヒーリングの有効！",
+                 null,
+                 null,
+                 "ランダムヒーローの有効！",
+                 null,
+                 null,
+                 null];
+
+    JP_STR[LStr.Disabled] = 
+                ["HUDを隠した！", 
+                 "統計を隠した！", 
+                 "キルストリークを隠した！", 
+                 "キルヒーリングの無効！",
+                 null,
+                 null,
+                 "ランダムヒーローの無効！",
+                 null,
+                 null,
+                 null];
+
+    JP_STR[LStr.Quotes] = ["「", "」"];
+
+    // JP_STR[LStr.HostItems] = 
+    //             ["デフォルトのプレイヤー言語", // 0
+    //              "Allow players to modify Workshop HUD", // 1
+    //              "Workshop HUD default toggle", // 2
+    //              "Kill Streaks default toggle", // 3
+    //              "Player Stats default toggle", // 4
+    //              "ALlow players to modify Heal On Kill", // 5
+    //              "Heal On Kill default toggle", // 6
+    //              "Heal On Kill default amount", // 7
+    //              "Heal On Kill default duration", // 8
+    //              "Allow players to modify Random Hero", // 9
+    //              "Random Hero default toggle" // 10
+    //              ];
+
+    // JP_STR[LStr.HostEnabled] = 
+    //             ["Default player language set to #", // 0
+    //              "Workshop HUD modification enabled", // 1
+    //              "Workshop HUD default set to enabled", // 2
+    //              "Kill Streaks default set to enabled", // 3
+    //              "Player Stats default set to enabled", // 4
+    //              "Heal On Kill modification enabled", // 5
+    //              "Heal On Kill default set to enabled", // 6
+    //              null, // 7
+    //              null, // 8
+    //              "Random Hero modification enabled", // 9
+    //              "Random Hero default set to enabled" // 10
+    //              ];
+
+    // JP_STR[LStr.HostDisabled] = 
+    //             [null, // 0
+    //              "Workshop HUD modification disabled", // 1
+    //              "Workshop HUD default set to disabled", // 2
+    //              "Kill Streaks default set to disabled", // 3
+    //              "Player Stats default set to disabled", // 4
+    //              "Heal On Kill modification disabled", // 5
+    //              "Heal On Kill default set to disabled", // 6
+    //              null, // 7
+    //              null, // 8
+    //              "Random Hero modification disabled", // 9
+    //              "Random Hero default set to disabled" // 10
+    //              ];
+}
