@@ -228,7 +228,7 @@ if (s_menu)
                             : local.lang_prog_str,
         Position:       RenderPosOf(0, local.item_pos[8]), 
         Scale:          1.25,
-        TextColor:      local.sel_item == Item.Language ? SelectedPulse() : Color.White,
+        TextColor:      Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -331,21 +331,23 @@ if (IsInteractHeld())
 playervar Boolean anim;
 playervar Boolean close_anim;
 Number anim_start: 2.15;
+Number anim_speed: 0.5;
 rule: "Menu : Open Animation"
 Event.OngoingPlayer
-if (menu && !close_anim)
+if (s_menu_anim)
+if (menu)
+if (!close_anim)
 {
     anim = true;
 
-    for (Number i = 0; i < ITEM_POS.Length; i++)
-        item_pos[i] = anim_start;
+    // for (Number i = 0; i < ITEM_POS.Length; i++)
+    //     item_pos[i] = anim_start;
 
     while (menu && anim)
     {
         for (Number i = 0; i < ITEM_POS.Length; i++)
         {
-            // if (item_pos[i] != ITEM_POS[i])
-            item_pos[i] += (ITEM_POS[i] - item_pos[i]) * 0.4;
+            item_pos[i] += (ITEM_POS[i] - item_pos[i]) * anim_speed;
 
             if (FilteredArray(item_pos, Curr() == ITEM_POS[i]).Length == ITEM_POS.Length)
             {
@@ -362,21 +364,18 @@ if (menu && !close_anim)
 
 rule: "Menu : Close Animation"
 Event.OngoingPlayer
+if (s_menu_anim)
 if (!menu)
 {
     WaitUntil(!anim, 1);
     close_anim = true;
     anim = true;
 
-    for (Number i = 0; i < ITEM_POS.Length; i++)
-        item_pos[i] = ITEM_POS[i];
-
     while (anim && close_anim)
     {
         for (Number i = 0; i < ITEM_POS.Length; i++)
         {
-            // if (item_pos[i] != anim_start)
-            item_pos[i] += (anim_start - item_pos[i]) * 0.4;
+            item_pos[i] += (anim_start - item_pos[i]) * anim_speed;
 
             if (FilteredArray(item_pos, Curr() >= anim_start - 0.025).Length == ITEM_POS.Length)
             {
@@ -568,7 +567,7 @@ rule: "Menu : Decrement Toggle Counter"
 Event.OngoingPlayer
 if (toggles > 0)
 {
-    WaitIfTrue(1);
+    Wait(1);
     toggles--;
     LoopIfConditionIsTrue();
 }
