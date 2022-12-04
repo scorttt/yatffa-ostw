@@ -17,8 +17,10 @@ globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
 globalvar Hero[] scope_crit_arr;
 globalvar Number s_match_time;
+globalvar Boolean s_destroy_railings;
 
 globalvar Boolean s_menu;
+globalvar Boolean s_menu_anim;
 globalvar Boolean s_def_hud;
 globalvar Boolean s_def_stats;
 globalvar Boolean s_def_streak;
@@ -85,8 +87,10 @@ rule: "Initial Global"
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
     s_score_win = WorkshopSettingToggle("Settings", "Enable Score Win Condition", true, 3);
+    s_destroy_railings = WorkshopSettingToggle("Settings", "Destroy Railings on Round Start", true, 4);
 
     s_menu = WorkshopSettingToggle("Menu", "Use Menu", true, 0);
+    s_menu_anim = WorkshopSettingToggle("Menu", "Menu Open/Close Animations", true, 0);
 
     s_hud = WorkshopSettingToggle("HUD", "Allow Modifying Workshop HUD toggle", true, 1);
     s_def_hud = WorkshopSettingToggle("HUD", "Show Workshop HUD", true, 2);
@@ -285,28 +289,31 @@ if (IsDead())
 globalvar Player bot;
 
 rule: "Bot : Create Bot to Destroy Railings, this is ugly and stupid"
+if (s_destroy_railings)
 if (IsGameInProgress())
 if (all.Length < 12)
 {
     bot_loc = [VectorZero(),
-               Vector(168.67, 9.00,  64.65),
-               Vector(173.40, 12.01, 57.62),
-               Vector(181.38, 10.00, 57.89),
-               Vector(185.10, 8.00,  73.51),
-               Vector(215.74, 13.98, 45.41),
-               Vector(218.19, 13.98, 53.51),
-               Vector(216.68, 16.00, 61.58),
-               Vector(229.02, 14.29, 67.35),
-               Vector(224.24, 10.55, 76.55),
-               Vector(219.20, 10.00, 80.37),
-               Vector(200.37, 11.00, 80.98),
-               Vector(179.51, 8.00,  90.74),
-               Vector(172.81, 7.97,  81.15),
-               Vector(203.67, 10.00, 110.78),
-               Vector(224.47, 7.00,  113.47),
-               Vector(233.25, 6.00,  108.16),
-               Vector(238.16, 4.16,  98.27),
-               Vector(233.52, 4.00,  89.21)];
+               Vector(168.67, 11.00,  64.65),
+               Vector(173.40, 14.01, 57.62),
+               Vector(181.38, 12.00, 57.89),
+               Vector(185.10, 10.00, 73.51),
+               Vector(193.76, 5.00,  76.36),
+               Vector(210.41, 4.00,  71.35),
+               Vector(215.74, 15.98, 45.41),
+               Vector(218.19, 15.98, 53.51),
+               Vector(216.68, 18.00, 61.58),
+               Vector(229.02, 16.29, 67.35),
+               Vector(224.24, 12.55, 76.55),
+               Vector(219.20, 12.00, 80.37),
+               Vector(200.37, 13.00, 80.98),
+               Vector(179.51, 10.00, 90.74),
+               Vector(172.81, 9.97,  81.15),
+               Vector(203.67, 12.00, 110.78),
+               Vector(224.47, 9.00,  113.47),
+               Vector(233.25, 8.00,  108.16),
+               Vector(238.16, 6.16,  98.27),
+               Vector(233.52, 6.00,  89.21)];
 
     Wait(0.25);
 
@@ -328,7 +335,7 @@ if (all.Length < 12)
         SetFacing(bot, Down());
         SetAbilityCooldown(bot, Button.Ability2, 0);
         PressButton(bot, Button.Ability2);
-        Wait(0.165);
+        Wait(0.176);
         CancelPrimaryAction(bot);
     }
 
