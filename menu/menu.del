@@ -1,5 +1,9 @@
 import "../main.del";
 import "options.del";
+
+globalvar Number[] ITEM_DEST;
+playervar Number[] item_pos;
+
 globalvar Number[] excl_fav;
 playervar Number sel_item;
 playervar Number fav_item;
@@ -53,13 +57,25 @@ if (s_menu)
     // excluded options from favoriting
     excl_fav = [Item.HOKMod, Item.HOKDurMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
+    ITEM_DEST = [1.62,
+                 1.52,
+                 1.42, 
+                 1.32,
+                 1.145,
+                 1.045,
+                 0.945,
+                 0.745,
+                 0.57,
+                 0.47
+                 ];
+
     // frame top
     CreateInWorldText(
         VisibleTo:    local.menu ? local : null,
         Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
                       local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
-        Position:     RenderPosOf(0, 1.62), 
+        Position:     RenderPosOf(0, local.item_pos[0]), 
         Scale:        1.35,
         Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:     Clipping.DoNotClip,
@@ -76,7 +92,7 @@ if (s_menu)
                                                     : IconString(Icon.No), 
                                             local.lang_str[LStr.Items][Item.AllHUD],
                                             local.fav_item == Item.AllHUD ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 1.52), 
+        Position:       RenderPosOf(0, local.item_pos[1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.AllHUD 
                             ? SelectedPulse() 
@@ -96,7 +112,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Stats],
                                     local.fav_item == Item.Stats ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 1.42), 
+        Position:       RenderPosOf(0, local.item_pos[2]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Stats 
                             ? SelectedPulse() 
@@ -113,7 +129,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Streak],
                                     local.fav_item == Item.Streak ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 1.32), 
+        Position:       RenderPosOf(0, local.item_pos[3]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Streak 
                             ? SelectedPulse() 
@@ -132,7 +148,7 @@ if (s_menu)
         Header:         <"<0>   <1> ▼<2>", local.hok ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.HOK],
                                     local.fav_item == Item.HOK ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 1.145), 
+        Position:       RenderPosOf(0, local.item_pos[4]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOK
                             ? SelectedPulse() 
@@ -154,7 +170,7 @@ if (s_menu)
                             : local.HOK_amt <= 1 
                                 ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5") + "%"
                                 : local.lang_str[LStr.Misc][6],
-        Position:       RenderPosOf(0, 1.045), 
+        Position:       RenderPosOf(0, local.item_pos[5]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
                             ? SelectedPulse() 
@@ -174,7 +190,7 @@ if (s_menu)
                             : local.HOK_dur >= 1 
                                 ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
                                 : local.lang_str[LStr.Misc][7],
-        Position:       RenderPosOf(0, 0.945), 
+        Position:       RenderPosOf(0, local.item_pos[6]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKDurMod 
                             ? SelectedPulse() 
@@ -191,7 +207,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Random],
                                     local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, 0.745), 
+        Position:       RenderPosOf(0, local.item_pos[7]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
                             ? SelectedPulse() 
@@ -210,7 +226,7 @@ if (s_menu)
         Header:         local.lang_prog_str == "" 
                             ? <"<0> ▼", local.lang_str[LStr.Items][Item.Language]> 
                             : local.lang_prog_str,
-        Position:       RenderPosOf(0, 0.57), 
+        Position:       RenderPosOf(0, local.item_pos[8]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Language ? SelectedPulse() : Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -219,7 +235,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         "English",
-        Position:       RenderPosOf(-0.15, 0.47), 
+        Position:       RenderPosOf(-0.15, local.item_pos[9]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.EN 
                             ? SelectedPulse() 
@@ -234,7 +250,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         "日本語",
-        Position:       RenderPosOf(0.15, 0.47), 
+        Position:       RenderPosOf(0.15, local.item_pos[9]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.JP 
                             ? SelectedPulse() 
@@ -247,7 +263,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
-    // easter egg
+    // jp easter egg
     CreateInWorldText(
         VisibleTo:      local.menu && local.language == Lang.JP ? local : null, 
         Header:         "自転車乗る人は「セクス」と言います",
@@ -304,6 +320,34 @@ if (IsInteractHeld())
     AllowButton(player, Button.SecondaryFire);
 
     Wait(0.1);
+}
+
+playervar Boolean anim;
+rule: "Menu : Open Animation"
+Event.OngoingPlayer
+if (menu)
+{
+    anim = true;
+
+    for (Number i = 0; i < ITEM_DEST.Length; i++)
+        item_pos[i] = 2.1;
+
+    while (menu && anim)
+    {
+        for (Number i = 0; i < ITEM_DEST.Length; i++)
+        {
+            if (item_pos[i] != ITEM_DEST[i])
+                item_pos[i] += (ITEM_DEST[i] - item_pos[i]) * 0.3;
+
+            if (IsTrueForAll(item_pos, item_pos[i] == ITEM_DEST[i]))
+            {
+                anim = false;
+                break;
+            }
+        }
+
+        Wait(0.032);
+    }
 }
 
 rule: "Menu : Get Hovered Item"
@@ -431,7 +475,7 @@ if (IsButtonHeld(player, Button.Interact))
     interact_taps++;
 }
 
-rule: "Menu: Reset Taps"
+rule: "Menu : Reset Interact Taps"
 Event.OngoingPlayer
 if (fav_item != Item.Invalid)
 if (!IsButtonHeld(player, Button.Interact))
@@ -459,6 +503,7 @@ Event.OngoingPlayer
 if (!menu)
 if (toggles < MAX_TOGGLES)
 if (interact_taps == 2)
+if (fav_item != -1)
 {
     WaitUntil(!IsReloadHeld(), 99999);
 
