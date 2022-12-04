@@ -31,7 +31,8 @@ if (player == host || dbg_usrs.Contains(<"<0>", player>))
     {
         CreateHudText(player, null, <" \nPos: <0>", PositionOf()>, null, Location.Right, 0.5);
         CreateHudText(player, null, <"Facing: <0>", FacingDirectionOf()>, null, Location.Right, 0.6);
-        CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, null, Location.Right, 0.7);
+        CreateHudText(player, null, <"RC: <0>", RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false)>, null, Location.Right, 0.6);
+        CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\ntgls: <4>", CursorX(), CursorY(), sel_item, fav_item, toggles>, null, Location.Right, 0.8);
     }
 }
 
@@ -93,4 +94,10 @@ if (player == host || dbg_usrs.Contains(<"<0>", player>))
 // Event.OngoingPlayer
 // {
 //     CreateEffect(player, Effect.Sphere, Color.White, Vector(177, 0, 51.5), 1);
+// }
+
+// rule: "ball"
+// Event.OngoingPlayer
+// {
+//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false), 8);
 // }
