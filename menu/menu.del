@@ -71,7 +71,7 @@ if (s_menu)
 
     // frame top
     CreateInWorldText(
-        VisibleTo:    local.menu ? local : null,
+        VisibleTo:    local.menu || local.close_anim ? local : null,
         Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
                       local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
@@ -84,7 +84,7 @@ if (s_menu)
 
     // contents
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         <"<0>   <1> ▼<2>", local.show_stats && local.show_streak 
                                                 ? IconString(Icon.Checkmark) 
                                                 : local.show_stats || local.show_streak && !(local.show_stats && local.show_streak) 
@@ -108,7 +108,7 @@ if (s_menu)
         Spectators:     Spectators.VisibleNever);
 
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         <"<0>   <1><2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Stats],
                                     local.fav_item == Item.Stats ? "  " + IconString(Icon.Heart) : "">,
@@ -125,7 +125,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         <"<0>   <1><2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Streak],
                                     local.fav_item == Item.Streak ? "  " + IconString(Icon.Heart) : "">,
@@ -144,7 +144,7 @@ if (s_menu)
 
 
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         <"<0>   <1> ▼<2>", local.hok ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.HOK],
                                     local.fav_item == Item.HOK ? "  " + IconString(Icon.Heart) : "">,
@@ -161,7 +161,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         local.sel_item == Item.HOKMod
                             ? <"<1>    -   <0>   +    <2>", local.HOK_amt <= 1 
                                                                 ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5")+ "%"
@@ -181,7 +181,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         local.sel_item == Item.HOKDurMod
                             ? <"<1>    -   <0>   +    <2>", local.HOK_dur >= 1
                                                                 ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
@@ -203,7 +203,7 @@ if (s_menu)
 
 
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Random],
                                     local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
@@ -222,7 +222,7 @@ if (s_menu)
 
 
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         local.lang_prog_str == "" 
                             ? <"<0> ▼", local.lang_str[LStr.Items][Item.Language]> 
                             : local.lang_prog_str,
@@ -233,7 +233,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         "English",
         Position:       RenderPosOf(-0.15, local.item_pos[9]), 
         Scale:          1.25,
@@ -248,7 +248,7 @@ if (s_menu)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
     CreateInWorldText(
-        VisibleTo:      local.menu ? local : null, 
+        VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         "日本語",
         Position:       RenderPosOf(0.15, local.item_pos[9]), 
         Scale:          1.25,
@@ -300,15 +300,20 @@ if (IsInteractHeld())
     cursor = LastTextID(); // store to destroy just in case theres performance issues when menu is not open
 
     menu = true;
+
     interact_taps = 0;
+    toggles++;
+
     facing = Facing();
     SetAimSpeed(player, 10);
     DisallowButton(player, Button.PrimaryFire);
     DisallowButton(player, Button.SecondaryFire);
+
     sel_item = Item.Invalid;
 
     WaitUntil(!IsInteractHeld() || IsDead(), 99999);
 
+    close_anim = true;
     menu = false;
     DestroyInWorldText(cursor);
     sel_item = Item.Invalid;
@@ -319,18 +324,21 @@ if (IsInteractHeld())
     AllowButton(player, Button.PrimaryFire);
     AllowButton(player, Button.SecondaryFire);
 
-    Wait(0.1);
+    WaitUntil(!close_anim && !anim, 1);
 }
 
 playervar Boolean anim;
+playervar Boolean close_anim;
+Number anim_start: 2.15;
 rule: "Menu : Open Animation"
 Event.OngoingPlayer
-if (menu)
+if (menu && !close_anim)
 {
+    close_anim = false;
     anim = true;
 
     for (Number i = 0; i < ITEM_DEST.Length; i++)
-        item_pos[i] = 2.1;
+        item_pos[i] = anim_start;
 
     while (menu && anim)
     {
@@ -339,7 +347,7 @@ if (menu)
             if (item_pos[i] != ITEM_DEST[i])
                 item_pos[i] += (ITEM_DEST[i] - item_pos[i]) * 0.3;
 
-            if (FilteredArray(item_pos, Curr() == ITEM_DEST[i]))
+            if (FilteredArray(item_pos, Curr() == ITEM_DEST[i]).Length == ITEM_DEST.Length)
             {
                 anim = false;
                 break;
@@ -348,6 +356,40 @@ if (menu)
 
         Wait(0.032);
     }
+
+    anim = false;
+}
+
+rule: "Menu : Close Animation"
+Event.OngoingPlayer
+if (!menu)
+{
+    WaitUntil(!anim, 1);
+    close_anim = true;
+    anim = true;
+
+    for (Number i = 0; i < ITEM_DEST.Length; i++)
+        item_pos[i] = ITEM_DEST[i];
+
+    while (anim && close_anim)
+    {
+        for (Number i = 0; i < ITEM_DEST.Length; i++)
+        {
+            if (item_pos[i] != anim_start)
+                item_pos[i] += (anim_start - item_pos[i]) * 0.3;
+
+            if (FilteredArray(item_pos, Curr() >= anim_start - 0.05).Length == ITEM_DEST.Length)
+            {
+                anim = false;
+                break;
+            }
+        }
+
+        Wait(0.032);
+    }
+
+    anim = false;
+    close_anim = false;
 }
 
 rule: "Menu : Get Hovered Item"
