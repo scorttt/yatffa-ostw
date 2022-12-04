@@ -36,7 +36,7 @@ if (s_hot_interrupt)
 if (healing)
 if (IsAlive())
 if (IsAlive(Attacker()))
-if (EventDamage() >= 2) // minimum damage to stop hot
+if (EventDamage() >= s_hot_mindamage) // minimum damage to stop hot
 {
     StopHealOverTime(hot);
     healing = false;
