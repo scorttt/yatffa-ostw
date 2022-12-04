@@ -1,7 +1,7 @@
 import "../main.del";
 import "options.del";
 
-globalvar Number[] ITEM_DEST;
+globalvar Number[] ITEM_POS;
 playervar Number[] item_pos;
 
 globalvar Number[] excl_fav;
@@ -57,17 +57,17 @@ if (s_menu)
     // excluded options from favoriting
     excl_fav = [Item.HOKMod, Item.HOKDurMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
-    ITEM_DEST = [1.62,
-                 1.52,
-                 1.42, 
-                 1.32,
-                 1.145,
-                 1.045,
-                 0.945,
-                 0.745,
-                 0.57,
-                 0.47
-                 ];
+    ITEM_POS = [1.62,
+                1.52,
+                1.42, 
+                1.32,
+                1.145,
+                1.045,
+                0.945,
+                0.745,
+                0.57,
+                0.47
+                ];
 
     // frame top
     CreateInWorldText(
@@ -282,6 +282,7 @@ if (s_menu)
 rule: "Menu : Open/Close"
 Event.OngoingPlayer
 if (s_menu)
+if (toggles < MAX_TOGGLES)
 if (IsAlive())
 if (IsInteractHeld())
 {
@@ -336,17 +337,17 @@ if (menu && !close_anim)
 {
     anim = true;
 
-    for (Number i = 0; i < ITEM_DEST.Length; i++)
+    for (Number i = 0; i < ITEM_POS.Length; i++)
         item_pos[i] = anim_start;
 
     while (menu && anim)
     {
-        for (Number i = 0; i < ITEM_DEST.Length; i++)
+        for (Number i = 0; i < ITEM_POS.Length; i++)
         {
-            if (item_pos[i] != ITEM_DEST[i])
-                item_pos[i] += (ITEM_DEST[i] - item_pos[i]) * 0.3;
+            // if (item_pos[i] != ITEM_POS[i])
+            item_pos[i] += (ITEM_POS[i] - item_pos[i]) * 0.4;
 
-            if (FilteredArray(item_pos, Curr() == ITEM_DEST[i]).Length == ITEM_DEST.Length)
+            if (FilteredArray(item_pos, Curr() == ITEM_POS[i]).Length == ITEM_POS.Length)
             {
                 anim = false;
                 break;
@@ -367,17 +368,17 @@ if (!menu)
     close_anim = true;
     anim = true;
 
-    for (Number i = 0; i < ITEM_DEST.Length; i++)
-        item_pos[i] = ITEM_DEST[i];
+    for (Number i = 0; i < ITEM_POS.Length; i++)
+        item_pos[i] = ITEM_POS[i];
 
     while (anim && close_anim)
     {
-        for (Number i = 0; i < ITEM_DEST.Length; i++)
+        for (Number i = 0; i < ITEM_POS.Length; i++)
         {
-            if (item_pos[i] != anim_start)
-                item_pos[i] += (anim_start - item_pos[i]) * 0.3;
+            // if (item_pos[i] != anim_start)
+            item_pos[i] += (anim_start - item_pos[i]) * 0.4;
 
-            if (FilteredArray(item_pos, Curr() >= anim_start - 0.025).Length == ITEM_DEST.Length)
+            if (FilteredArray(item_pos, Curr() >= anim_start - 0.025).Length == ITEM_POS.Length)
             {
                 anim = false;
                 break;
