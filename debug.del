@@ -99,5 +99,5 @@ if (player == host || dbg_usrs.Contains(<"<0>", player>))
 // rule: "ball"
 // Event.OngoingPlayer
 // {
-//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false), 8);
+//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false), 0.1);
 // }
