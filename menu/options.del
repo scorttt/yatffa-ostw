@@ -86,7 +86,7 @@ void ToggleHOK() playervar "Menu Option Sub : Toggle HOK"
     }
 }
 
-void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
+void ModifyHOK() playervar "Menu Option Sub : Modify HOK Amount"
 {
     if (!sec)
     {
@@ -104,7 +104,7 @@ void ModifyHOK() playervar "Menu Option Sub : Modify HOK"
     }
 }
 
-void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK"
+void ModifyHOKDur() playervar "Menu Option Sub : Modify HOK Duration"
 {
     if (!sec)
     {

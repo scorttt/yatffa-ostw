@@ -7,6 +7,7 @@ globalvar String[] EN_STR;
 
 rule: "Init English Strings"
 {
+    # translator: scort
     EN_STR[LStr.MenuStatus] = 
                 ["Hold * to open menu", // 0
                  "Release * to hide menu", // 1
@@ -137,6 +138,7 @@ rule: "Init English Strings"
 
 void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 {
+    # translator: scort
     lang_swap = true;
     language = Lang.EN;
     for (Number i = 0; i < EN_STR.Length; i++)

@@ -53,7 +53,7 @@ rule: "Global Hud Text"
         VisibleTo:      local.afk ? local : null, 
         Header:         "AFK",
         Position:       RenderPosOf(0, 0.2), 
-        Scale:          3,
+        Scale:          5,
         TextColor:      AFKPulse(),
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
@@ -215,7 +215,7 @@ if (Attacker() != Victim())
         streak = true;
 }
 
-rule: "PLayer died, Reset Kills"
+rule: "Player died, Reset Kills"
 Event.OnDeath
 {
     # disable interact until respawn to prevent instances like destroying Torb turret while trying to force a respawn

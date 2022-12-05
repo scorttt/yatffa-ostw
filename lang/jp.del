@@ -7,6 +7,7 @@ globalvar String[] JP_STR;
 
 rule: "Init Japanese Strings"
 {
+    # translator: saruyo
     JP_STR[LStr.MenuStatus] = 
                 ["*を押す続けるメニュー開く", // 0
                  "*を放すメニューを非表示する", // 1
@@ -135,6 +136,7 @@ rule: "Init Japanese Strings"
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
+    # translator: saruyo
     lang_swap = true;
     language = Lang.JP;
     for (Number i = 0; i < JP_STR.Length; i++)
