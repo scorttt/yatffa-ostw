@@ -33,6 +33,7 @@ if (player == host || dbg_usrs.Contains(<"<0>", player>))
         CreateHudText(player, null, <"Facing: <0>", FacingDirectionOf()>, null, Location.Right, 0.6);
         CreateHudText(player, null, <"RC: <0>", RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false)>, null, Location.Right, 0.6);
         CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>", CursorX(), CursorY(), sel_item, fav_item>, null, Location.Right, 0.8);
+        CreateHudText(player, null, <"anim: <0>\nclose_anim: <1>", anim, close_anim>, null, Location.Right, 0.9);
     }
 }
 
