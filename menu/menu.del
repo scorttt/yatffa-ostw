@@ -498,7 +498,8 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
     }
 
     async! SelectionHandler(sel_item);
-    Wait(0.5);
+    Wait(0.4);
+    LoopIfConditionIsTrue(); // loop to prevent players inputs from being eaten cuz otherwise it feels like shit
 }
 
 // bit clunky but it works
