@@ -293,8 +293,10 @@ globalvar Player bot;
 rule: "Bot : Create Bot to Destroy Railings, this is ugly and stupid"
 if (s_destroy_railings)
 if (IsGameInProgress())
-if (all.Length < 12)
 {
+    if (all.Length == 12)
+        WaitUntil(all.Length < 12, 99999);
+
     bot_loc = [VectorZero(),
                Vector(168.67, 11.00,  64.65),
                Vector(173.40, 14.01, 57.62),
