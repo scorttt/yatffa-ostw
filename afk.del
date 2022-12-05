@@ -1,0 +1,86 @@
+import "main.del";
+playervar Boolean afk;
+rule: "AFK : Not Spawned"
+Event.OngoingPlayer
+if (!HasSpawned())
+{
+    WaitIfTrue(30);
+    afk = true;
+}
+
+// ugly
+rule: "AFK : Spawned Player AFK"
+Event.OngoingPlayer
+if (HasSpawned())
+if (ThrottleOf() == VectorZero())
+if (!IsPrimaryHeld())
+if (!IsSecondaryHeld())
+if (!IsAbility1Held())
+if (!IsAbility2Held())
+if (!IsUltimateHeld())
+if (!IsInteractHeld())
+if (!IsMeleeHeld())
+if (!IsReloadHeld())
+if (!IsJumpHeld())
+if (!IsCrouchHeld())
+{
+    WaitIfTrue(30);
+    afk = true;
+}
+
+rule: "AFK : Player Returns"
+Event.OngoingPlayer
+if (afk)
+if (ThrottleOf() != VectorZero() 
+ || IsPrimaryHeld()
+ || IsSecondaryHeld()
+ || IsAbility1Held()
+ || IsAbility2Held()
+ || IsInteractHeld()
+ || IsMeleeHeld()
+ || IsReloadHeld()
+ || IsJumpHeld() 
+ || IsCrouchHeld())
+{
+    afk = false;
+}
+
+rule: "AFK : Set AFK properties and kick"
+Event.OngoingPlayer
+if (afk)
+{
+    DisallowButton(player, Button.PrimaryFire);
+    DisallowButton(player, Button.SecondaryFire);
+    DisallowButton(player, Button.Ability1);
+    DisallowButton(player, Button.Ability2);
+    DisallowButton(player, Button.Ultimate);
+
+    StartCamera(player, Update(EyePosition()), Update(EyePosition() + Facing()), 0);
+
+    SetInvisible(player, InvisibleTo.All);
+    SetStatus(player, null, Status.PhasedOut, 99999);
+
+    WaitIfTrue(270);
+
+    SmallMessage(all, <"   <0><1>", player, local.lang_str[LStr.Misc][0]>);
+    Wait(1);
+    RemovePlayer(player);
+}
+
+rule: "AFK : Remove AFK properties"
+Event.OngoingPlayer
+if (!afk)
+{
+    Respawn();
+
+    StopCamera(player);
+
+    AllowButton(player, Button.PrimaryFire);
+    AllowButton(player, Button.SecondaryFire);
+    AllowButton(player, Button.Ability1);
+    AllowButton(player, Button.Ability2);
+    AllowButton(player, Button.Ultimate);
+
+    SetInvisible(player, InvisibleTo.None);
+    ClearStatus(player, Status.PhasedOut);
+}

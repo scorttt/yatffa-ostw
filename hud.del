@@ -16,6 +16,8 @@ Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
                              250);
 
 Color HealthColor(): CustomColor(r, g, 0, 255);
+Color AFKPulse(): 
+    CustomColor(Oscillate(750, 0, 255), Oscillate(750, 153, 255), 255, 255);
 Number percentage: (NormalizedHealth() * 100);
 Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
 Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
@@ -44,6 +46,17 @@ rule: "Global Hud Text"
                                 : Color.White
                             : CustomColor(255, PingPong(500, 255), 0, 255), 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
+
+    // afk text
+    CreateInWorldText(
+        VisibleTo:      local.afk ? local : null, 
+        Header:         "AFK",
+        Position:       RenderPosOf(0, 0.2), 
+        Scale:          3,
+        TextColor:      AFKPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
     if (s_menu || s_def_hud)

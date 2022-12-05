@@ -2,6 +2,7 @@ import "settings.json";
 // import "jpsettings.json";
 import "../workshop-scripts/macros.del";
 
+import "afk.del";
 import "hok.del";
 import "hud.del";
 import "debug.del";
@@ -126,6 +127,7 @@ if (!IsDummyBot())
     fav_item = Item.Invalid;
     HOK_amt = s_heal;
     HOK_dur = s_hot_time;
+    afk = false;
 
     // todo: may need some optimization
     if (s_def_hud)
@@ -160,6 +162,7 @@ rule: "Player Spawned"
 Event.OngoingPlayer
 if (HasSpawned())
 {
+    afk = false;
     Wait(1);
     WaitUntil(!lang_swap, 1);
     SmallMessage(player, <"   <0><1>", local.lang_str[LStr.Misc][4], StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact))>);
@@ -178,16 +181,6 @@ if (HasSpawned())
 //     }
 // }
 
-rule: "Kick players who havent selected a hero"
-Event.OngoingPlayer
-if (!HasSpawned())
-{
-    # 5 minutes
-    WaitIfTrue(300);
-    SmallMessage(all, <"   <0><1>", player, local.lang_str[LStr.Misc][0]>);
-    Wait(1);
-    RemovePlayer(player);
-}
 
 rule: "Match Started"
 if (IsGameInProgress())
@@ -274,7 +267,7 @@ if (IsAlive())
     SetAbilityCooldown(player, Button.SecondaryFire, 0);
 }
 
-rule: "Spawning : Remove Chateau \"Dock/Pier\" Spawn"
+rule: "Spawning : Remove Chateau Pier Spawn"
 Event.OngoingPlayer
 if (check_spawn)
 if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))

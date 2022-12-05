@@ -43,7 +43,7 @@ rule: "Init English Strings"
                  ];
 
     EN_STR[LStr.Misc] = 
-                [" was kicked for not selecting a hero after 5 minutes", // 0
+                [" was kicked after 5 minutes of inactivity", // 0
                  "Navigate: Aim", // 1
                  "Select: ", // 2
                  "Favorite: ", // 3
