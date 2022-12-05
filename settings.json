@@ -26,6 +26,7 @@
         "Bastion",
         "Doomfist",
         "Genji",
+        "Ramattra",
         "Hanzo",
         "Junker Queen",
         "Orisa",
@@ -105,6 +106,12 @@
       },
       "Genji": {
         "Ultimate Ability (Dragonblade)": false
+      },
+      "Ramattra" : {
+        "Health": 66.6666,
+        "Ultimate Ability (Annihilation)": false,
+        "Void Barrier": false,
+        "Ravenous Vortex": false
       },
       "Sombra": {
         "Hack": false,
