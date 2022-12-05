@@ -341,8 +341,8 @@ if (!close_anim)
 {
     anim = true;
 
-    // for (Number i = 0; i < ITEM_POS.Length; i++)
-    //     item_pos[i] = anim_start;
+    for (Number i = 0; i < ITEM_POS.Length; i++)
+        item_pos[i] = anim_start;
 
     while (menu && anim)
     {
@@ -350,7 +350,7 @@ if (!close_anim)
         {
             item_pos[i] += (ITEM_POS[i] - item_pos[i]) * anim_speed;
 
-            if (FilteredArray(item_pos, Curr() == ITEM_POS[i]).Length == ITEM_POS.Length)
+            if (item_pos[i] == ITEM_POS[i])
             {
                 anim = false;
                 break;
@@ -378,7 +378,7 @@ if (!menu)
         {
             item_pos[i] += (anim_start - item_pos[i]) * anim_speed;
 
-            if (FilteredArray(item_pos, Curr() >= anim_start - 0.025).Length == ITEM_POS.Length)
+            if (item_pos[i] >= anim_start - 0.025)
             {
                 anim = false;
                 break;
