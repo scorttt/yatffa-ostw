@@ -9,6 +9,9 @@ Workshop Tryhard FFA mode inspired by the balance of old Tryhard FFA lobbies hos
     - Heal on Kill duration
     - Randomized Heroes
     - Language switching
+        - English
+        - Japanese
+        - Spanish (MX) (eventually)
 - Heal on Kill
     - Taking damage interrupts the healing
 - Kill streaks
