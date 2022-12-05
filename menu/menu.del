@@ -341,16 +341,13 @@ if (!close_anim)
 {
     anim = true;
 
-    for (Number i = 0; i < ITEM_POS.Length; i++)
-        item_pos[i] = anim_start;
-
     while (menu && anim)
     {
         for (Number i = 0; i < ITEM_POS.Length; i++)
         {
             item_pos[i] += (ITEM_POS[i] - item_pos[i]) * anim_speed;
 
-            if (item_pos[i] == ITEM_POS[i])
+            if (item_pos.Last <= ITEM_POS.Last + 0.01)
             {
                 anim = false;
                 break;
@@ -378,7 +375,7 @@ if (!menu)
         {
             item_pos[i] += (anim_start - item_pos[i]) * anim_speed;
 
-            if (item_pos[i] >= anim_start - 0.025)
+            if (item_pos.Last >= anim_start - 0.01)
             {
                 anim = false;
                 break;
