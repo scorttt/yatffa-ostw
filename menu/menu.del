@@ -10,7 +10,6 @@ playervar Number fav_item;
 playervar Boolean menu;
 playervar Any cursor;
 playervar Vector facing;
-playervar Number toggles;
 
 enum Item
 {
@@ -49,7 +48,6 @@ Number SCREEN_HEIGHT:  2.125;
 
 Number SELECTION_AREA_WIDTH:  0.65;
 
-Number MAX_TOGGLES: 5;
 
 rule: "Menu : Create Menu Options : Welcome to Hell"
 if (s_menu)
@@ -282,7 +280,6 @@ if (s_menu)
 rule: "Menu : Open/Close"
 Event.OngoingPlayer
 if (s_menu)
-if (toggles < MAX_TOGGLES)
 if (IsAlive())
 if (IsInteractHeld())
 {
@@ -292,7 +289,7 @@ if (IsInteractHeld())
     CreateInWorldText(
         VisibleTo:      player,
         Header:         "↖",
-        Position:       RenderPosOf(CursorX() + 0.05, CursorY() - 0.105),
+        Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
         TextColor:      sel_item == Item.Invalid ? Rainbow() : SelectedPulse(),
         Scale:          3,
         Clipping:       Clipping.DoNotClip,
@@ -303,7 +300,6 @@ if (IsInteractHeld())
     menu = true;
 
     interact_taps = 0;
-    toggles++;
 
     facing = Facing();
     SetAimSpeed(player, 10);
@@ -314,7 +310,9 @@ if (IsInteractHeld())
 
     WaitUntil(!IsInteractHeld() || IsDead(), 99999);
 
-    close_anim = true;
+    if (s_menu_anim)
+        close_anim = true;
+
     menu = false;
     DestroyInWorldText(cursor);
     sel_item = Item.Invalid;
@@ -325,7 +323,10 @@ if (IsInteractHeld())
     AllowButton(player, Button.PrimaryFire);
     AllowButton(player, Button.SecondaryFire);
 
-    WaitUntil(!close_anim && !anim, 1);
+    if (s_menu_anim)
+        WaitUntil(!close_anim && !anim, 1);
+    else 
+        Wait(0.1);
 }
 
 playervar Boolean anim;
@@ -476,8 +477,6 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             LogToInspector(<"<0> set language to Japanese", player>);
             break;
     }
-
-    Wait(0.1);
 }
 
 playervar Boolean sec;
@@ -485,13 +484,11 @@ rule: "Menu : Select Hovered Item"
 Event.OngoingPlayer
 if (menu)
 if (sel_item != Item.Invalid)
-if (toggles < MAX_TOGGLES)
 if (IsPrimaryHeld() || IsSecondaryHeld())
 {
     if ((sel_item != Item.HOKMod) && (sel_item != Item.HOKDurMod))
     {
         WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
-        toggles++;
     }
     else 
     {
@@ -499,11 +496,12 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
         {
             sec = IsSecondaryHeld();
             async! SelectionHandler(sel_item);
-            WaitIfTrue(0.225);
+            WaitIfTrue(0.25);
         }
     }
 
     async! SelectionHandler(sel_item);
+    Wait(0.5);
 }
 
 // bit clunky but it works
@@ -528,13 +526,11 @@ if (!IsButtonHeld(player, Button.Interact))
 rule: "Menu : Favorite Item"
 Event.OngoingPlayer
 if (menu)
-if (toggles < MAX_TOGGLES)
 if (IsReloadHeld())
 if (!excl_fav.Contains(sel_item))
 {
     WaitUntil(!IsReloadHeld(), 99999);
 
-    toggles++;
     fav_item = sel_item == fav_item ? Item.Invalid : sel_item;
     Wait(0.1);
 }
@@ -542,7 +538,6 @@ if (!excl_fav.Contains(sel_item))
 rule: "Menu : Favorite Toggle"
 Event.OngoingPlayer
 if (!menu)
-if (toggles < MAX_TOGGLES)
 if (interact_taps == 2)
 if (fav_item != -1)
 {
@@ -560,14 +555,5 @@ if (Abs(CursorX(player)) > SCREEN_WIDTH || Abs(CursorY(player)) > SCREEN_HEIGHT)
     SetFacing(Direction: facing);
 
     MinWait();
-    LoopIfConditionIsTrue();
-}
-
-rule: "Menu : Decrement Toggle Counter"
-Event.OngoingPlayer
-if (toggles > 0)
-{
-    Wait(1);
-    toggles--;
     LoopIfConditionIsTrue();
 }
