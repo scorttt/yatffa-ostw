@@ -90,48 +90,6 @@ rule: "Init Japanese Strings"
                  null];
 
     JP_STR[LStr.Quotes] = ["「", "」"];
-
-    // JP_STR[LStr.HItems] = 
-    //             ["デフォルトのプレイヤー言語", // 0
-    //              "Allow Workshop HUD modification", // 1
-    //              "Workshop HUD default toggle", // 2
-    //              "Kill Streaks default toggle", // 3
-    //              "Player Stats default toggle", // 4
-    //              "Allow Heal On Kill modification", // 5
-    //              "Heal On Kill default toggle", // 6
-    //              "Heal On Kill default amount", // 7
-    //              "Heal On Kill default duration", // 8
-    //              "Allow Random Hero modification", // 9
-    //              "Random Hero default toggle" // 10
-    //              ];
-
-    // JP_STR[LStr.HEnabled] = 
-    //             ["Default player language set to #", // 0
-    //              "Workshop HUD modification enabled", // 1
-    //              "Workshop HUD default set to shown", // 2
-    //              "Kill Streaks default set to shown", // 3
-    //              "Player Stats default set to shown", // 4
-    //              "Heal On Kill modification enabled", // 5
-    //              "Heal On Kill default set to enabled", // 6
-    //              null, // 7
-    //              null, // 8
-    //              "Random Hero modification enabled", // 9
-    //              "Random Hero default set to enabled" // 10
-    //              ];
-
-    // JP_STR[LStr.HDisabled] = 
-    //             [null, // 0
-    //              "Workshop HUD modification disabled", // 1
-    //              "Workshop HUD default set to hidden", // 2
-    //              "Kill Streaks default set to hidden", // 3
-    //              "Player Stats default set to hidden", // 4
-    //              "Heal On Kill modification disabled", // 5
-    //              "Heal On Kill default set to disabled", // 6
-    //              null, // 7
-    //              null, // 8
-    //              "Random Hero modification disabled", // 9
-    //              "Random Hero default set to disabled" // 10
-    //              ];
 }
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
