@@ -285,7 +285,6 @@ if (IsDead())
 }
 
 globalvar Player bot;
-
 rule: "Bot : Create Bot to Destroy Railings, this is ugly and stupid"
 if (s_destroy_railings)
 if (IsGameInProgress())

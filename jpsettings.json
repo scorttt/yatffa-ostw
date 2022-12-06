@@ -101,8 +101,10 @@
       },
       "Orisa": {
         "Health": 54.5454,
-        "Energy Javelin Cooldown Time": 83.3333,
-        "Ultimate Ability (Terra Surge)": false
+        "Ultimate Ability (Terra Surge)": false,
+        "Energy Javelin Cooldown Time": 50,
+        "Fortify": false,
+        "Javelin Spin": false
       },
       "Genji": {
         "Ultimate Ability (Dragonblade)": false
@@ -110,7 +112,7 @@
       "Ramattra" : {
         "Health": 66.6666,
         "Ultimate Ability (Annihilation)": false,
-        "Void Barrier": false,
+        "Void Barrier Omnic Form": false,
         "Ravenous Vortex": false
       },
       "Sombra": {
