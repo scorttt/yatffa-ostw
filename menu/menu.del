@@ -1,8 +1,8 @@
 import "../main.del";
 import "options.del";
 
-globalvar Number[] ITEM_POS;
-playervar Number[] item_pos;
+globalvar Number[] ITEM_Y_POS;
+playervar Number[] item_y_pos;
 
 globalvar Number[] excl_fav;
 playervar Number sel_item;
@@ -55,16 +55,16 @@ if (s_menu)
     // excluded options from favoriting
     excl_fav = [Item.HOKMod, Item.HOKDurMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
-    ITEM_POS = [1.62,
-                1.52,
-                1.42, 
-                1.32,
-                1.145,
-                1.045,
-                0.945,
-                0.745,
-                0.57,
-                0.47
+    ITEM_Y_POS = [1.62,
+                1.50,
+                1.40, 
+                1.30,
+                1.125,
+                1.025,
+                0.925,
+                0.725,
+                0.525,
+                0.425
                 ];
 
     // frame top
@@ -73,7 +73,7 @@ if (s_menu)
         Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
                       local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
-        Position:     RenderPosOf(0, local.item_pos[0]), 
+        Position:     RenderPosOf(0, local.item_y_pos[0]), 
         Scale:        1.35,
         Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:     Clipping.DoNotClip,
@@ -90,7 +90,7 @@ if (s_menu)
                                                     : IconString(Icon.No), 
                                             local.lang_str[LStr.Items][Item.AllHUD],
                                             local.fav_item == Item.AllHUD ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, local.item_pos[1]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.AllHUD + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.AllHUD 
                             ? SelectedPulse() 
@@ -110,7 +110,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.show_stats ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Stats],
                                     local.fav_item == Item.Stats ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, local.item_pos[2]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.Stats + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Stats 
                             ? SelectedPulse() 
@@ -127,7 +127,7 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.show_streak ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Streak],
                                     local.fav_item == Item.Streak ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, local.item_pos[3]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.Streak + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Streak 
                             ? SelectedPulse() 
@@ -146,7 +146,7 @@ if (s_menu)
         Header:         <"<0>   <1> ▼<2>", local.hok ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.HOK],
                                     local.fav_item == Item.HOK ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, local.item_pos[4]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.HOK + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOK
                             ? SelectedPulse() 
@@ -167,8 +167,8 @@ if (s_menu)
                                                             BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
                             : local.HOK_amt <= 1 
                                 ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5") + "%"
-                                : local.lang_str[LStr.Misc][6],
-        Position:       RenderPosOf(0, local.item_pos[5]), 
+                                : local.lang_str[LStr.Misc][Item.HOKMod],
+        Position:       RenderPosOf(0, local.item_y_pos[Item.HOKMod + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
                             ? SelectedPulse() 
@@ -187,8 +187,8 @@ if (s_menu)
                                                             BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
                             : local.HOK_dur >= 1 
                                 ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
-                                : local.lang_str[LStr.Misc][7],
-        Position:       RenderPosOf(0, local.item_pos[6]), 
+                                : local.lang_str[LStr.Misc][Item.HOKDurMod],
+        Position:       RenderPosOf(0, local.item_y_pos[Item.HOKDurMod + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKDurMod 
                             ? SelectedPulse() 
@@ -205,11 +205,11 @@ if (s_menu)
         Header:         <"<0>   <1><2>", local.random_hero ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     local.lang_str[LStr.Items][Item.Random],
                                     local.fav_item == Item.Random ? "  " + IconString(Icon.Heart) : "">,
-        Position:       RenderPosOf(0, local.item_pos[7]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.Random + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.Random 
                             ? SelectedPulse() 
-                            : s_hok
+                            : s_random
                                 ? local.random_hero 
                                     ? Color.Green
                                     : CustomColor(255, 0, 0, 255)
@@ -224,7 +224,7 @@ if (s_menu)
         Header:         local.lang_prog_str == "" 
                             ? <"<0> ▼", local.lang_str[LStr.Items][Item.Language]> 
                             : local.lang_prog_str,
-        Position:       RenderPosOf(0, local.item_pos[8]), 
+        Position:       RenderPosOf(0, local.item_y_pos[Item.Language + 1]), 
         Scale:          1.25,
         TextColor:      Color.White,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
@@ -233,7 +233,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         "English",
-        Position:       RenderPosOf(-0.15, local.item_pos[9]), 
+        Position:       RenderPosOf(-0.15, local.item_y_pos[Item.EN + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.EN 
                             ? SelectedPulse() 
@@ -248,7 +248,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         "日本語",
-        Position:       RenderPosOf(0.15, local.item_pos[9]), 
+        Position:       RenderPosOf(0.15, local.item_y_pos[Item.EN + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.JP 
                             ? SelectedPulse() 
@@ -343,11 +343,11 @@ if (!close_anim)
 
     while (menu && anim)
     {
-        for (Number i = 0; i < ITEM_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
-            item_pos[i] += (ITEM_POS[i] - item_pos[i]) * anim_speed;
+            item_y_pos[i] += (ITEM_Y_POS[i] - item_y_pos[i]) * anim_speed;
 
-            if (item_pos.Last <= ITEM_POS.Last + 0.01)
+            if (item_y_pos.Last <= ITEM_Y_POS.Last + 0.01)
             {
                 anim = false;
                 break;
@@ -371,11 +371,11 @@ if (!menu)
 
     while (anim && close_anim)
     {
-        for (Number i = 0; i < ITEM_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
-            item_pos[i] += (anim_start - item_pos[i]) * anim_speed;
+            item_y_pos[i] += (anim_start - item_y_pos[i]) * anim_speed;
 
-            if (item_pos.Last >= anim_start - 0.01)
+            if (item_y_pos.Last >= anim_start - 0.01)
             {
                 anim = false;
                 break;
@@ -415,9 +415,9 @@ if (menu)
         else if (s_random && (Abs(X) < lang_x[Item.Random]) && Y < 0.825 && Y > 0.725)
             sel_item = Item.Random;
 
-        else if (language != Lang.EN && !lang_swap && (X > -0.30 && X < 0) && Y < 0.55 && Y > 0.47)
+        else if (language != Lang.EN && !lang_swap && (X > -0.30 && X < 0) && Y < 0.525 && Y > 0.425)
             sel_item = Item.EN;
-        else if (language != Lang.JP && !lang_swap && (X > 0 && X < 0.25) && Y < 0.55 && Y > 0.47)
+        else if (language != Lang.JP && !lang_swap && (X > 0 && X < 0.25) && Y < 0.525 && Y > 0.425)
             sel_item = Item.JP;
 
         else if (language == Lang.JP && Y < -1.90 && Y > -2.00)
@@ -498,7 +498,7 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
     }
 
     async! SelectionHandler(sel_item);
-    Wait(0.4);
+    Wait(0.35);
     LoopIfConditionIsTrue(); // loop to prevent players inputs from being eaten cuz otherwise it feels like shit
 }
 

@@ -13,7 +13,6 @@ import "lang/en.del";
 import "lang/jp.del";
 import "lang/es.del";
 
-
 globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
 globalvar Hero[] scope_crit_arr;
@@ -58,10 +57,7 @@ enum LStr
     Items, // 5
     Enabled, // 6
     Disabled, // 7
-    Quotes, // 8
-    HItems, // 9 
-    HEnabled, // 10
-    HDisabled // 11
+    Quotes // 8
 }
 enum Lang
 {
@@ -150,9 +146,9 @@ if (!IsDummyBot())
 
     if (!s_menu_anim)
     {
-        for (Number i = 0; i < ITEM_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
-            item_pos[i] = ITEM_POS[i];
+            item_y_pos[i] = ITEM_Y_POS[i];
             Wait(0.2);
         }
     }
