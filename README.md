@@ -1,7 +1,7 @@
 # Yet Another Tryhard FFA
-Workshop Tryhard FFA mode inspired by the balance of old Tryhard FFA lobbies hosted by Immanust in 2019/2020
+Tryhard FFA built on [OSTW](https://github.com/ItsDeltin/Overwatch-Script-To-Workshop) inspired by the balance of old Tryhard FFA lobbies hosted by Immanust in 2019/2020
 
-I am looking for translators for other languages! If interested, message me on discord scort#9899
+I am looking for translators for other languages! If interested, message me on discord: `scort#9899`
 
 ### Known issues
 - Strings will show as 0 or multiple 0's for spectators and anyone viewing POTGs, kill cams or replay viewer; this is a side effect of having every string custom localized. Since spectators and viewers of a replay will never have playervars, they will never be initialized and will show incorrectly
@@ -19,7 +19,7 @@ I am looking for translators for other languages! If interested, message me on d
         - Japanese
         - Spanish (MX) (eventually)
 - Heal on Kill
-    - Taking damage interrupts the healing
+    - Taking damage interrupts healing
 - Kill streaks
 - Dynamic stats
 - Railings destroyed on round start
@@ -28,3 +28,4 @@ I am looking for translators for other languages! If interested, message me on d
 ## Import Codes
 - BKRXY (NA/EU)
 - 5RKYY (JP)
+
