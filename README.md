@@ -1,4 +1,4 @@
-# Yet Another Tryhard FFA
+# **Yet Another Tryhard FFA**
 Tryhard FFA built on [OSTW](https://github.com/ItsDeltin/Overwatch-Script-To-Workshop) inspired by the balance of old Tryhard FFA lobbies hosted by Immanust in 2019/2020
 
 I am looking for translators for other languages! If interested, message me on discord: `scort#9899`
