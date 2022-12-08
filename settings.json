@@ -149,11 +149,15 @@
         "Ultimate Ability (Kitsune Rush)": false,
         "Protection Suzu": false
       },
+      "Widowmaker": {
+        "Ultimate Ability (Infra-sight)" : false,
+        "Grappling Hook Cooldown Time": 50
+      },
       "Zenyatta": {
         "Ultimate Ability (Transcendence)": false
       }
     }
   },
   "Mode Name": "<FGFF00FFFF>Tryhard FFA (YATFFA)",
-  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\n2.2.0 | 12/06/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
+  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: <FGFF00FFFF>BKRXY</FG> (Use this code instead of saving a preset!)\nCreated by scort#11221\n2.2.0 | 12/08/2022\n<FG5BCFFAFF>Tr</FG><FGF5ABB9FF>an</FG><FGFEFEFEFF>s ri</FG><FGF5ABB9FF>gh</FG><FG5BCFFAFF>ts!</FG>"
 }

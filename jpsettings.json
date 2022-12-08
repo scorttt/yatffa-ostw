@@ -149,11 +149,15 @@
         "Ultimate Ability (Kitsune Rush)": false,
         "Protection Suzu": false
       },
+      "Widowmaker": {
+        "Ultimate Ability (Infra-sight)" : false,
+        "Grappling Hook Cooldown Time": 50
+      },
       "Zenyatta": {
         "Ultimate Ability (Transcendence)": false
       }
     }
   },
   "Mode Name": "<FGFF00FFFF>トライハードFFA",
-  "Description": "トライハードFFA\nコード：<FGFF00FFFF>5RKYY</FG>\n作者：scort#11221（僕は英語だけ分かる）\n2.2.0｜2022/12/06"
+  "Description": "トライハードFFA\nコード：<FGFF00FFFF>5RKYY</FG>\n作者：scort#11221（僕は英語だけ分かる）\n2.2.0｜2022/12/08"
 }
