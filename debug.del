@@ -100,5 +100,26 @@ if (player == host || dbg_usrs.Contains(<"<0>", player>))
 // rule: "ball"
 // Event.OngoingPlayer
 // {
-//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false), 0.1);
+//     DisableMovementCollisionWithEnvironment(player, false);
+//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false), 8);
+// }
+
+// globalvar Any effect;
+// globalvar Any txt;
+// rule: "place ball"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
+// {
+//     CreateEffect(player, Effect.Sphere, Color.White, Once(RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false)), 8);
+//     effect = LastCreatedEntity();
+//     CreateHudText(player, null, Once(RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, all, false) + Vector(0, 4, 0)), null, Location.Right, 0.99);
+//     txt = LastTextID();
+// }
+
+// rule: "remove previous ball"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
+// {
+//     DestroyEffect(effect);
+//     DestroyHudText(txt);
 // }
