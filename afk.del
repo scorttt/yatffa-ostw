@@ -1,31 +1,27 @@
 import "main.del";
 playervar Boolean afk;
-rule: "AFK : Not Spawned"
-Event.OngoingPlayer
-if (!HasSpawned())
-{
-    WaitIfTrue(30);
-    afk = true;
-}
 
+Number afk_time: 20;
+Number afk_kick_time: 280;
 // ugly
-rule: "AFK : Spawned Player AFK"
+rule: "AFK : Player AFK"
 Event.OngoingPlayer
 if (!IsDummyBot())
-if (HasSpawned())
-if (ThrottleOf() == VectorZero())
-if (!IsPrimaryHeld())
-if (!IsSecondaryHeld())
-if (!IsAbility1Held())
-if (!IsAbility2Held())
-if (!IsUltimateHeld())
-if (!IsInteractHeld())
-if (!IsMeleeHeld())
-if (!IsReloadHeld())
-if (!IsJumpHeld())
-if (!IsCrouchHeld())
+if (!HasSpawned() 
+|| (HasSpawned() 
+&&  ThrottleOf() == VectorZero()
+&& !IsPrimaryHeld()
+&& !IsSecondaryHeld()
+&& !IsAbility1Held()
+&& !IsAbility2Held()
+&& !IsUltimateHeld()
+&& !IsInteractHeld()
+&& !IsMeleeHeld()
+&& !IsReloadHeld()
+&& !IsJumpHeld()
+&& !IsCrouchHeld()))
 {
-    WaitIfTrue(30);
+    WaitIfTrue(afk_time);
     afk = true;
 }
 
@@ -33,15 +29,15 @@ rule: "AFK : Player Returns"
 Event.OngoingPlayer
 if (afk)
 if (ThrottleOf() != VectorZero() 
- || IsPrimaryHeld()
- || IsSecondaryHeld()
- || IsAbility1Held()
- || IsAbility2Held()
- || IsInteractHeld()
- || IsMeleeHeld()
- || IsReloadHeld()
- || IsJumpHeld() 
- || IsCrouchHeld())
+||  IsPrimaryHeld()
+||  IsSecondaryHeld()
+||  IsAbility1Held()
+||  IsAbility2Held()
+||  IsInteractHeld()
+||  IsMeleeHeld()
+||  IsReloadHeld()
+||  IsJumpHeld() 
+||  IsCrouchHeld())
 {
     afk = false;
 }
@@ -61,10 +57,10 @@ if (afk)
     SetInvisible(player, InvisibleTo.All);
     SetStatus(player, null, Status.PhasedOut, 99999);
 
-    WaitIfTrue(270);
+    WaitIfTrue(afk_kick_time);
 
     SmallMessage(all, <"   <0><1>", player, local.lang_str[LStr.Misc][0]>);
-    Wait(1);
+    Wait(2);
     RemovePlayer(player);
 }
 
@@ -76,18 +72,16 @@ if (!afk)
     check_spawn = true;
     Respawn();
 
-    StopCamera(player);
-
     AllowButton(player, Button.PrimaryFire);
     AllowButton(player, Button.SecondaryFire);
     AllowButton(player, Button.Ability1);
     AllowButton(player, Button.Ability2);
     AllowButton(player, Button.Ultimate);
 
+    Wait(0.25);
+    StopCamera(player);
     SetInvisible(player, InvisibleTo.None);
     ClearStatus(player, Status.PhasedOut);
-
-    Wait(0.08);
 
     check_spawn = false;
 }
