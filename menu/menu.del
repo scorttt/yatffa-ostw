@@ -332,6 +332,7 @@ if (IsInteractHeld())
 playervar Boolean anim;
 playervar Boolean close_anim;
 Number anim_start: 2.15;
+Number anim_end: 2.14;
 Number anim_speed: 0.5;
 rule: "Menu : Open Animation"
 Event.OngoingPlayer
@@ -375,7 +376,7 @@ if (!menu)
         {
             item_y_pos[i] += (anim_start - item_y_pos[i]) * anim_speed;
 
-            if (item_y_pos.Last >= anim_start - 0.01)
+            if (item_y_pos.Last >= anim_end)
             {
                 anim = false;
                 break;
@@ -506,6 +507,7 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
 playervar Number interact_taps;
 rule: "Menu : Interact Taps"
 Event.OngoingPlayer
+if (IsAlive())
 if (fav_item != Item.Invalid)
 if (IsButtonHeld(player, Button.Interact))
 {
