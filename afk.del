@@ -9,7 +9,7 @@ Event.OngoingPlayer
 if (!IsDummyBot())
 if (!HasSpawned() 
 || (HasSpawned() 
-&&  ThrottleOf() == VectorZero()
+&& ThrottleOf() == VectorZero()
 && !IsPrimaryHeld()
 && !IsSecondaryHeld()
 && !IsAbility1Held()
@@ -72,13 +72,14 @@ if (!afk)
     check_spawn = true;
     Respawn();
 
+    Wait(0.08);
+
     AllowButton(player, Button.PrimaryFire);
     AllowButton(player, Button.SecondaryFire);
     AllowButton(player, Button.Ability1);
     AllowButton(player, Button.Ability2);
     AllowButton(player, Button.Ultimate);
 
-    Wait(0.25);
     StopCamera(player);
     SetInvisible(player, InvisibleTo.None);
     ClearStatus(player, Status.PhasedOut);
