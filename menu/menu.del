@@ -70,7 +70,7 @@ if (s_menu)
     // frame top
     CreateInWorldText(
         VisibleTo:    local.menu || local.close_anim ? local : null,
-        Header:       <"┏ <0> ━ <1><4> / <5> ━ <2><3> ┓", 
+        Header:       <"<0> ━ <1><4> / <5> ━ <2><3>", 
                       local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
         Position:     RenderPosOf(0, local.item_y_pos[0]), 
@@ -333,7 +333,7 @@ playervar Boolean anim;
 playervar Boolean close_anim;
 Number anim_start: 2.15;
 Number anim_end: 2.14;
-Number anim_speed: 0.5;
+Number anim_speed: 0.3;
 rule: "Menu : Open Animation"
 Event.OngoingPlayer
 if (s_menu_anim)
@@ -355,7 +355,7 @@ if (!close_anim)
             }
         }
 
-        Wait(0.032);
+        MinWait();
     }
 
     anim = false;
@@ -383,7 +383,7 @@ if (!menu)
             }
         }
 
-        Wait(0.032);
+        MinWait();
     }
 
     anim = false;
