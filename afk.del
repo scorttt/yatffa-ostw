@@ -46,11 +46,17 @@ rule: "AFK : Set AFK properties and kick"
 Event.OngoingPlayer
 if (afk)
 {
+    kill_streak = 0;
+
     DisallowButton(player, Button.PrimaryFire);
     DisallowButton(player, Button.SecondaryFire);
     DisallowButton(player, Button.Ability1);
     DisallowButton(player, Button.Ability2);
     DisallowButton(player, Button.Ultimate);
+
+    // hide hud
+    DisableHeroHud();
+    show_all = false;
 
     StartCamera(player, Update(EyePosition()), Update(EyePosition() + Facing()), 0);
 
@@ -74,6 +80,7 @@ if (!afk)
 
     Wait(0.08);
 
+    EnableHeroHud(player);
     AllowButton(player, Button.PrimaryFire);
     AllowButton(player, Button.SecondaryFire);
     AllowButton(player, Button.Ability1);
