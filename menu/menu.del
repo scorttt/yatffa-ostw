@@ -55,16 +55,16 @@ if (s_menu)
     // excluded options from favoriting
     excl_fav = [Item.HOKMod, Item.HOKDurMod, Item.Language, Item.EN, Item.JP, Item.Secret];
 
-    ITEM_Y_POS = [1.62,
-                1.50,
-                1.40, 
-                1.30,
-                1.125,
-                1.025,
-                0.925,
-                0.725,
-                0.525,
-                0.425
+    ITEM_Y_POS = [1.62, // 0 (frame)
+                  1.50, // 1
+                  1.40, // 2
+                  1.30, // 3
+                  1.125, // 4
+                  1.025, // 5
+                  0.925, // 6
+                  0.725, // 7
+                  0.525, // 8
+                  0.425 // 9
                 ];
 
     // frame top
@@ -397,37 +397,32 @@ if (menu)
     Number X: CursorX(player);
     Number Y: CursorY(player);
 
-    if (Abs(CursorX(player)) <= SELECTION_AREA_WIDTH)
-    {
-        if (s_hud && (Abs(X) < lang_x[Item.AllHUD]) && Y < 1.60 && Y > 1.50)
-            sel_item = Item.AllHUD;
-        else if (s_hud && (Abs(X) < lang_x[Item.Stats]) && Y < 1.50 && Y > 1.40)
-            sel_item = Item.Stats;
-        else if (s_hud && (Abs(X) < lang_x[Item.Streak]) && Y < 1.40 && Y > 1.30)
-            sel_item = Item.Streak;
+    if      (s_hud && (Abs(X) < lang_x[Item.AllHUD]) &&                              Y < 1.600 && Y > 1.500)
+        sel_item = Item.AllHUD;
+    else if (s_hud && (Abs(X) < lang_x[Item.Stats]) &&                               Y < 1.500 && Y > 1.400)
+        sel_item = Item.Stats;
+    else if (s_hud && (Abs(X) < lang_x[Item.Streak]) &&                              Y < 1.400 && Y > 1.300)
+        sel_item = Item.Streak;
+            
+    else if (s_hok && (Abs(X) < lang_x[Item.HOK]) &&                                 Y < 1.225 && Y > 1.125)
+        sel_item = Item.HOK;
+    else if (hok && (Abs(X) < lang_x[Item.HOKMod])&&                                 Y < 1.125 && Y > 1.025)
+        sel_item = Item.HOKMod;
+    else if (hok && (Abs(X) < lang_x[Item.HOKDurMod]) &&                             Y < 1.025 && Y > 0.925)
+        sel_item = Item.HOKDurMod;
 
-        else if (s_hok && (Abs(X) < lang_x[Item.HOK]) && Y < 1.225 && Y > 1.125)
-            sel_item = Item.HOK;
-        else if (hok && (Abs(X) < lang_x[Item.HOKMod]) && Y < 1.125 && Y > 1.025)
-            sel_item = Item.HOKMod;
-        else if (hok && (Abs(X) < lang_x[Item.HOKDurMod]) && Y < 1.025 && Y > 0.925)
-            sel_item = Item.HOKDurMod;
+    else if (s_random && (Abs(X) < lang_x[Item.Random]) &&                           Y < 0.825 && Y > 0.725)
+        sel_item = Item.Random;
 
-        else if (s_random && (Abs(X) < lang_x[Item.Random]) && Y < 0.825 && Y > 0.725)
-            sel_item = Item.Random;
+    else if (language != Lang.EN && !lang_swap &&            X > -0.3 && X < 0.00 && Y < 0.525 && Y > 0.425)
+        sel_item = Item.EN;
+    else if (language != Lang.JP && !lang_swap &&            X > 0.00 && X < 0.25 && Y < 0.525 && Y > 0.425)
+        sel_item = Item.JP;
 
-        else if (language != Lang.EN && !lang_swap && (X > -0.30 && X < 0) && Y < 0.525 && Y > 0.425)
-            sel_item = Item.EN;
-        else if (language != Lang.JP && !lang_swap && (X > 0 && X < 0.25) && Y < 0.525 && Y > 0.425)
-            sel_item = Item.JP;
+    else if (language == Lang.JP &&                                                  Y < -1.90 && Y > -2.00)
+        sel_item = Item.Secret;
 
-        else if (language == Lang.JP && Y < -1.90 && Y > -2.00)
-            sel_item = Item.Secret;
-
-        else
-            sel_item = Item.Invalid;
-    }
-    else 
+    else
         sel_item = Item.Invalid;
 
     Wait(0.048);
