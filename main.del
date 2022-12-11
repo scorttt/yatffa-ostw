@@ -114,6 +114,12 @@ rule: "Initial Global"
     EnableAnnouncer();
 }
 
+rule: "Valid Map"
+if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+{
+    valid_map = true;
+}
+
 rule: "Initial Player Join"
 Event.OnPlayerJoin
 if (!IsDummyBot())
@@ -149,7 +155,7 @@ if (!IsDummyBot())
     {
         for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
-            item_y_pos[i] = ITEM_Y_POS[i];
+            item_y_pos[i] = anim_start;
             Wait(0.2);
         }
     }
@@ -267,7 +273,7 @@ if (IsAlive())
 rule: "Spawning : Remove Chateau Pier Spawn"
 Event.OngoingPlayer
 if (check_spawn)
-if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+if (valid_map)
 if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
 {
     check_spawn = false;
@@ -286,11 +292,12 @@ if (IsDead())
 }
 
 globalvar Player bot;
-globalvar Boolean bot_created; 
-rule: "Bot : Create Bot"
+// globalvar Vector chosen_loc;
+globalvar Boolean valid_map;
+rule: "Bot : Set Locations"
 if (s_destroy_railings)
 if (IsGameInProgress())
-if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+if (valid_map)
 {
     bot_loc = [VectorZero(),
                Vector(216.77, 9.00, 111.91),
@@ -317,27 +324,86 @@ if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
 
     SetDamageDealt(bot, 0);
     SetKnockbackDealt(bot, 0);
+    SetAbility2Enabled(bot, true);
     SetProjectileSpeed(bot, 99999);
     SetGravity(bot, 0);
     SetInvisible(bot, InvisibleTo.All);
     SetStatus(bot, null, Status.PhasedOut, 99999);
-
-    MinWait();
-    bot_created = true;
 }
 
 // this bot makes me want to blow my brains out holy shit i hate blizzard
 
 // problems
-// - spawn protection (including bot creation) prevents heroes from using ANY abilities for a duration
+// - spawn protection (includes bot creation) prevents heroes from using ANY abilities for a duration
 // - pharahs e has at least a 0.16s cast time before the projectile even spawns
-// - bot sometimes just doesnt get created sometimes??? for some fucking reason?????
+// - host latency for some reason can prevent the bot from spawning??? for some fucking reason????? makes no fucking sense considering ws scripts are entirely ran on the server
+// - bot sometimes just doesnt use abilities??? for some fucking reason?????
 // - full lobby will prevent the bot to spawn, or destroy an already existing bot. not much i can do about this without extensions
 
-rule: "Bot : Start Destroying Railings"
-if (bot_created)
+// rule: "Bot : Destroy Railings : i want to die"
+// if (bot_loc != 0)
+// {
+//     Number bot_len = bot_loc.Length;
+
+//     DestroyDummyBot(bot);
+//     CreateDummyBot(Hero.Pharah, Team.All, -1, VectorZero(), Down());
+//     bot = LastCreatedEntity();
+//     SetDamageDealt(bot, 0);
+//     SetKnockbackDealt(bot, 0);
+//     SetAbility2Enabled(bot, true);
+//     SetProjectileSpeed(bot, 99999);
+//     SetGravity(bot, 0);
+//     SetInvisible(bot, InvisibleTo.All);
+//     SetStatus(bot, null, Status.PhasedOut, 99999);
+
+//     if (!EntityExists(bot) && FilteredArray(all, !IsDummyBot(Curr())).Length != 0)
+//         # try again
+//         Loop(); 
+//     else 
+//         StartHoldingButton(bot, Button.Ability2);
+
+//     WaitUntil(IsUsingAbility2(bot), 99999);
+//     StopHoldingButton(bot, Button.Ability2);
+
+//     if (EntityExists(bot))
+//     {
+//         for (Number i = 0; i < bot_len; i++)
+//         {
+//             chosen_loc = bot_loc.First; 
+//             Teleport(bot, chosen_loc);
+//             SetFacing(bot, Down());
+//             SetAbilityCooldown(bot, Button.Ability2, 0);
+//             PressButton(bot, Button.Ability2);
+//             WaitUntil(IsUsingAbility2(bot), 99999);
+//             Wait(0.176);
+//             CancelPrimaryAction(bot);
+//             bot_loc -= chosen_loc;
+//         }
+//     }
+//     else 
+//     {
+//         # try AGAIN
+//         Loop();
+//     }
+
+//     Wait(0.1);
+
+//     if (EntityExists(bot) && bot_loc.Length == 0)
+//     {
+//         DestroyDummyBot(bot);
+//         bot = null;
+//     }
+//     else 
+//     {
+//         # try YET AGAIN JUST IN CASE IT FAILS AGAIN SOMEHOW
+//         Loop();
+//     }
+// }
+
+rule: "Bot : Destroy Railings"
+if (bot != null)
 {
-    Wait(0.9);
+    Wait(1);
 
     for (Number i = 0; i < bot_loc.Length; i++)
     {
@@ -353,5 +419,4 @@ if (bot_created)
 
     DestroyDummyBot(bot);
     bot = null;
-    bot_created = false;
 }
