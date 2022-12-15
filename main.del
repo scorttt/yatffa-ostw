@@ -11,7 +11,7 @@ import "menu/menu.del";
 
 import "lang/en.del";
 import "lang/jp.del";
-import "lang/es.del";
+// import "lang/es.del";
 
 globalvar Hero[] critexc_arr;
 globalvar Hero[] scope_arr;
@@ -66,14 +66,15 @@ enum Lang
     JP
 }
 
-rule: "v2.2.0.221208 | Created by scort#12211" 
+String version: "2.2.1";
+rule: "v2.2.1.221208 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
 
 rule: "Initial Global"
 {
-    dbg_usrs = ["scort", "gigaballs", "NAFFA", "EUFFA", "JPFFA"];
+    dbg_usrs = ["scort", "NAFFA", "EUFFA", "JPFFA"];
 
     critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
     scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
@@ -118,6 +119,29 @@ rule: "Valid Map"
 if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
 {
     valid_map = true;
+
+    if (s_destroy_railings)
+    {
+        bot_loc = [Vector(216.77, 9.00, 111.91),
+                   Vector(231.02, 8.04, 110.80),
+                   Vector(238.05, 8.00, 102.19),
+                   Vector(234.69, 6.00, 87.85),
+                   Vector(217.53, 5.95, 74.71),
+                   Vector(207.05, 13.00, 81.13),
+                   Vector(219.25, 13.11, 87.03),
+                   Vector(203.67, 12.00, 109.91),
+                   Vector(176.01, 11.00, 58.25),
+                   Vector(184.82, 12.00, 61.72),
+                   Vector(179.46, 10.00, 90.72),
+                   Vector(172.35, 9.00, 75.45),
+                   Vector(168.24, 12.11, 66.00),
+                   Vector(215.68, 15.98, 45.80),
+                   Vector(218.79, 18.00, 61.54),
+                   Vector(228.41, 16.47, 67.21),
+                   Vector(227.50, 13.00, 77.32),
+                   Vector(187.94, 10.00, 76.55),
+                   VectorZero()];
+    }
 }
 
 rule: "Initial Player Join"
@@ -148,15 +172,15 @@ if (!IsDummyBot())
 
     if (s_lang == Lang.EN)
         SetEnglish();
-    else if (s_lang == Lang.JP)
+    else
         SetJapanese();
 
     if (!s_menu_anim)
     {
         for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
-            item_y_pos[i] = anim_start;
-            Wait(0.2);
+            item_y_pos[i] = ITEM_Y_POS[i];
+            Wait(0.048);
         }
     }
 }
@@ -297,28 +321,9 @@ globalvar Boolean valid_map;
 rule: "Bot : Set Locations"
 if (s_destroy_railings)
 if (IsGameInProgress())
+if (FilteredArray(all, !IsDummyBot(Curr())).Length > 0) // if at least one person has loaded into the lobby
 if (valid_map)
 {
-    bot_loc = [VectorZero(),
-               Vector(216.77, 9.00, 111.91),
-               Vector(231.02, 8.04, 110.80),
-               Vector(238.05, 8.00, 102.19),
-               Vector(234.69, 6.00, 87.85),
-               Vector(217.53, 5.95, 74.71),
-               Vector(207.05, 13.00, 81.13),
-               Vector(219.25, 13.11, 87.03),
-               Vector(203.67, 12.00, 109.91),
-               Vector(176.01, 11.00, 58.25),
-               Vector(184.82, 12.00, 61.72),
-               Vector(179.46, 10.00, 90.72),
-               Vector(172.35, 9.00, 75.45),
-               Vector(168.24, 12.11, 66.00),
-               Vector(215.68, 15.98, 45.80),
-               Vector(218.79, 18.00, 61.54),
-               Vector(228.41, 16.47, 67.21),
-               Vector(227.50, 13.00, 77.32),
-               Vector(187.94, 10.00, 76.55)];
-
     CreateDummyBot(Hero.Pharah, Team.All, -1, VectorZero(), Down());
     bot = LastCreatedEntity();
 
@@ -329,93 +334,43 @@ if (valid_map)
     SetGravity(bot, 0);
     SetInvisible(bot, InvisibleTo.All);
     SetStatus(bot, null, Status.PhasedOut, 99999);
+
+    WaitUntil(HasSpawned(bot) && EntityExists(bot), 99999);
+    StartHoldingButton(bot, Button.Ability2);
 }
 
 // this bot makes me want to blow my brains out holy shit i hate blizzard
 
 // problems
 // - spawn protection (includes bot creation) prevents heroes from using ANY abilities for a duration
-// - pharahs e has at least a 0.16s cast time before the projectile even spawns
+// - pharahs e has a 0.16s cast time before the projectile even spawns, because of this the majority of the bots time is determined by the bot_loc[] size (plus 0.016 for each element)
 // - host latency for some reason can prevent the bot from spawning??? for some fucking reason????? makes no fucking sense considering ws scripts are entirely ran on the server
 // - bot sometimes just doesnt use abilities??? for some fucking reason?????
 // - full lobby will prevent the bot to spawn, or destroy an already existing bot. not much i can do about this without extensions
 
-// rule: "Bot : Destroy Railings : i want to die"
-// if (bot_loc != 0)
-// {
-//     Number bot_len = bot_loc.Length;
-
-//     DestroyDummyBot(bot);
-//     CreateDummyBot(Hero.Pharah, Team.All, -1, VectorZero(), Down());
-//     bot = LastCreatedEntity();
-//     SetDamageDealt(bot, 0);
-//     SetKnockbackDealt(bot, 0);
-//     SetAbility2Enabled(bot, true);
-//     SetProjectileSpeed(bot, 99999);
-//     SetGravity(bot, 0);
-//     SetInvisible(bot, InvisibleTo.All);
-//     SetStatus(bot, null, Status.PhasedOut, 99999);
-
-//     if (!EntityExists(bot) && FilteredArray(all, !IsDummyBot(Curr())).Length != 0)
-//         # try again
-//         Loop(); 
-//     else 
-//         StartHoldingButton(bot, Button.Ability2);
-
-//     WaitUntil(IsUsingAbility2(bot), 99999);
-//     StopHoldingButton(bot, Button.Ability2);
-
-//     if (EntityExists(bot))
-//     {
-//         for (Number i = 0; i < bot_len; i++)
-//         {
-//             chosen_loc = bot_loc.First; 
-//             Teleport(bot, chosen_loc);
-//             SetFacing(bot, Down());
-//             SetAbilityCooldown(bot, Button.Ability2, 0);
-//             PressButton(bot, Button.Ability2);
-//             WaitUntil(IsUsingAbility2(bot), 99999);
-//             Wait(0.176);
-//             CancelPrimaryAction(bot);
-//             bot_loc -= chosen_loc;
-//         }
-//     }
-//     else 
-//     {
-//         # try AGAIN
-//         Loop();
-//     }
-
-//     Wait(0.1);
-
-//     if (EntityExists(bot) && bot_loc.Length == 0)
-//     {
-//         DestroyDummyBot(bot);
-//         bot = null;
-//     }
-//     else 
-//     {
-//         # try YET AGAIN JUST IN CASE IT FAILS AGAIN SOMEHOW
-//         Loop();
-//     }
-// }
-
+globalvar Vector chosen_loc;
 rule: "Bot : Destroy Railings"
-if (bot != null)
+if (HasSpawned(bot))
+if (EntityExists(bot))
+if (IsUsingAbility2(bot))
 {
-    Wait(1);
+    WaitUntil(FilteredArray(all, !IsDummyBot(Curr())).Length > 0, 99999);
+    Number bot_len = bot_loc.Length;
+    StopHoldingButton(bot, Button.Ability2);
 
-    for (Number i = 0; i < bot_loc.Length; i++)
+    for (Number i = 0; i < bot_len; i++)
     {
-        Teleport(bot, bot_loc[i]);
+        chosen_loc = bot_loc.First; 
+        Teleport(bot, chosen_loc);
         SetFacing(bot, Down());
         SetAbilityCooldown(bot, Button.Ability2, 0);
         PressButton(bot, Button.Ability2);
         Wait(0.176);
         CancelPrimaryAction(bot);
+        bot_loc -= chosen_loc;
     }
 
-    Wait(0.1);
+    WaitUntil(bot_loc.Length == 0, 99999);
 
     DestroyDummyBot(bot);
     bot = null;
