@@ -62,14 +62,8 @@ rule: "Global Hud Text"
     {
         // hide/show menu
         CreateHudText(
-            VisibleTo:  !local.afk && !local.menu ? local : null, 
-            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact)), 
-            Location:   Location.Right, 
-            SortOrder:  0.2, 
-            Spectators: Spectators.VisibleNever);
-        CreateHudText(
-            VisibleTo:  !local.afk && local.menu ? local : null, 
-            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][1], "*", BindString(Button.Interact)), 
+            VisibleTo:  !local.afk ? local : null, 
+            Subheader:  StringReplace(!local.menu ? local.lang_str[LStr.MenuStatus][0] : local.lang_str[LStr.MenuStatus][1], "*", BindString(Button.Interact)),
             Location:   Location.Right, 
             SortOrder:  0.2, 
             Spectators: Spectators.VisibleNever);
