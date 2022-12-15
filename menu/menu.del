@@ -67,17 +67,6 @@ if (s_menu)
                   0.425 // 9
                 ];
 
-    // version and code
-    CreateInWorldText(
-        VisibleTo:      local.menu || local.close_anim ? local : null, 
-        Header:         <"<0>　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　BKRXY", version>,
-        Position:       RenderPosOf(0, local.item_y_pos[0] + 0.1), 
-        Scale:          0.75,
-        TextColor:      Color.White,
-        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
-        Clipping:       Clipping.DoNotClip,
-        Spectators:     Spectators.VisibleNever);
-
     // instructions
     CreateInWorldText(
         VisibleTo:    local.menu || local.close_anim ? local : null,
