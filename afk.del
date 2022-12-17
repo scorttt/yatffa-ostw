@@ -9,7 +9,7 @@ Event.OngoingPlayer
 if (!IsDummyBot())
 if (!HasSpawned() 
 || (HasSpawned() 
-&& ThrottleOf() == VectorZero()
+&& ThrottleOf() == Vector()
 && !IsPrimaryHeld()
 && !IsSecondaryHeld()
 && !IsAbility1Held()
@@ -28,7 +28,7 @@ if (!HasSpawned()
 rule: "AFK : Player Returns"
 Event.OngoingPlayer
 if (afk)
-if (ThrottleOf() != VectorZero() 
+if (ThrottleOf() != Vector() 
 ||  IsPrimaryHeld()
 ||  IsSecondaryHeld()
 ||  IsAbility1Held()

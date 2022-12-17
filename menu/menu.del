@@ -70,7 +70,7 @@ if (s_menu)
     // instructions
     CreateInWorldText(
         VisibleTo:    local.menu || local.close_anim ? local : null,
-        Header:       <"<0> ┃ <1><4> / <5> ┃ <2><3>", 
+        Header:       <"<0>   ┃   <1><4> / <5>   ┃   <2><3>", 
                       local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
         Position:     RenderPosOf(0, local.item_y_pos[0]), 
@@ -316,8 +316,8 @@ if (IsInteractHeld())
 
     WaitUntil(!IsInteractHeld() || IsDead(), 99999);
 
-    if (s_menu_anim)
-        close_anim = true;
+    // if (s_menu_anim)
+    //     close_anim = true;
 
     menu = false;
     DestroyInWorldText(cursor);
@@ -351,14 +351,12 @@ if (!close_anim)
     while (menu && anim)
     {
         for (Number i = 0; i < ITEM_Y_POS.Length; i++)
-        {
             item_y_pos[i] += (ITEM_Y_POS[i] - item_y_pos[i]) * anim_speed;
 
-            if (item_y_pos.Last <= ITEM_Y_POS.Last + 0.01)
-            {
-                anim = false;
-                break;
-            }
+        if (item_y_pos.Last <= ITEM_Y_POS.Last + 0.01)
+        {
+            anim = false;
+            break;
         }
 
         MinWait();
@@ -379,14 +377,12 @@ if (!menu)
     while (anim && close_anim)
     {
         for (Number i = 0; i < ITEM_Y_POS.Length; i++)
-        {
             item_y_pos[i] += (anim_start - item_y_pos[i]) * anim_speed;
 
-            if (item_y_pos.Last >= anim_end)
-            {
-                anim = false;
-                break;
-            }
+        if (item_y_pos.Last >= anim_end)
+        {
+            anim = false;
+            break;
         }
 
         MinWait();

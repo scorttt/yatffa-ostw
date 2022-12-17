@@ -62,24 +62,24 @@ enum LStr
 enum Lang
 {
     EN,
-    ESMX,
-    JP
+    JP,
+    ESMX
 }
 
-rule: "v2.2.1.221208 | Created by scort#12211" 
+rule: "v2.2.2.221217 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
 
 rule: "Initial Global"
 {
-    dbg_usrs = ["scort", "NAFFA", "EUFFA", "JPFFA"];
+    dbg_usrs = ["scort", "NAFFA", "EUFFA", "JPFFA", "gigaballs"];
 
     critexc_arr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
     scope_arr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scope_crit_arr = [Hero.Widowmaker, Hero.Ashe];
 
-    s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", /* "Español (AL)",  */"日本語"], 0);
+    s_lang = WorkshopSettingCombo("Settings", "Default Language", 0, ["English", "日本語"/*, "Español (AL)" */], 0);
 
     s_match_time = WorkshopSettingInteger("Settings", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     s_instant_respawn = WorkshopSettingToggle("Settings", "Respawn instantly on Interact", true, 2);
@@ -105,7 +105,7 @@ rule: "Initial Global"
     s_random = WorkshopSettingToggle("Random Hero", "Allow Modifying Random Hero toggle", true, 9);
     s_def_random = WorkshopSettingToggle("Random Hero", "Random Hero", false, 10);
 
-    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)", "jaskfy (ES MX Localization)", "Josbird (Cursor math)", "BXRXY", "5RKYY (JP)", "Please credit!"], 1000);
+    Number credit = WorkshopSettingCombo("Credit", "Credit", 0, ["scort#11221", "saruyo (JP Localization)",/*  "jaskfy (ES MX Localization)", */ "Josbird (Cursor math)", "BXRXY", "5RKYY (JP)", "Please credit!"], 1000);
 
     DisableAnnouncer();
     SetMatchTime(1);
@@ -139,7 +139,7 @@ if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
                    Vector(228.41, 16.47, 67.21),
                    Vector(227.50, 13.00, 77.32),
                    Vector(187.94, 10.00, 76.55),
-                   VectorZero()];
+                   Vector()];
     }
 }
 
@@ -171,7 +171,7 @@ if (!IsDummyBot())
 
     if (s_lang == Lang.EN)
         SetEnglish();
-    else
+    else if (s_lang == Lang.JP)
         SetJapanese();
 
     if (!s_menu_anim)
@@ -317,13 +317,15 @@ if (IsDead())
 globalvar Player bot;
 // globalvar Vector chosen_loc;
 globalvar Boolean valid_map;
+globalvar Boolean bot_finished;
 rule: "Bot : Set Locations"
 if (s_destroy_railings)
+if (!bot_finished)
 if (IsGameInProgress())
 if (FilteredArray(all, !IsDummyBot(Curr())).Length > 0) // if at least one person has loaded into the lobby
 if (valid_map)
 {
-    CreateDummyBot(Hero.Pharah, Team.All, -1, VectorZero(), Down());
+    CreateDummyBot(Hero.Pharah, Team.All, -1, Vector(), Down());
     bot = LastCreatedEntity();
 
     SetDamageDealt(bot, 0);
@@ -353,7 +355,6 @@ if (HasSpawned(bot))
 if (EntityExists(bot))
 if (IsUsingAbility2(bot))
 {
-    WaitUntil(FilteredArray(all, !IsDummyBot(Curr())).Length > 0, 99999);
     Number bot_len = bot_loc.Length;
     StopHoldingButton(bot, Button.Ability2);
 
@@ -373,4 +374,5 @@ if (IsUsingAbility2(bot))
 
     DestroyDummyBot(bot);
     bot = null;
+    bot_finished = true;
 }
