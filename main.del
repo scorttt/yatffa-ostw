@@ -56,8 +56,7 @@ enum LStr
     Misc, // 4
     Items, // 5
     Enabled, // 6
-    Disabled, // 7
-    Quotes // 8
+    Disabled // 7
 }
 enum Lang
 {
@@ -66,7 +65,7 @@ enum Lang
     ESMX
 }
 
-rule: "v2.2.2.221217 | Created by scort#12211" 
+rule: "v2.2.3.221223 | Created by scort#12211" 
 {
     DisableInspectorRecording(); 
 }
@@ -153,7 +152,9 @@ if (!IsDummyBot())
     fav_item = Item.Invalid;
     HOK_amt = s_heal;
     HOK_dur = s_hot_time;
+
     afk = false;
+    afk_time = afk_dur;
 
     // todo: may need some optimization
     if (s_def_hud)
@@ -191,7 +192,7 @@ if (HasSpawned())
     afk = false;
     Wait(1);
     WaitUntil(!lang_swap, 1);
-    SmallMessage(player, <"   <0><1>", local.lang_str[LStr.Misc][4], StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact))>);
+    SmallMessage(player, <"   <0><1>", local.lang_str[LStr.Misc][5], StringReplace(local.lang_str[LStr.MenuStatus][0], "*", BindString(Button.Interact))>);
 }
 
 // rule: "Player Leave"
@@ -207,7 +208,6 @@ if (HasSpawned())
 //     }
 // }
 
-
 rule: "Match Started"
 if (IsGameInProgress())
 {
@@ -221,6 +221,12 @@ if (IsGameInProgress())
     SetMatchTime(s_match_time);
 }
 
+rule: "Reset Match time if lobby becomes empty"
+if (IsGameInProgress())
+if (all.Length == 0)
+{
+    SetMatchTime(s_match_time);
+}
 
 rule: "End Game"
 if (MatchTime() <= 0)

@@ -71,7 +71,7 @@ if (s_menu)
     CreateInWorldText(
         VisibleTo:    local.menu || local.close_anim ? local : null,
         Header:       <"<0>   ┃   <1><4> / <5>   ┃   <2><3>", 
-                      local.lang_str[LStr.Misc][1], local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], 
+                      local.lang_str[LStr.Misc][2], local.lang_str[LStr.Misc][3], local.lang_str[LStr.Misc][4], 
                       BindString(Button.Reload), BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>, 
         Position:     RenderPosOf(0, local.item_y_pos[0]), 
         Scale:        1.35,
@@ -175,7 +175,7 @@ if (s_menu)
                                                             BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
                             : local.HOK_amt <= 1 
                                 ? MultiStringReplace(local.HOK_amt * 100, ".00", ".50", "", ".5") + "%"
-                                : local.lang_str[LStr.Misc][Item.HOKMod],
+                                : local.lang_str[LStr.Misc][6],
         Position:       RenderPosOf(0, local.item_y_pos[Item.HOKMod + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKMod 
@@ -190,12 +190,12 @@ if (s_menu)
         VisibleTo:      local.menu || local.close_anim ? local : null, 
         Header:         local.sel_item == Item.HOKDurMod
                             ? <"<1>    -   <0>   +    <2>", local.HOK_dur >= 1
-                                                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
+                                                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Misc][11]
                                                                 : local.lang_str[LStr.Misc][7],
                                                             BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
                             : local.HOK_dur >= 1 
-                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Items][Item.HOKDurMod]
-                                : local.lang_str[LStr.Misc][Item.HOKDurMod],
+                                ? MultiStringReplace(local.HOK_dur, ".00", ".50", "", ".5") + local.lang_str[LStr.Misc][11]
+                                : local.lang_str[LStr.Misc][7],
         Position:       RenderPosOf(0, local.item_y_pos[Item.HOKDurMod + 1]), 
         Scale:          1.25,
         TextColor:      local.sel_item == Item.HOKDurMod 

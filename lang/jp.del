@@ -45,13 +45,17 @@ rule: "Init Japanese Strings"
 
     JP_STR[LStr.Misc] = 
                 ["さん５分間のAFKの後キックされった", // 0
-                 "ナビる：狙う", // 1
-                 "選ぶ：", // 2
-                 "愛用：", // 3
-                 "ようこそ！", // 4
-                 "ホストのみ", // 5
+                 "AFKだから#m#sでキックされる", // 1
+                 "ナビる：狙う", // 2
+                 "選ぶ：", // 3
+                 "愛用：", // 4
+                 "ようこそ！", // 5
                  "マックス", // 6
-                 "今すぐ" // 7
+                 "今すぐ", // 7
+                 "「", // 8
+                 "」", // 9
+                 "分", // 10
+                 "秒" // 11
                  ];
 
     JP_STR[LStr.Items] = 
@@ -60,7 +64,7 @@ rule: "Init Japanese Strings"
                  "キルストリークを見せる", // 2
                  "キルヒーリング", // 3
                  null, // 4
-                 "秒", // 5
+                 null, // 5
                  "ランダムのヒーロー", // 6
                  "言語" // 7
                  ];
@@ -88,8 +92,6 @@ rule: "Init Japanese Strings"
                  null,
                  null,
                  null];
-
-    JP_STR[LStr.Quotes] = ["「", "」"];
 }
 
 void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"

@@ -1,8 +1,8 @@
 import "main.del";
 playervar Boolean afk;
-
-Number afk_time: 20;
-Number afk_kick_time: 280;
+playervar Number afk_time;
+Number afk_dur: 280;
+Number afk_warning: 60;
 // ugly
 rule: "AFK : Player AFK"
 Event.OngoingPlayer
@@ -21,8 +21,9 @@ if (!HasSpawned()
 && !IsJumpHeld()
 && !IsCrouchHeld()))
 {
-    WaitIfTrue(afk_time);
+    WaitIfTrue(20);
     afk = true;
+    afk_time = afk_dur;
 }
 
 rule: "AFK : Player Returns"
@@ -40,6 +41,7 @@ if (ThrottleOf() != Vector()
 ||  IsCrouchHeld())
 {
     afk = false;
+    afk_time = afk_dur;
 }
 
 rule: "AFK : Set AFK properties and kick"
@@ -62,9 +64,15 @@ if (afk)
 
     SetInvisible(player, InvisibleTo.All);
     SetStatus(player, null, Status.PhasedOut, 99999);
+}
 
-    WaitIfTrue(afk_kick_time);
-
+rule: "AFK : Kick Player"
+Event.OngoingPlayer
+if (afk)
+if (afk_time <= 0)
+{
+    afk = false;
+    afk_time = afk_dur;
     SmallMessage(all, <"   <0><1>", player, local.lang_str[LStr.Misc][0]>);
     Wait(2);
     RemovePlayer(player);
@@ -75,6 +83,7 @@ Event.OngoingPlayer
 if (!IsDummyBot())
 if (!afk)
 {
+    afk_time = afk_dur;
     check_spawn = true;
     Respawn();
 
@@ -92,4 +101,14 @@ if (!afk)
     ClearStatus(player, Status.PhasedOut);
 
     check_spawn = false;
+}
+
+rule: "AFK : Run Timer"
+Event.OngoingPlayer
+if (afk)
+if (afk_time > 0)
+{
+    afk_time--;
+    Wait(1);
+    LoopIfConditionIsTrue();
 }

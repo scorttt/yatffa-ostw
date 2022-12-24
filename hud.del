@@ -17,17 +17,17 @@ Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
 
 Color HealthColor(): CustomColor(r, g, 0, 255);
 Color AFKPulse(): CustomColor(Oscillate(750, 0, 255), Oscillate(750, 153, 255), 255, 255);
+Color KickWarningPulse(): CustomColor(255, PingPong(1000, 255), 0, 255);
 Number percentage: (NormalizedHealth() * 100);
 Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
 Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
-
 
 rule: "Global Hud Text"
 {
     // timer
     CreateHudText(
         VisibleTo:      all, 
-        Subheader:           <"<0><1><2>\n", 
+        Subheader:      <"<0><1><2>\n", 
                         MatchTime() >= 3600
                             ? <"<0>:", Floor(MatchTime() / 3600)> 
                             : "", 
@@ -58,6 +58,31 @@ rule: "Global Hud Text"
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
+    // afk kick warning good luck reading this future me
+    CreateInWorldText(
+        VisibleTo:      local.afk ? local : null, 
+        Header:         MultiStringReplace(local.lang_str[LStr.Misc][1], "#m", "#s",
+                            Floor(local.afk_time % 3600 / 60) != 0 
+                                ? <"<0><1>", Floor(local.afk_time % 3600 / 60),
+                                Floor(local.afk_time % 3600 / 60) != 1 
+                                    ? local.lang_str[LStr.Misc][10] 
+                                    : StringReplace(local.lang_str[LStr.Misc][10], "es", "e")> 
+                                : "", 
+                            Floor(local.afk_time % 60) != 0 
+                                ? <"<0><1>", Floor(local.afk_time % 60), 
+                                Floor(local.afk_time % 60) != 1
+                                    ? local.lang_str[LStr.Misc][11] 
+                                    : StringReplace(local.lang_str[LStr.Misc][11], "ds", "d")> 
+                                : ""),
+        Position:       RenderPosOf(0, -0.2), 
+        Scale:          2,
+        TextColor:      local.afk_time > afk_warning 
+                            ? CustomColor(Oscillate(100, 0, 255), Oscillate(100, 153, 255), 255, 255)
+                            : KickWarningPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
     if (s_menu || s_def_hud)
     {
         // hide/show menu
@@ -71,7 +96,7 @@ rule: "Global Hud Text"
         // double tap for fav_item
         CreateHudText(
             VisibleTo:  !local.afk && local.fav_item != Item.Invalid ? local : null, 
-            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][2], "*", BindString(Button.Interact)) + local.lang_str[LStr.Quotes][0] + local.lang_str[LStr.Items][local.fav_item] + local.lang_str[LStr.Quotes][1], 
+            Subheader:  StringReplace(local.lang_str[LStr.MenuStatus][2], "*", BindString(Button.Interact)) + local.lang_str[LStr.Misc][8] + local.lang_str[LStr.Items][local.fav_item] + local.lang_str[LStr.Misc][9], 
             Location:   Location.Right, 
             SortOrder:  0.3,
             Spectators: Spectators.VisibleNever);

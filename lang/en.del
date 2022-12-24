@@ -45,13 +45,17 @@ rule: "Init English Strings"
 
     EN_STR[LStr.Misc] = 
                 [" was kicked after 5 minutes of inactivity", // 0
-                 "Navigate: Aim", // 1
-                 "Select: ", // 2
-                 "Favorite: ", // 3
-                 "Welcome! ", // 4
-                 "Host Only", // 5
+                 "You will be kicked for inactivity in #m#s", // 1
+                 "Navigate: Aim", // 2
+                 "Select: ", // 3
+                 "Favorite: ", // 4
+                 "Welcome! ", // 5
                  "Maximum", // 6
-                 "Instant" // 7
+                 "Instant", // 7
+                 "\"", // 8
+                 "\"", // 9
+                 " minutes ", // 10
+                 " seconds" // 11
                  ];
 
     EN_STR[LStr.Items] = 
@@ -60,9 +64,9 @@ rule: "Init English Strings"
                  "Show Kill Streaks", // 2
                  "Heal On Kill", // 3
                  null, // 4
-                 " secs", // 5
-                 "Random Hero", // 6
-                 "Language" // 7
+                 null, // 5
+                 "Random Hero", // 5
+                 "Language" // 6
                  ];
 
     EN_STR[LStr.Enabled] = 
@@ -90,8 +94,6 @@ rule: "Init English Strings"
                  null,
                  null
                  ];
-
-    EN_STR[LStr.Quotes] = ["\"", "\""];
 }
 
 void SetEnglish() playervar "Menu Option Sub : Set Language to English"
