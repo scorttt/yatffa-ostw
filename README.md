@@ -35,3 +35,5 @@ I am looking for translators for other languages! If interested, message me on d
 - BKRXY (NA/EU)
 - 5RKYY (JP)
 
+## Compiling
+Compilation requires you to have [OSTW](https://github.com/ItsDeltin/Overwatch-Script-To-Workshop) set up and my [macros.del](https://github.com/scorttt/workshop-scripts/blob/master/macros.del) file placed in an folder called `workshop-scripts` above the parent directory of the cloned repository.
