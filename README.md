@@ -5,6 +5,8 @@ Workshop Tryhard FFA mode built on [OSTW](https://github.com/ItsDeltin/Overwatch
 
 Inspired by the balance of old Tryhard FFA lobbies hosted by Immanust in 2018/2019
 
+Not abandoned, just feature complete
+
 I am looking for translators for other languages! If interested, message me on discord: `scort#9899`
 
 ### Known issues
