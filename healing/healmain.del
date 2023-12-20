@@ -1,0 +1,88 @@
+import "../main.del";
+
+playervar Number healReward;
+playervar Any hot;
+playervar Boolean healing;
+
+rule: "Healing : Player Took Damage"
+Event.OnDamageTaken
+if (S_HOT_INTERRUPT)
+if (healing)
+if (IsAlive())
+if (IsAlive(Attacker()))
+if (EventDamage() >= S_HOT_MINDMG) // minimum damage to stop hot
+{
+    StopHealReward();
+}
+
+rule: "Healing : Player Took Health Pack"
+Event.OnHealingTaken
+if (S_HOT_INTERRUPT)
+if (healing)
+if (IsAlive())
+if (EventWasHealthPack())
+{
+    StopHealReward();
+}
+
+rule: "Healing : Player Full Health"
+Event.OngoingPlayer
+if (healing)
+if (Health() == MaxHealth())
+{
+    # usually this wouldn't matter with gameplay since taking damage already stops heal rewards, however since adding reward heal stacking rules people couldnt use heal abilities while full without this
+    StopHealReward();
+}
+
+rule: "Healing : Heal Reward Active"
+Event.OngoingPlayer
+if (S_DISABLE_HEALSTACK)
+if (healing)
+{
+    SetHealingDealt(player, 0);
+}
+
+rule: "Healing : Heal Reward Not Active"
+Event.OngoingPlayer
+if (S_DISABLE_HEALSTACK)
+if (!healing)
+{
+    SetHealingDealt(player, 100);
+}
+
+void StopHealReward() playervar "Healing : Stop Heal Reward"
+{
+    StopHealOverTime(hot);
+    healing = false;
+}
+
+void GetHealRewardAmount() playervar "Healing : Get Heal Reward Amount Sub" // should only be called in OnFinalBlow/OnDamageTaken/OnDamageGiven events
+{
+    if (!flatHeal)
+        healReward = Max((MaxHealth(Victim()) * healAmt), 200 * healAmt);
+    else 
+        healReward = healAmt;
+}
+
+void GiveHealReward(Player receiver = Attacker()) playervar "Healing : Give Heal Reward Sub"
+{
+    healing = true;
+
+    if (healDur > 0) // check if heal duration isnt instant
+    {
+        StopHealOverTime(hot);
+
+        StartHealOverTime(receiver, null, healDur, healReward / healDur);
+        hot = LastHealOverTime();
+
+        Wait(healDur, WaitBehavior.RestartWhenTrue);
+
+        StopHealOverTime(hot);
+    }
+    else 
+    {
+        Heal(player, null, healReward);
+    }
+
+    healing = false;
+}

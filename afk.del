@@ -1,0 +1,125 @@
+import "main.del";
+playervar Boolean afk;
+playervar Number afkTime;
+
+// ugly
+rule: "AFK : Player AFK"
+Event.OngoingPlayer
+if (!isDbgUsr)
+if (!IsDummyBot())
+if (!HasSpawned() ||
+   (HasSpawned() && 
+    ThrottleOf() == Vector() && 
+    !IsPrimaryHeld() && 
+    !IsSecondaryHeld() &&
+    !IsAbility1Held() &&
+    !IsAbility2Held() &&
+    !IsUltimateHeld() &&
+    !IsInteractHeld() &&
+    !IsMeleeHeld() &&
+    !IsReloadHeld() &&
+    !IsJumpHeld() &&
+    !IsCrouchHeld()))
+{
+    WaitIfTrue(S_AFK_TIME);
+    afk = true;
+    afkTime = S_AFK_KICK_TIME;
+
+    for (Number i! = 0; i < 3; i++)
+    {
+        PlayEffect(player, PlayEffect.ExplosionSound, null, player, 100);
+        Wait(0.2);
+    }
+}
+
+rule: "AFK : Player Returns"
+Event.OngoingPlayer
+if (afk)
+if (ThrottleOf() != Vector() ||
+    IsPrimaryHeld() ||
+    IsSecondaryHeld() ||
+    IsAbility1Held() ||
+    IsAbility2Held() ||
+    IsInteractHeld() ||
+    IsMeleeHeld() ||
+    IsReloadHeld() || 
+    IsJumpHeld() || 
+    IsCrouchHeld())
+{
+    afk = false;
+    afkTime = S_AFK_KICK_TIME;
+    PlayEffect(player, PlayEffect.BuffImpactSound, null, player, 100);
+}
+
+rule: "AFK : Set AFK properties and kick"
+Event.OngoingPlayer
+if (afk)
+{
+    killStreak = 0;
+    streak = false;
+
+    DisallowButton(player, Button.PrimaryFire);
+    DisallowButton(player, Button.SecondaryFire);
+    DisallowButton(player, Button.Ability1);
+    DisallowButton(player, Button.Ability2);
+    DisallowButton(player, Button.Ultimate);
+
+    // hide hud
+    DisableHeroHud();
+    showAllEnabled = false;
+
+    StartCamera(player, Update(EyePos()), Update(EyePos() + Facing()), 0);
+
+    SetInvisible(player, InvisibleTo.All);
+    SetStatus(player, null, Status.PhasedOut, 99999);
+    SetMoveSpeed(player, 0);
+}
+
+rule: "AFK : Kick Player"
+Event.OngoingPlayer
+if (afk)
+if (afkTime <= 0)
+{
+    SmallMessage(All(), <"   <0><1>", player, local.playerWasKickedStr>);
+    Wait(2);
+    RemovePlayer(player);
+}
+
+rule: "AFK : Remove AFK properties"
+Event.OngoingPlayer
+if (!IsDummyBot())
+if (!afk)
+{
+    afkTime = S_AFK_KICK_TIME;
+    checkSpawn = true;
+    SetMoveSpeed(player, 100);
+    Respawn();
+
+    Wait(0.08);
+
+    EnableHeroHud(player);
+    AllowButton(player, Button.PrimaryFire);
+    AllowButton(player, Button.SecondaryFire);
+    AllowButton(player, Button.Ability1);
+    AllowButton(player, Button.Ability2);
+    AllowButton(player, Button.Ultimate);
+
+    StopCamera(player);
+    SetInvisible(player, InvisibleTo.None);
+    ClearStatus(player, Status.PhasedOut);
+
+    checkSpawn = false;
+
+    if (Health() != MaxHealth())
+        FixSpawnHealth();
+}
+
+rule: "AFK : Run Timer"
+Event.OngoingPlayer
+if (afk)
+if (afkTime > 0)
+{
+    afkTime--;
+    Wait(1);
+    LoopIfConditionIsTrue();
+}

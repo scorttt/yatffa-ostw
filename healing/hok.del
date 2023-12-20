@@ -1,0 +1,12 @@
+import "../main.del";
+
+rule: "Healing : Heal On KIll : Player Got Kill"
+Event.OnFinalBlow
+if (S_HEAL_TYPE == 0 || S_HEAL_TYPE == 2)
+if (healEnabled)
+if (!IsDuplicating()) 
+if (Health() < MaxHealth())
+{
+    GetHealRewardAmount();
+    GiveHealReward(Attacker());
+}

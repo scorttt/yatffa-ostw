@@ -1,0 +1,219 @@
+import "main.del";
+
+playervar Number | String killStreak;
+playervar Number | String bestStreak;
+globalvar Number | String bestStreakServer;
+globalvar Number | String bestStreakServerUser;
+globalvar Number | String bestStreakServerHero;
+playervar Number | String bestStreakHero;
+playervar Boolean streak;
+
+Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
+                             128 + 127 * CosineFromDegrees((Time() * 150) + 120),
+                             128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
+                             250);
+
+Color HealthColor(): CustomColor(r, g, 0, 255);
+Color AFKPulse(): CustomColor(Oscillate(750, 0, 255), Oscillate(750, 153, 255), 255, 255);
+Color KickWarningPulse(): CustomColor(255, PingPong(1000, 255), 0, 255);
+Number percentage: (NormalizedHealth() * 100);
+Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
+Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
+
+String PrettyNumber(String number): 
+        StringLength(number) <= 3
+            ? number
+            : StringLength(number) <= 6
+                ? StringSlice(number, 0, StringLength(number) - 3) + "," + StringSlice(number, StringLength(number) - 3, 3)
+                : StringSlice(number, 0, StringLength(number) - 6) + "," + StringSlice(number, StringLength(number) - 6, 3) + "," + StringSlice(number, StringLength(number) - 3, 3);
+                // breaks when a number is greater than 999,999,999
+
+rule: "HUD : Global HUD : Welcome to Hell"
+{
+    # timer
+    CreateHudText(
+        VisibleTo:      All(), 
+        Text:           MatchTime() >= 60 
+                            ? "" 
+                            : MatchTime() % 60,
+        Subheader:      MatchTime() >= 60 
+                            ? <"<0>:<1><2>", 
+                                Floor(MatchTime() / 60 % 60), 
+                                MatchTime() % 60 < 10 
+                                    ? "0" 
+                                    : "", 
+                                Floor(MatchTime() % 60)> 
+                            : "",
+        Location:       Location.Top, 
+        SortOrder:      -10000, 
+        TextColor:      CustomColor(255, PingPong(500, 255), 0, 255),
+        SubheaderColor: MatchTime() <= S_MATCH_TIME / 4 
+                            ? CustomColor(255, 255, PingPong(250, 255), 255)
+                            : Color.White, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
+
+    # afk text
+    CreateInWorldText(
+        VisibleTo:      local.afk ? local : null, 
+        Header:         "AFK",
+        Position:       RenderPosOf(0, 0.2), 
+        Scale:          100,
+        TextColor:      AFKPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # afk kick warning
+    CreateInWorldText(
+        VisibleTo:      local.afk ? local : null, 
+        Header:         DuoStringReplace(local.playerKickTimerStr, "{minutes}", "{seconds}",
+                            Floor(local.afkTime % 3600 / 60) != 0 // if minute is not 0
+                                ? <"<0><1>", Floor(local.afkTime % 3600 / 60),
+                                Floor(local.afkTime % 3600 / 60) != 1 // if minute is not 1
+                                    ? local.amountOfMinutesStr
+                                    : local.oneMinuteStr>
+                                : "", // if minute is 0
+                            <"<0><1>", Floor(local.afkTime % 60), 
+                                Floor(local.afkTime % 60) != 1 // if seconds arent 1
+                                    ? local.amountOfSecondsStr
+                                    : local.oneSecondStr>),
+        Position:       RenderPosOf(0, -0.2), 
+        Scale:          2,
+        TextColor:      local.afkTime > S_AFK_KICK_TIME / 4 
+                            ? CustomColor(Oscillate(100, 0, 255), Oscillate(100, 153, 255), 255, 255)
+                            : KickWarningPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    if (S_MENU || S_DEF_HUD)
+    {
+        # hide/show menu
+        CreateHudText(
+            VisibleTo:  !local.afk ? local : null, 
+            Subheader:  StringReplace(!local.menu ? local.holdToOpenMenuStr : local.releaseToHideMenuStr, "{interact}", BindString(Button.Interact)),
+            Location:   Location.Right, 
+            SortOrder:  0.2, 
+            Spectators: Spectators.VisibleNever);
+
+        # double tap for fav_item
+        CreateHudText(
+            VisibleTo:  !local.afk && local.favItem != Item.Invalid ? local : null, 
+            Subheader:  StringReplace(local.doubleTapToToggleFavStr, "{interact}", BindString(Button.Interact)) + local.quote1Str + local.favedItemStr + local.quote1Str, 
+            Location:   Location.Right, 
+            SortOrder:  0.3,
+            Spectators: Spectators.VisibleNever);
+    }
+
+    # spacing for death info
+    CreateHudText(
+        VisibleTo:  All(), 
+        Text:       " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 
+        Location:   Location.Top, 
+        SortOrder:  100, 
+        Spectators: Spectators.VisibleNever);
+
+    # death info
+    if (S_INSTANT_RESPAWN)
+    {
+        CreateHudText(
+            VisibleTo:      local.IsDead() ? local : null, 
+            Subheader:      StringReplace(local.pressToRespawnInstantlyStr, "{interact}", BindString(Button.Interact)), 
+            Location:       Location.Top, 
+            SortOrder:      101,
+            SubheaderColor: Color.Yellow, 
+            Spectators:     Spectators.VisibleNever);
+
+        CreateHudText(
+            VisibleTo:      local.IsDead() ? local : null, 
+            Subheader:      <"<0>\n", local.useNormalHeroSelectStr>, 
+            Location:       Location.Top, 
+            SortOrder:      102,
+            SubheaderColor: Color.Yellow, 
+            Spectators:     Spectators.VisibleNever);
+    }
+
+    # player stats
+    if (S_MODIFY_HUD || S_DEF_HUD)
+    {
+        # stats
+        CreateHudText(
+            VisibleTo: !local.afk && local.showStatsEnabled ? local : null, 
+            Subheader: <" \n\n\n\n<0><1><2><3><4><5><6><7><8><9><10>\n", 
+
+            // 0
+            <"<0><1>\n", local.kdrStatStr, 
+                Kills(local) > 0 && Deaths(local) == 0 
+                    ? "∞" 
+                    : (Kills(local) / Deaths(local)) + 0.0001>,
+
+            // 1
+            <"<0><1>\n", local.dmgRatioStatStr, 
+                DamageDealt(local) > 0 && DamageTaken(local) == 0
+                    ? "∞" 
+                    : (DamageDealt(local) / DamageTaken(local)) + 0.0001>,
+
+            <"<0><1>\n", local.dmgOutStatStr, PrettyNumber(<"<0>", DamageDealt(local)>)>, // 2
+            <"<0><1>\n", local.dmgInStatStr, PrettyNumber(<"<0>", DamageTaken(local)>)>, // 3
+            <"<0><1>%\n", local.accuracyStatStr, Accuracy(local)>, // 4
+
+            !critExcArr.Contains(HeroOf(local)) // 5
+                ? <"<0><1>%\n", local.critAccuracyStatStr, CritAccuracy(local)> : "",
+
+            scopeArr.Contains(HeroOf(local)) // 6
+                ? <"<0><1>%\n", local.scopeAccuracyStatStr, ScopedAccuracy(local)> : "", 
+
+            scopeCritArr.Contains(HeroOf(local)) // 7
+                ? <"<0><1>%\n", local.scopeCritAccuracyStatStr, ScopedCritAccuracy(local)> : "",
+
+            EnvironmentalKills(local) != 0 // 8
+                ? <"<0><1>\n", local.environmentKillsStatStr, EnvironmentalKills(local)> : "",
+
+            <"<0><1>\n", local.healingStatStr, PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
+
+            local.bestStreak != 0 // 10
+                ? <" \n<0>", StringReplace(local.bestKillStreakStatStr, "{number}", local.bestStreak)> : "">,
+
+            Location: Location.Left, 
+            SortOrder: 0.1, 
+            SubheaderColor: Color.White, 
+            Reevaluation: HudTextRev.VisibleToSortOrderAndString, 
+            Spectators: Spectators.DefaultVisibility);
+    }
+}
+
+rule: "HUD : Player Streak"
+Event.OngoingPlayer
+if (S_MODIFY_HUD || S_DEF_HUD)
+{
+    # visible only to self
+    CreateHudText(
+        VisibleTo:      !afk && streak && showStreakEnabled ? player : null,
+
+        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, local.youStr>, 
+        Text:           bestStreak != 0 
+                            ? <"<0><1>/<2>", local.currentKillStreakStr, killStreak, bestStreak> 
+                            : <"<0><1>", local.currentKillStreakStr, killStreak>, 
+        Location:       Location.Left, 
+        SortOrder:      1, 
+        SubheaderColor: Rainbow(), 
+        TextColor:      Color.White, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
+
+    # visible to everyone excluding self
+    CreateHudText(
+        VisibleTo:      !afk && streak ? FilteredArray(All().Remove(player), Curr().showStreakEnabled) : null,
+
+        Subheader:      <"<0>  <1>", HeroIconString(HeroOf()), player>, 
+        Text:           bestStreak != 0 
+                            ? <"<0><1>/<2>", local.currentKillStreakStr, killStreak, bestStreak> 
+                            : <"<0><1>", local.currentKillStreakStr, killStreak>, 
+        Location:       Location.Left, 
+        SortOrder:      SlotOf() + 1, 
+        SubheaderColor: HealthColor(), 
+        TextColor:      Color.White, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.DefaultVisibility);
+}

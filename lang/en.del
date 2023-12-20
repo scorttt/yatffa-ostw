@@ -1,0 +1,124 @@
+import "../main.del";
+
+////////////////////
+//   EN strings   //
+// translator: ME //
+////////////////////
+
+void SetEnglish() playervar "Menu Option Sub : Set Language to English"
+{
+    # \"translator\": scort
+    langSwap = true;
+    spin = true;
+    language = Lang.EN;
+
+    holdToOpenMenuStr = "Hold [{interact}] to open menu";
+    releaseToHideMenuStr = "Release [{interact}] to hide menu";
+    doubleTapToToggleFavStr ="Double tap [{interact}] to toggle ";
+    Wait(0.2);
+
+    pressToRespawnInstantlyStr = "{interact} to respawn instantly";
+    useNormalHeroSelectStr = "Use normal hero select to change hero";
+    Wait(0.2);
+
+    currentKillStreakStr = "Streak: ";
+    lastKillstreakStr = "{number} player killstreak!";
+    killStreakPersonalBestStr = "{number} player killstreak! Your personal best!";
+    killStreakServerBestStr = "{number} player killstreak! The lobby's best!";
+    playerGotServerBestKillStreakStr = "{player} got a {number} player killstreak! The lobby's best!";
+    youStr = " (You)";
+    bestKillStreakByPlayer = "Best Streak: {number} by {player}";
+    Wait(0.2);
+
+    kdrStatStr = "KDR: ";
+    dmgRatioStatStr = "DMG Ratio: ";
+    dmgOutStatStr = "DMG Out: ";
+    dmgInStatStr = "DMG In: ";
+    accuracyStatStr = "Accuracy: ";
+    critAccuracyStatStr = "Crit Accuracy: ";
+    scopeAccuracyStatStr = "Scope Accuracy: ";
+    scopeCritAccuracyStatStr = "Scope Crit Accuracy: ";
+    environmentKillsStatStr = "Environment Kills: ";
+    healingStatStr = "Healing: ";
+    bestKillStreakStatStr = "Best Streak: {number}";
+    Wait(0.2);
+
+    playerWasKickedStr = <" was kicked after <0> minutes of inactivity", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
+    playerKickTimerStr = "You will be kicked for inactivity in {minutes}{seconds}";
+    navigateMenuStr = "Navigate: Aim";
+    selectMenuItemStr = "Select: ";
+    favoriteMenuItemStr = "Favorite: ";
+    welcomeStr = "Welcome! ";
+    healToFullStr = " (To Full)";
+    instantHealDurStr = "Instant";
+    quote1Str = "\"";
+    quote2Str = "\"";
+    amountOfMinutesStr = " minutes ";
+    amountOfSecondsStr = " seconds";
+    oneMinuteStr = " minute ";
+    oneSecondStr = " second";
+
+    if (S_HEAL_TYPE == 0)
+        healTypeDescriptorStr = " (Heal on Kill) ";
+    else if (S_HEAL_TYPE == 1)
+        healTypeDescriptorStr = " (Health pickups) ";
+    else if (S_HEAL_TYPE == 2)
+        healTypeDescriptorStr = " (HOK and Pickups) ";
+    else
+        healTypeDescriptorStr = " (Disabled) ";
+
+    Wait(0.2);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // !!! reminder to self: manually set itemWidth when changing strings !!! //
+    showWorkshopHudItemStr = "Show Workshop HUD"; itemWidth[0] = 0.474;
+    showStatsItemStr =       "Show Stats";        itemWidth[1] = 0.320;
+    showKillStreaksItemStr = "Show Kill Streaks"; itemWidth[2] = 0.474;
+    healingItemStr =         "Healing";           itemWidth[3] = 0.606;
+                                                  itemWidth[4] = 0.400;
+                                                  itemWidth[5] = 0.400;
+    randomHeroItemStr =      "Random Hero";       itemWidth[6] = 0.342;
+    languageItemStr =        "Language";          itemWidth[7] = 0.276;
+    Wait(0.2);
+
+    showWorkshopHudNotifStr = "Workshop HUD shown!";
+    showStatsNotifStr = "Stats shown!";
+    showKillStreaksNotifStr = "Kill Streaks shown!";
+    enableHealNotifStr = "Healing Enabled!";
+    enableRandomHeroNotifStr = "Random Hero Enabled!";
+    Wait(0.2);
+
+    hideWorkshopHudNotifStr = "Workshop HUD Hidden!";
+    hideStatsNotifStr = "Stats Hidden!";
+    hideKillStreaksNotifStr = "Kill Streaks Hidden!";
+    disableHealNotifStr = "Healing Disabled!";
+    disableRandomHeroNotifStr = "Random Hero Disabled!";
+
+    spin = false;
+    Wait(0.1);
+
+    langProgStr = "Done!";
+    Wait(2);
+
+    langSwap = false;
+    langProgStr = "";
+}
+
+// void SetLanguageX(Number charWidth) playervar "Set Language X Sub"
+// {
+//     for (Number i! = 0; i < 8; i++)
+//     {
+//         if (langStr[LStr.Items][i] == null)
+//             langX[i] = 0.40;
+//         else
+//         {
+//             Number strLen = StringLength(langStr[LStr.Items][i]);
+//             if (i != Item.Heal)
+//                 langX[i] = 0.10 + (strLen * charWidth);
+//             else
+//                 langX[i] = 0.10 + (strLen + StringLength(langStr[LStr.Misc][12 + S_HEAL_TYPE])) * charWidth;
+//         }
+
+//         MinWait();
+//     }
+// }

@@ -1,0 +1,140 @@
+import "../main.del";
+
+playervar Any[] orbEff;
+playervar Number orbIn;
+playervar Vector[] orbPos;
+playervar Number[] orbTime;
+playervar Number[] orbReward;
+playervar Any envBeam;
+
+rule: "Healing : Pickup : Create Pickup"
+Event.OnFinalBlow
+if (Attacker() != Victim())
+if (healEnabled)
+if (orbPos.Length < S_MAX_HEAL_ORBS)
+if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
+{
+    orbIn++;
+    Vector pos! = RayHit(PosOf(Victim()), PosOf(Victim()) + Down() * 1000, null, All()) + Up();
+
+    # check if victim is over a kill plane or was an environment kill
+    if (DistanceBetween(pos, RayHit(pos, pos + Down() * 50)) >= 49 || EventWasEnvironment())
+    {
+        # good enough i guess
+        pos = NearestWalkablePosition(PosOf(Victim())) + Up();
+        CreateBeamEffect(Attacker(), BeamType.BadBeam, PosOf(Victim()), pos, Color.Yellow, EffectRev.None);
+        envBeam = LastCreatedEntity();
+    }
+ 
+    GetHealRewardAmount();
+    orbReward[orbIn] = healReward;
+    Number size = Clamp(orbReward[orbIn] * 0.001666, 0.075, 0.4);
+
+    PlayEffect(player, PlayEffect.RingExplosion, Color.Yellow, pos, size * 10);
+    PlayEffect(player, PlayEffect.GoodExplosion, Color.Yellow, pos, size);
+    PlayEffect(player, PlayEffect.GoodExplosion, Color.Yellow, pos, 0.1);
+    CreateEffect(player, Effect.GoodAura, Color.Yellow, pos, size, EffectRev.None);
+    orbEff[orbIn] = LastCreatedEntity();
+
+    orbPos[orbIn] = pos;
+    orbTime[orbIn] = S_ORB_TIME;
+
+    if (EntityExists(envBeam))
+    {
+        Wait(0.75);
+        DestroyEffect(envBeam);
+    }
+}
+
+rule: "Healing : Pickup : Pickup Timer"
+Event.OngoingPlayer
+if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
+if (orbIn != -1)
+if (orbTime.Length > 0)
+{
+    for (Number i! = orbTime.Length - 1; i >= 0; i--)
+    {
+        orbTime[i]--;
+
+        if (orbTime[i] <= 0)
+            RemovePickup(i);
+
+        MinWait();
+    }
+
+    Wait(1);
+    LoopIfConditionIsTrue();
+}
+
+rule: "Healing : Pickup : Collect Pickup"
+Event.OngoingPlayer
+if (orbPos.Length != 0)
+if (IsTrueForAny(orbPos, DistanceBetween(Curr(), PositionOf() + Up()) < S_ORB_COLLECT_DIST))
+if (healEnabled)
+if (!IsDuplicating()) 
+if (Health() < MaxHealth())
+{
+    # invalidate index first
+    Number closestIn! = -1;
+
+    for (Number i! = 0; i < orbPos.Length; i++)
+    {
+        # check closest distance between all indices
+        Number distance! = DistanceBetween(orbPos[i], PositionOf() + Up());
+
+        if (distance < S_ORB_COLLECT_DIST)
+        {
+            closestIn = i;
+            healReward = orbReward[i];
+            break;
+        }
+    }
+
+    if (S_ORB_COLLECTION_DESPAWN)
+    {
+        for (Number i! = 0; i < orbPos.Length; i++)
+        {
+            Number size! = Clamp(orbReward[i] * 0.001666, 0.075, 0.4);
+            PlayEffect(player, PlayEffect.RingExplosion, Color.Yellow, orbPos[i], size * 10);
+            PlayEffect(player, PlayEffect.BadExplosion, Color.Yellow, orbPos[i], size);
+        }
+
+        # clear arrays
+        DestroyEffect(orbEff);
+        orbIn = -1;
+        orbPos = [];
+        orbEff = [];
+        orbTime = [];
+        orbReward = [];
+    }
+    else if (closestIn != -1)
+    {
+        # remove closest pickup
+        RemovePickup(closestIn);
+    }
+
+    # effects
+    PlayEffect(player, PlayEffect.GoodPickupEffect, Color.Yellow, PosOf(), 1);
+    PlayEffect(player, PlayEffect.BuffExplosionSound, null, player, 100);
+
+    # apply healing
+    async GiveHealReward(player);
+}
+
+void RemovePickup(in Number index)
+{
+    Number size! = Clamp(orbReward[index] * 0.001666, 0.075, 0.4);
+
+    PlayEffect(player, PlayEffect.BadExplosion, Color.Yellow, orbPos[index], size);
+    PlayEffect(player, PlayEffect.RingExplosion, Color.Yellow, orbPos[index], size * 10);
+
+    DestroyEffect(orbEff[index]);
+    # remove from arrays
+    orbPos = RemoveFromArrayAtIndex(orbPos, index);
+    orbEff = RemoveFromArrayAtIndex(orbEff, index);
+    orbTime = RemoveFromArrayAtIndex(orbTime, index);
+    orbReward = RemoveFromArrayAtIndex(orbReward, index);
+
+    # not the best but whatever
+    orbIn = orbTime.Length - 1;
+}

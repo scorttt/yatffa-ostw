@@ -1,0 +1,166 @@
+{
+    "Lobby": {
+      "Allow Players Who Are In Queue": true,
+      "Match Voice Chat": true,
+      "Map Rotation": "After A Game",
+      "Max FFA Players": 12,
+      "Max Spectators": 3,
+      "Return To Lobby": "Never"
+    },
+    "Modes": {
+      "All": {
+        "Game Mode Start": "Immediately",
+        "Hero Limit": "Off"
+      },
+      "Deathmatch": {
+        "Enabled Maps": ["Château Guillard"],
+        "Score To Win": 60
+    }
+  },
+  "Heroes": {
+    "General": {
+      "Enabled Heroes": [
+        "Ana",
+        "Ashe",
+        "Baptiste",
+        "Bastion",
+        "Doomfist",
+        "Genji",
+        "Hanzo",
+        "Junker Queen",
+        "Orisa",
+        "Illari",
+        "Lúcio",
+        "Lifeweaver",
+        "Cassidy",
+        "Mei",
+        "Echo",
+        "Kiriko",
+        "Sombra",
+        "Pharah",
+        "Soldier: 76",
+        "Sojourn",
+        "Tracer",
+        "Torbjörn",
+        "Widowmaker",
+        "Zenyatta"
+      ],
+      "Ana": {
+        "Ultimate Ability (Nano Boost)": false,
+        "Sleep Dart Cooldown Time": 80
+      },
+      "Cassidy": {
+        "Secondary Fire": false,
+        "Magnetic Grenade": false,
+        "Ultimate Ability (Deadeye)": false
+      },
+      "D.va": {
+        "Boosters": false,
+        "Defense Matrix": false,
+        "Micro Missiles": false,
+        "Spawn Without Mech": true,
+        "Ultimate Ability (Self-Destruct)": false
+      },
+      "Doomfist": {
+        "Health": 91.6666,
+        "Ultimate Ability (Meteor Strike)": false
+      },
+      "Baptiste": {
+        "Ultimate Ability (Amplification Matrix)": false,
+        "Immortality Field": false,
+        "Healing Dealt": 60
+      },
+      "Bastion": {
+        "Health": 91.6666,
+        "Reconfigure": false,
+        "Ultimate Ability (Configuration: Artillery)": false
+      },
+      "Echo": {
+        "Focusing Beam": false,
+        "Ultimate Ability (Duplicate)": false
+      },
+      "Torbjörn": {
+        "Deploy Turret": false,
+        "Ultimate Ability (Molten Core)": false
+      },
+      "Mei": {
+        "No Ammunition Requirement": true,
+        "Cryo-Freeze": false,
+        "Ice Wall": false,
+        "Primary Fire": false,
+        "Ultimate Ability (Blizzard)": false
+      },
+      "Hanzo": {
+        "Ultimate Ability (Dragonstrike)": false
+      },
+      "Junker Queen": {
+        "Health": 91.6666,
+        "Commanding Shout": false,
+        "Carnage": false,
+        "Jagged Blade Cooldown Time": 75,
+        "Ultimate Ability (Rampage)": false
+      },
+      "Orisa": {
+        "Health": 68.7500,
+        "Ultimate Ability (Terra Surge)": false,
+        "Energy Javelin Cooldown Time": 50,
+        "Fortify": false,
+        "Javelin Spin": false
+      },
+      "Genji": {
+        "Ultimate Ability (Dragonblade)": false
+      },
+      "Ramattra" : {
+        "Health": 91.6666,
+        "Ultimate Ability (Annihilation)": false,
+        "Void Barrier Omnic Form": false,
+        "Ravenous Vortex": false
+      },
+      "Sombra": {
+        "Hack": false,
+        "Virus": false,
+        "Ultimate Ability (EMP)": false
+      },
+      "Soldier: 76": {
+        "Healing Dealt": 70,
+        "Ultimate Ability (Tactical Visor)": false
+      },
+      "Sojourn": {
+        "Disruptor Shot": false,
+        "Ultimate Ability (Overclock)": false
+      },
+      "Ashe": {
+        "Ultimate Ability (B.O.B.)": false,
+        "Dynamite": false
+      },
+      "Pharah": {
+        "Ultimate Ability (Barrage)": false
+      },
+      "Illari": {
+        "Ultimate Ability (Captive Sun)": false,
+        "Healing Pylon": false
+      },
+      "Lifeweaver": {
+        "Ultimate Ability (Tree of Life)": false,
+        "Petal Platform Health": 25
+      },
+      "Lúcio": {
+        "Ultimate Ability (Sound Barrier)": false,
+        "Healing Dealt": 40
+      },
+      "Kiriko": {
+        "Ultimate Ability (Kitsune Rush)": false,
+        "Protection Suzu": false
+      },
+      "Widowmaker": {
+        "Ultimate Ability (Infra-sight)" : false,
+        "Grappling Hook Cooldown Time": 33.3334
+      },
+      "Zenyatta": {
+        "Ultimate Ability (Transcendence)": false
+      }
+    }
+  },
+  "Mode Name": "トライハードFFA",
+  "Description": "トライハードFFA\nコード：5RKYY\n作者：scort#11221（僕は英語だけ分かる！）\n2.3.5｜2023年10月10日"
+}

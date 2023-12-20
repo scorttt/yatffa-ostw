@@ -1,0 +1,573 @@
+import "settings/settings.json";
+// import "settings/jpsettings.json";
+import "../macros-ostw/main.del";
+
+import "afk.del";
+import "healing/healmain.del";
+import "healing/hok.del";
+import "healing/healpickup.del";
+import "hud.del";
+import "debug.del";
+
+import "menu/menu.del";
+
+import "lang/en.del";
+import "lang/jp.del";
+// import "lang/es.del";
+
+globalvar Hero[] critExcArr;
+globalvar Hero[] scopeArr;
+globalvar Hero[] scopeCritArr;
+globalvar Hero[] boundingBoxArr;
+globalvar Number S_MATCH_TIME;
+globalvar Boolean S_DESTROY_RAILINGS;
+
+globalvar Number S_HEAL_TYPE;
+globalvar Boolean S_MENU;
+globalvar Boolean S_USE_MENU_ANIM;
+globalvar Boolean S_DEF_HUD;
+globalvar Boolean S_DEF_STATS;
+globalvar Boolean S_DEF_STREAK;
+globalvar Boolean S_DEF_HEAL;
+globalvar Boolean S_DEF_RANDOMHERO;
+
+globalvar Number S_MAX_HEAL_ORBS;
+globalvar Number S_ORB_TIME;
+globalvar Boolean S_ORB_COLLECTION_DESPAWN;
+globalvar Number S_ORB_COLLECT_DIST;
+
+globalvar Number S_AFK_TIME;
+globalvar Number S_AFK_KICK_TIME;
+
+globalvar Boolean S_MODIFY_HUD;
+globalvar Boolean S_MODIFY_HEAL;
+globalvar Boolean S_MODIFY_RANDOMHERO;
+
+globalvar Boolean S_DISABLE_HEALSTACK;
+globalvar Number S_HOT_TIME;
+globalvar Boolean S_HOT_INTERRUPT;
+globalvar Number S_HOT_MINDMG;
+globalvar Boolean S_INSTANT_RESPAWN;
+globalvar Boolean S_SCORE_TO_WIN;
+globalvar Number S_FLAT_HEAL_AMT;
+globalvar Boolean flatHeal;
+globalvar Number S_HEAL_PERCENT;
+globalvar Number finalHeal; 
+globalvar Number healIncrement;
+globalvar Number S_LANG;
+
+globalvar Vector[] projLoc;
+
+globalvar Any[] dbgUsrs;
+playervar Boolean isDbgUsr;
+
+playervar Boolean checkSpawn;
+playervar Boolean hasOpenedMenu;
+
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+////// giant fuckin list of localized strings start //////
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+playervar String holdToOpenMenuStr!;
+playervar String releaseToHideMenuStr!;
+playervar String doubleTapToToggleFavStr!;
+
+playervar String pressToRespawnInstantlyStr!;
+playervar String useNormalHeroSelectStr!;
+
+playervar String currentKillStreakStr!;
+playervar String lastKillstreakStr!;
+playervar String killStreakPersonalBestStr!;
+playervar String killStreakServerBestStr!;
+playervar String playerGotServerBestKillStreakStr!;
+playervar String youStr!;
+playervar String bestKillStreakByPlayer!;
+
+playervar String kdrStatStr!;
+playervar String dmgRatioStatStr!;
+playervar String dmgOutStatStr!;
+playervar String dmgInStatStr!;
+playervar String accuracyStatStr!;
+playervar String critAccuracyStatStr!;
+playervar String scopeAccuracyStatStr!;
+playervar String scopeCritAccuracyStatStr!;
+playervar String environmentKillsStatStr!;
+playervar String healingStatStr!;
+playervar String bestKillStreakStatStr!;
+
+playervar String playerWasKickedStr!;
+playervar String playerKickTimerStr!;
+playervar String navigateMenuStr!;
+playervar String selectMenuItemStr!;
+playervar String favoriteMenuItemStr!;
+playervar String welcomeStr!;
+playervar String healToFullStr!;
+playervar String instantHealDurStr!;
+playervar String quote1Str!;
+playervar String quote2Str!;
+playervar String amountOfMinutesStr!;
+playervar String amountOfSecondsStr!;
+playervar String oneMinuteStr!;
+playervar String oneSecondStr!;
+playervar String healTypeDescriptorStr!;
+
+playervar String showWorkshopHudItemStr!;
+playervar String showStatsItemStr!;
+playervar String showKillStreaksItemStr!;
+playervar String healingItemStr!;
+playervar String randomHeroItemStr!;
+playervar String languageItemStr!;
+
+playervar String showWorkshopHudNotifStr!;
+playervar String showStatsNotifStr!;
+playervar String showKillStreaksNotifStr!;
+playervar String enableHealNotifStr!;
+playervar String enableRandomHeroNotifStr!;
+
+playervar String hideWorkshopHudNotifStr!;
+playervar String hideStatsNotifStr!;
+playervar String hideKillStreaksNotifStr!;
+playervar String disableHealNotifStr!;
+playervar String disableRandomHeroNotifStr!;
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+////// end of giant fuckin list of localized strings //////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+
+enum LStr
+{
+    MenuStatus, // 0
+    Death, // 1
+    Streak, // 2
+    Stats, // 3
+    Misc, // 4
+    Items, // 5
+    Enabled, // 6
+    Disabled // 7
+}
+enum Lang
+{
+    EN,
+    JP
+}
+
+rule: "v2.3.5.231010 | Created by scort#12211" 
+{
+    # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw
+    DisableInspectorRecording(); 
+}
+
+rule: "Initial Global"
+{
+    dbgUsrs = ["scort", "gigaballs"];
+
+    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
+    scopeArr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
+    scopeCritArr = [Hero.Widowmaker, Hero.Ashe];
+    boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
+
+    S_LANG = WorkshopSettingCombo("A. General", "Language", 0, ["English", "日本語"], 0);
+    S_MATCH_TIME = WorkshopSettingInteger("A. General", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
+    S_INSTANT_RESPAWN = WorkshopSettingToggle("A. General", "Respawn instantly on Interact", true, 2);
+    S_SCORE_TO_WIN = WorkshopSettingToggle("A. General", "Enable Score Win Condition", true, 3);
+    S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 4);
+    S_AFK_TIME = WorkshopSettingReal("A. General", "Time to put players in AFK (Seconds)", 20, 5, 600, 5);
+    S_AFK_KICK_TIME = WorkshopSettingReal("A. General", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 6) - 20;
+
+    S_MENU = WorkshopSettingToggle("B. Menu", "Use Menu", true, 0);
+    S_USE_MENU_ANIM = WorkshopSettingToggle("B. Menu", "Menu Animations", true, 1);
+
+    S_MODIFY_HUD = WorkshopSettingToggle("C. HUD", "Allow Modifying Workshop HUD menu toggle", true, 1);
+    S_DEF_HUD = WorkshopSettingToggle("C. HUD", "\"Show Workshop HUD\" default menu toggle", true, 2);
+    S_DEF_STREAK = WorkshopSettingToggle("C. HUD", "\"Show Kill Streaks\" default menu toggle", true, 3);
+    S_DEF_STATS = WorkshopSettingToggle("C. HUD", "\"Show Player Stats\" default menu toggle", true, 4);
+
+    S_MODIFY_RANDOMHERO = WorkshopSettingToggle("D. Random Hero", "Allow Modifying \"Random Hero\" menu toggle", true, 0);
+    S_DEF_RANDOMHERO = WorkshopSettingToggle("D. Random Hero", "\"Random Hero\" default menu toggle", false, 1);
+
+    S_HEAL_TYPE = WorkshopSettingCombo("E. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
+    S_MODIFY_HEAL = WorkshopSettingToggle("E. Healing", "Allow Modifying Healing menu settings", true, 1);
+    S_DEF_HEAL = WorkshopSettingToggle("E. Healing", "\"Healing\" default menu toggle", true, 2);
+    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 8, 
+        ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
+         "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
+         "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
+         "50% of Victims Max HP", "55% of Victims Max HP", "60% of Victims Max HP", 
+         "65% of Victims Max HP", "70% of Victims Max HP", "75% of Victims Max HP", 
+         "80% of Victims Max HP", "85% of Victims Max HP", "90% of Victims Max HP", 
+         "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
+
+    S_FLAT_HEAL_AMT = WorkshopSettingInteger("E. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 100, 1, 700, 4);
+    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 4, 0, 16, 5) * 2) / 2;
+    S_DISABLE_HEALSTACK = WorkshopSettingToggle("E. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
+    S_HOT_INTERRUPT = WorkshopSettingToggle("E. Healing", "Interrupt Healing upon damage taken", true, 7);
+    S_HOT_MINDMG = WorkshopSettingReal("E. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
+
+    S_ORB_TIME = WorkshopSettingInteger("F. Healing Pickups", "Pickup Lifetime", 8, 2, 30, 0);
+    S_MAX_HEAL_ORBS = WorkshopSettingInteger("F. Healing Pickups", "Maximum amount of pickups per player (11+ may go over the 128 effect limit)", 10, 1, 20, 1);
+    S_ORB_COLLECTION_DESPAWN = WorkshopSettingToggle("F. Healing Pickups", "All pickups disappear after collection", false, 2);
+    S_ORB_COLLECT_DIST = WorkshopSettingReal("F. Healing Pickups", "Pickup Collection Distance", 1.5, 1, 3, 3);
+
+    Number credit! = WorkshopSettingCombo("Z. Credit", "Credit", 0, ["scort#11221", "さるよ (JP Localization)", "Josbird (Cursor math)", "Please credit!"], 1000);
+    credit = WorkshopSettingCombo("Z. Credit", "Import Codes", 0, ["BXRXY (NA/EU)", "5RKYY (JP)"], 1000);
+
+    if (S_HEAL_PERCENT != 20)
+    {
+        flatHeal = false;
+        finalHeal = (S_HEAL_PERCENT + 1) * 0.05;
+        healIncrement = 0.025;
+    }
+    else 
+    {
+        flatHeal = true;
+        finalHeal = Near(S_FLAT_HEAL_AMT / 5) * 5;
+        healIncrement = 5;
+    }
+
+    if (S_HEAL_TYPE == 3)
+    {
+        S_MODIFY_HEAL = false;
+        S_DEF_HEAL = false;
+    }
+
+    if (!S_MODIFY_HEAL && !S_DEF_HEAL)
+        S_HEAL_TYPE = 3;
+
+    if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
+    {
+        validMap = true;
+
+        if (S_DESTROY_RAILINGS)
+        {
+            projLoc = [Vector(206.28, 13.00, 65.06),
+                        Vector(175.60, 10.00, 79.51),
+                        Vector(224.87, 10.78, 105.12),
+                        Vector(219.70, 5.95, 73.67)];
+        }
+    }
+
+    DisableAnnouncer();
+    SetMatchTime(1);
+
+    Wait(2);
+    EnableAnnouncer();
+}
+
+rule: "Initial Player Join"
+Event.OnPlayerJoin
+if (!IsDummyBot())
+{
+    DisableGameModeHud();
+
+    # invalidate sel_item and fav_item
+    selItem = Item.Invalid;
+    favItem = Item.Invalid;
+    favedItemStr = "";
+
+    # set healing properties
+    healAmt = finalHeal;
+    healDur = S_HOT_TIME;
+
+    # invalidate orb index
+    if (S_HEAL_TYPE != 0)
+        orbIn = -1;
+
+    # set afk timer
+    afkTime = S_AFK_KICK_TIME;
+
+    # scort?
+    // isDbgUsr = dbgUsrs.Contains(<"<0>", player>);
+
+    Wait(0.032);
+
+    # set menu defaults
+    showAllEnabled = S_DEF_STATS && S_DEF_STREAK;
+    showStatsEnabled = S_DEF_STATS;
+    showStreakEnabled = S_DEF_STREAK;
+    healEnabled = S_DEF_HEAL;
+    randomHeroEnabled = S_DEF_RANDOMHERO;
+
+    # set language, should replace this with a switch if i ever add more languages
+    if (S_LANG == Lang.EN)
+        SetEnglish();
+    else if (S_LANG == Lang.JP)
+        SetJapanese(); 
+
+    # set menu animation initial value
+    if (S_USE_MENU_ANIM)
+    {
+        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        {
+            itemYPos[i] = 2.15;
+            Wait(0.048);
+        }
+
+        menuInit = true;
+    }
+    else 
+    {
+        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        {
+            itemYPos[i] = ITEM_Y_POS[i];
+            Wait(0.048);
+        }
+
+        menuInit = true;
+    }
+}
+
+rule: "Match : Match Started"
+if (IsGameInProgress())
+{
+    if (!S_SCORE_TO_WIN)
+    {
+        DisableCompletion();
+        DisableAnnouncer();
+    }
+
+    Wait(0.08);
+    SetMatchTime(S_MATCH_TIME);
+}
+
+globalvar Number timeResets;
+rule: "Match : Reset Match time if lobby becomes empty"
+if (IsGameInProgress())
+if (All().Length == 0)
+if (Time() > 10)
+if (timeResets < 3)
+{
+    SetMatchTime(S_MATCH_TIME);
+
+    WaitIfTrue(10);
+    timeResets++;
+}
+
+rule: "Match : End Game"
+if (!S_SCORE_TO_WIN)
+if (MatchTime() <= 0)
+{
+    WaitIfTrue(1); // just in case something breaks and somehow puts lobbies into a restart loop
+    EnableCompletion();
+}
+
+rule: "Spawning : Player Spawned"
+Event.OngoingPlayer
+if (HasSpawned())
+{
+    afk = false;
+    Wait(1);
+    WaitUntil(!langSwap, 1);
+
+    SmallMessage(player, <"   <0><1>", local.welcomeStr, S_MENU ? StringReplace(local.holdToOpenMenuStr, "{interact}", BindString(Button.Interact)) : "">);
+}
+
+rule: "Spawning : Respawn"
+Event.OngoingPlayer
+if (IsAlive())
+if (HasSpawned())
+{
+    if (!randomHeroEnabled)
+    {
+        switch (HeroOf())
+        {
+            case Hero.Tracer:
+                SetAbilityCharge(player, Button.Ability1, 3);
+                break;
+            case Hero.Symmetra:
+                SetAbilityCharge(player, Button.Ability1, 3);
+                break;
+            case Hero.Junkrat:
+                SetAbilityCharge(player, Button.Ability1, 2);
+                break;
+            case Hero.Dva:
+                SetAbilityResource(player, Button.SecondaryFire, 100);
+                break;
+            case Hero.Reinhardt:
+                SetAbilityCharge(player, Button.Ability2, 2);
+                break;
+            case Hero.Pharah:
+                SetAbilityResource(player, Button.Jump, 100);
+                break;
+        }
+    }
+    else
+    {
+        # remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
+        Hero prevHero! = HeroOf();
+        Hero[] heroArr! = AllowedHeroes() - prevHero;
+
+        ForcePlayerHero(player, heroArr.Random());
+        StopForcingHero();
+
+        # add the previous hero back to the hero array
+        heroArr = AllowedHeroes() + prevHero;
+    }
+
+    MinWait();
+
+    ResetHeroAvailability();
+    checkSpawn = true;
+
+    Wait(0.08);
+
+    checkSpawn = false;
+
+    SetAbilityCooldown(player, Button.Ability1, 0);
+    SetAbilityCooldown(player, Button.Ability2, 0);
+    SetAbilityCooldown(player, Button.PrimaryFire, 0);
+    SetAbilityCooldown(player, Button.SecondaryFire, 0);
+
+    if (Health() != MaxHealth())
+        FixSpawnHealth();
+}
+
+void FixSpawnHealth() playervar "Fix Spawn Health"
+{
+    # dumb workaround for characters spawning with one less hp (maybe not needed anymore?)
+    Wait(0.05);
+    SetPlayerHealth(player, MaxHealth() - 1);
+    Wait(0.05);
+    SetPlayerHealth(player, MaxHealth());
+}
+
+rule: "Spawning : Remove Chateau Pier Spawn"
+Event.OngoingPlayer
+if (checkSpawn)
+if (validMap)
+if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
+{
+    checkSpawn = false;
+
+    LogToInspector(<"<0> spawned near the Chateau Pier spawn coords, forcing a respawn", player>);
+    Respawn();
+}
+
+rule: "Spawning : Force Respawn Hotkey"
+Event.OngoingPlayer
+if (S_INSTANT_RESPAWN)
+if (IsButtonHeld(player, Button.Interact))
+if (IsDead())
+{
+    Respawn();
+}
+
+rule: "Streak : Update Killstreak"
+Event.OnFinalBlow
+if (IsAlive(Attacker())) 
+if (Attacker() != Victim())
+{
+    killStreak++;
+
+    if (killStreak >= 5)
+        streak = true;
+}
+
+rule: "Streak : Player died, Reset Kills"
+Event.OnDeath
+if (killStreak > 0)
+{
+    streak = false;
+
+    if (killStreak >= 5 && killStreak > bestStreak)
+    {
+        bestStreak = killStreak;
+
+        bestStreakHero = HeroIconString(HeroOf());
+
+        if (bestStreak > bestStreakServer)
+        {
+            bestStreakServer = bestStreak;
+            bestStreakServerUser = player;
+            bestStreakServerHero = bestStreakHero;
+            SmallMessage(showStreakEnabled ? player : null, "   " + StringReplace(local.killStreakServerBestStr, "{number}", killStreak));
+            Wait(0.1);
+            SmallMessage(FilteredArray(All().Remove(player), Curr().showStreakEnabled), 
+            <"   <0> <1>", bestStreakServerHero, DuoStringReplace(local.playerGotServerBestKillStreakStr, "{player}", "{number}", bestStreakServerUser, killStreak)>);
+        }
+        else 
+        {
+            SmallMessage(showStreakEnabled ? player : null, "   " + <"<0> <1>", bestStreakHero, StringReplace(local.killStreakPersonalBestStr, "{number}", killStreak)>);
+        }
+    }
+    else if (killStreak >= 5)
+    {
+        SmallMessage(showStreakEnabled ? player : null, "   " + StringReplace(local.lastKillstreakStr, "{number}", killStreak));
+    }
+
+    Wait(0.1);
+    killStreak = 0;
+}
+
+globalvar Boolean validMap;
+
+rule: "Destroy Railings"
+if (S_DESTROY_RAILINGS)
+if (IsGameInProgress())
+if (All().Length > 0) // if at least one person has loaded into the lobby
+if (validMap)
+{
+    for (Number i = 0; i < projLoc.Length; i++)
+    {
+        CreateProjectile(
+            ProjectileType: ProjectileType.OrbProjectile, 
+            Player: null, 
+            StartPosition: projLoc[i], 
+            Direction: Down(), 
+            Relative: Relative.ToWorld, 
+            ModifyHealthType: ModifyHealthType.Damage, 
+            AffectedTeam: Team.All, 
+            Amount: 0, 
+            AmountScalar: 99999, 
+            ExplosionRadius: 30, // explosion radius is capped to some internal arbitrary number (around 30)
+            ExplosionEffect: PlayEffect.BadExplosion, 
+            ExplosionSoundEffect: PlayEffect.ExplosionSound, 
+            Oversize: 0, 
+            Speed: 100, 
+            Lifetime: 2, 
+            Impulse: 0,
+            RicochetCount: 0,
+            Gravity: 0
+        );
+    }
+}
+
+rule: "Bounding Box"
+Event.OngoingPlayer
+if (validMap)
+if (boundingBoxArr.Contains(HeroOf()))
+if (PosOf().Y < 6)
+if (IsInRange(PosOf().Z, 108.50, 116.50))
+if (IsInRange(PosOf().X, 187.22, 199.50))
+{
+    if (IsInRange(PosOf().X, 198.60, 199.50))
+        ApplyImpulse(player, Vector(1, 0, 0), 1);
+    else if (IsInRange(PosOf().X, 187.00, 188.10))
+        ApplyImpulse(player, Vector(-1, 0, 0), 1);
+    else if (IsInRange(PosOf().Z, 112.70, 116.50))
+        ApplyImpulse(player, Vector(0, 0, 1), 1);
+    Wait(0.05);
+    LoopIfConditionIsTrue();
+}
+
+playervar Boolean spin;
+void DumbWait(Number wait) { if (spin) Wait(wait); } // why cant i just use WaitIfTrue in a while
+void LangSwapSpin() playervar "Language Swap Spin Load Thing"
+{
+    while (spin)
+    {
+        langProgStr = AltFont("ー");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("／");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("｜");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("\\");
+        DumbWait(0.1);
+    }
+}

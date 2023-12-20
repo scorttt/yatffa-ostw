@@ -1,0 +1,106 @@
+import "../main.del";
+globalvar String[] JP_STR;
+////////////////////////
+//     JP strings     //
+// translator: saruyo //
+////////////////////////
+
+void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
+{
+    # translator: saruyo/さるよ
+    langSwap = true;
+    spin = true;
+    language = Lang.JP;
+
+    holdToOpenMenuStr = "メニューを開く「{interact}を長押し」";
+    releaseToHideMenuStr = "メニューを非表示「{interact}を放す」";
+    doubleTapToToggleFavStr ="「{interact}」をダブルタップして";
+    Wait(0.2);
+
+    pressToRespawnInstantlyStr = "「{interact}」を直ぐにリスポーンする";
+    useNormalHeroSelectStr = "普通ヒーロー選択で変更する";
+    Wait(0.2);
+
+    currentKillStreakStr = "連続キル：";
+    lastKillstreakStr = "{number}人連続キル！";
+    killStreakPersonalBestStr = "{number}人連続キル！あなたの自己最高！";
+    killStreakServerBestStr = "{number}人連続キル！このロビーで最高！";
+    playerGotServerBestKillStreakStr = "{player}さんは{number}人連続キルを得ました！このロビーで最高！";
+    youStr = "（あなた）";
+    bestKillStreakByPlayer = "最高連続キル：{player}さん{number}人殺した";
+    Wait(0.2);
+
+    kdrStatStr = "キル・デス率：";
+    dmgRatioStatStr = "ダメージ率：";
+    dmgOutStatStr = "与ダメージ：";
+    dmgInStatStr = "受けたダメージ：";
+    accuracyStatStr = "命中率：";
+    critAccuracyStatStr = "CRIT命中率：";
+    scopeAccuracyStatStr = "スコープ命中率：";
+    scopeCritAccuracyStatStr = "スコープCRIT命中率：";
+    environmentKillsStatStr = "環境キル：";
+    healingStatStr = "回復：";
+    bestKillStreakStatStr = "最高連続キル：#人";
+    Wait(0.2);
+
+    playerWasKickedStr = <"さん<0>分間のAFKの後キックされった", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
+    playerKickTimerStr = "AFKだから{minutes}{seconds}でキックされる";
+    navigateMenuStr = "操作：マウス";
+    selectMenuItemStr = "選ぶ：";
+    favoriteMenuItemStr = "お気に入り：";
+    welcomeStr = "ようこそ！";
+    healToFullStr = "（フルに）";
+    instantHealDurStr = "即時";
+    quote1Str = "「";
+    quote2Str = "」";
+    amountOfMinutesStr = "分";
+    amountOfSecondsStr = "秒";
+    oneMinuteStr = "分";
+    oneSecondStr = "秒";
+
+    if (S_HEAL_TYPE == 0)
+        healTypeDescriptorStr = "（キルヒーリング）";
+    else if (S_HEAL_TYPE == 1)
+        healTypeDescriptorStr = "（ピックアップ）";
+    else if (S_HEAL_TYPE == 2)
+        healTypeDescriptorStr = "（キルとピックアップ）";
+    else 
+        healTypeDescriptorStr = "（無効）";
+
+    Wait(0.2);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // !!! reminder to self: manually set itemWidth when changing strings !!! //
+    showWorkshopHudItemStr = "HUDを見せる";      itemWidth[0] = 0.380;
+    showStatsItemStr =       "統計を見せる";        itemWidth[1] = 0.340;
+    showKillStreaksItemStr = "連続キルを見せる";     itemWidth[2] = 0.420;
+    healingItemStr =         "回復";               itemWidth[3] = 0.540;
+                                                  itemWidth[4] = 0.400;
+                                                  itemWidth[5] = 0.400;
+    randomHeroItemStr =      "ランダム・ヒーロー";   itemWidth[6] = 0.460;
+    languageItemStr =        "言語";              itemWidth[7] = 0.180;
+
+    Wait(0.2);
+
+    showWorkshopHudNotifStr = "HUDを見る!";
+    showStatsNotifStr = "統計を見る!";
+    showKillStreaksNotifStr = "連続キルを見る!";
+    enableHealNotifStr = "回復を有効！";
+    enableRandomHeroNotifStr = "ランダム・ヒーローを有効！";
+    Wait(0.2);
+
+    hideWorkshopHudNotifStr = "HUDを隠した！";
+    hideStatsNotifStr = "統計を隠した！";
+    hideKillStreaksNotifStr = "連続キルを隠した！";
+    disableHealNotifStr = "回復を無効！";
+    disableRandomHeroNotifStr = "ランダム・ヒーローを無効！";
+
+    spin = false;
+    Wait(0.1);
+
+    langProgStr = "完了！";
+    Wait(2);
+
+    langSwap = false;
+    langProgStr = "";
+}
