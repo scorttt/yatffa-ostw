@@ -20,13 +20,18 @@ if (IsButtonHeld(host, Button.Interact))
 
 rule: "Debug : Host Server Load"
 {
-    CreateInWorldText(host, <"C: <0>%, A: <1>%, P: <2>%, E: <3>, T: <4> (<5>)", 
-    Near(ServerLoad()), 
-    Near(ServerLoadAverage()), 
-    Near(ServerLoadPeak()), 
-    EntityCount(),
-    TextCount(), TextCount() - 1>, 
-    RenderPosOf(3, -2.05), 1, Clipping.DoNotClip, InworldTextRev.VisibleToPositionStringAndColor);
+    CreateHudText(
+        VisibleTo: host.menu ? host : null,
+        Header: null,
+        Subheader: <"C: <0>%, A: <1>%, P: <2>%, E: <3>, T: <4> (<5>)", 
+                    Near(ServerLoad()), 
+                    Near(ServerLoadAverage()), 
+                    Near(ServerLoadPeak()), 
+                    EntityCount(),
+                    TextCount(), TextCount() - 1>, 
+        Text: null,
+        Location: Location.Right,
+        SortOrder: 0);
 }
 
 rule: "Debug : Main"
@@ -36,17 +41,16 @@ if (isDbgUsr)
     if (host.isDbgUsr)
         EnableInspectorRecording();
 
-    CreateHudText(player, null, <" \nPos: <0>\nNW: <1><2>\nFacing: <3>\nRC: <4>",
+    CreateHudText(player, null, <" \nPos: <0>\nFacing: <1>\nRC: <2>",
 
     PosOf(),
-    NearestWalkablePosition(PosOf()), NearestWalkablePosition(PosOf()) != PosOf() ? " !" : "",
     Facing(),
-    RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, All(), false)>,
+    RayHit(EyePos(), EyePos() + Facing() * 100, null, All())>,
     null, Location.Right, 0.5);
 
     CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\nanim: <4>\ncloseAnim: <5>", CursorX(), CursorY(), selItem, favItem, anim, closeAnim>, null, Location.Right, 0.6);
 
-    if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
+    if (S_HEAL_TYPE != 0)
         CreateHudText(player, null, <"orbIn: <0>\norbPos len: <1>", orbIn, orbPos.Length>, null, Location.Right, 0.7);
 }
 
@@ -57,19 +61,19 @@ if (isDbgUsr)
 //         CreateEffect(All(), Effect.Sphere, Color.White, RayCastHitPosition(SpawnPoints(Team.All)[Once(i)], SpawnPoints(Team.All)[Once(i)] + Down(), null, null), 0.5, EffectRev.VisibleToPositionRadiusAndColor);
 // }
 
-rule: "Bots"
-Event.OngoingPlayer
-if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
-{
-    CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
-}
+// rule: "Bots"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
+// {
+//     CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
+// }
 
-rule: "Destroy Bots"
-Event.OngoingPlayer
-if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
-{
-    DestroyAllDummyBots();
-}
+// rule: "Destroy Bots"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
+// {
+//     DestroyAllDummyBots();
+// }
 
 // rule: "Randomize Kill Streak"
 // Event.OngoingPlayer
@@ -135,65 +139,65 @@ if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact)
 // }
 
 
-playervar Boolean noclipEnabled;
-rule: "Toggle noclip"
-Event.OngoingPlayer
-if (isDbgUsr)
-if (FilteredArray(All(), !IsDummyBot(Curr())).Length == 1)
-if (IsInteractHeld())
-if (IsReloadHeld())
-{
-    noclipEnabled = !noclipEnabled;
-    if (noclipEnabled)
-        SmallMessage(player, "Noclip activated");
-    else
-        SmallMessage(player, "Noclip deactivated");
-}
+// playervar Boolean noclipEnabled;
+// rule: "Toggle noclip"
+// Event.OngoingPlayer
+// if (isDbgUsr)
+// if (FilteredArray(All(), !IsDummyBot(Curr())).Length == 1)
+// if (IsInteractHeld())
+// if (IsReloadHeld())
+// {
+//     noclipEnabled = !noclipEnabled;
+//     if (noclipEnabled)
+//         SmallMessage(player, "Noclip activated");
+//     else
+//         SmallMessage(player, "Noclip deactivated");
+// }
 
-rule: "Start noclipping"
-Event.OngoingPlayer
-if (noclipEnabled)
-{
-    SetGravity(player, 0);
-    DisableMovementCollisionWithEnvironment(player, true);
-    DisableMovementCollisionWithPlayers(player);
-    SetMoveSpeed(player, 0);
-    DisallowButton(player, Button.Jump);
-    DisallowButton(player, Button.Crouch);
-}
+// rule: "Start noclipping"
+// Event.OngoingPlayer
+// if (noclipEnabled)
+// {
+//     SetGravity(player, 0);
+//     DisableMovementCollisionWithEnvironment(player, true);
+//     DisableMovementCollisionWithPlayers(player);
+//     SetMoveSpeed(player, 0);
+//     DisallowButton(player, Button.Jump);
+//     DisallowButton(player, Button.Crouch);
+// }
 
-rule: "Stop noclipping"
-Event.OngoingPlayer
-if (!noclipEnabled)
-{
-    SetGravity(player, 100);
-    EnableMovementCollisionWithEnvironment();
-    EnableMovementCollisionWithPlayers();
-    SetMoveSpeed(player, 100);
-    AllowButton(player, Button.Jump);
-    AllowButton(player, Button.Crouch);
-}
+// rule: "Stop noclipping"
+// Event.OngoingPlayer
+// if (!noclipEnabled)
+// {
+//     SetGravity(player, 100);
+//     EnableMovementCollisionWithEnvironment();
+//     EnableMovementCollisionWithPlayers();
+//     SetMoveSpeed(player, 100);
+//     AllowButton(player, Button.Jump);
+//     AllowButton(player, Button.Crouch);
+// }
 
-rule: "Noclip propulsion"
-Event.OngoingPlayer
-if (noclipEnabled)
-if ((IsCrouchHeld() || IsJumpHeld() || ThrottleOf() != Vector(0, 0, 0)))
-{
-    ApplyImpulse(player, VelocityOf() * -1, SpeedOf() * 0.03, Relative.ToWorld, ContraryMotion.Incorporate);
-    ApplyImpulse(player, 
-    Normalize(Facing() * ThrottleOf().Z + WorldVectorOf(Left(), player, LocalVector.Rotation) * ThrottleOf().X + Up() * (IsJumpHeld() - IsCrouchHeld())), (60 + 400 * IsReloadHeld() - SpeedOf()) / 62.5,
-    Relative.ToWorld, ContraryMotion.Incorporate);
-    MinWait();
-    LoopIfConditionIsTrue();
-}
+// rule: "Noclip propulsion"
+// Event.OngoingPlayer
+// if (noclipEnabled)
+// if ((IsCrouchHeld() || IsJumpHeld() || ThrottleOf() != Vector(0, 0, 0)))
+// {
+//     ApplyImpulse(player, VelocityOf() * -1, SpeedOf() * 0.03, Relative.ToWorld, ContraryMotion.Incorporate);
+//     ApplyImpulse(player, 
+//     Normalize(Facing() * ThrottleOf().Z + WorldVectorOf(Left(), player, LocalVector.Rotation) * ThrottleOf().X + Up() * (IsJumpHeld() - IsCrouchHeld())), (60 + 400 * IsReloadHeld() - SpeedOf()) / 62.5,
+//     Relative.ToWorld, ContraryMotion.Incorporate);
+//     MinWait();
+//     LoopIfConditionIsTrue();
+// }
 
-rule: "Noclip air resistance"
-Event.OngoingPlayer
-if (noclipEnabled)
-if (!(IsCrouchHeld() || IsJumpHeld() || ThrottleOf() != Vector(0, 0, 0)))
-if (SpeedOf() > 0.01)
-{
-    ApplyImpulse(player, VelocityOf() * -1, SpeedOf() * 0.06, Relative.ToWorld, ContraryMotion.Incorporate);
-    MinWait();
-    LoopIfConditionIsTrue();
-}
+// rule: "Noclip air resistance"
+// Event.OngoingPlayer
+// if (noclipEnabled)
+// if (!(IsCrouchHeld() || IsJumpHeld() || ThrottleOf() != Vector(0, 0, 0)))
+// if (SpeedOf() > 0.01)
+// {
+//     ApplyImpulse(player, VelocityOf() * -1, SpeedOf() * 0.06, Relative.ToWorld, ContraryMotion.Incorporate);
+//     MinWait();
+//     LoopIfConditionIsTrue();
+// }
