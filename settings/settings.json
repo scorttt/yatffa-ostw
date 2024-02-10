@@ -62,7 +62,6 @@
         "Ultimate Ability (Self-Destruct)": false
       },
       "Doomfist": {
-        "Health": 91.6666,
         "Ultimate Ability (Meteor Strike)": false
       },
       "Baptiste": {
@@ -71,7 +70,6 @@
         "Healing Dealt": 60
       },
       "Bastion": {
-        "Health": 91.6666,
         "Reconfigure": false,
         "Ultimate Ability (Configuration: Artillery)": false
       },
@@ -94,14 +92,12 @@
         "Ultimate Ability (Dragonstrike)": false
       },
       "Junker Queen": {
-        "Health": 91.6666,
         "Commanding Shout": false,
         "Carnage": false,
         "Jagged Blade Cooldown Time": 75,
         "Ultimate Ability (Rampage)": false
       },
       "Orisa": {
-        "Health": 68.7500,
         "Ultimate Ability (Terra Surge)": false,
         "Energy Javelin Cooldown Time": 50,
         "Fortify": false,
@@ -111,7 +107,6 @@
         "Ultimate Ability (Dragonblade)": false
       },
       "Ramattra" : {
-        "Health": 91.6666,
         "Ultimate Ability (Annihilation)": false,
         "Void Barrier Omnic Form": false,
         "Ravenous Vortex": false
@@ -162,5 +157,5 @@
     }
   },
   "Mode Name": "Tryhard FFA (YATFFA)",
-  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: BKRXY (Use this code instead of saving a preset!)\n2.3.5 | Oct 10th, 2023\nTrans rights!"
+  "Description": "Yet Another Tryhard FFA | Immanust fan club\nCode: BKRXY | https://workshop.codes/BKRXY\nFavorite or use the above code instead of saving a preset!\n2.3.6 | Feb 13th, 2024\nTrans rights!"
 }
