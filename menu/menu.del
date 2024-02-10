@@ -478,7 +478,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             async! ModifyHealDur();
             break;
         case Item.Random:
-            async! RandomHero();
+            async! ToggleRandomHero();
             LogToInspector(<"<0> toggled Random Hero", player>);
             break;
         case Item.EN:

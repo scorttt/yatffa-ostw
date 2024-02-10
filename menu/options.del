@@ -121,7 +121,7 @@ void ModifyHealDur() playervar "Menu Option Sub : Modify Heal Duration"
     }
 }
 
-void RandomHero() playervar "Menu Option Sub : Random Hero"
+void ToggleRandomHero() playervar "Menu Option Sub : Random Hero"
 {
     randomHeroEnabled = !randomHeroEnabled;
     if (randomHeroEnabled)
