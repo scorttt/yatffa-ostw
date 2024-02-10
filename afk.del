@@ -110,8 +110,7 @@ if (!afk)
 
     checkSpawn = false;
 
-    if (Health() != MaxHealth())
-        FixSpawnHealth();
+    CapSpawnHealth();
 }
 
 rule: "AFK : Run Timer"
