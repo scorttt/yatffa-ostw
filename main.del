@@ -282,8 +282,8 @@ if (!IsDummyBot())
     # set afk timer
     afkTime = S_AFK_KICK_TIME;
 
-    # scort?
-    // isDbgUsr = dbgUsrs.Contains(<"<0>", player>);
+    # in debug list?
+    isDbgUsr = dbgUsrs.Contains(<"<0>", player>);
 
     Wait(0.032);
 
@@ -400,14 +400,21 @@ if (HasSpawned())
     else
     {
         # remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
-        Hero prevHero! = HeroOf();
         Hero[] heroArr! = AllowedHeroes() - prevHero;
 
-        ForcePlayerHero(player, heroArr.Random());
-        StopForcingHero();
+        if (prevHero == HeroOf())
+        {
+            ForcePlayerHero(player, heroArr.Random());
+            StopForcingHero();
 
-        # add the previous hero back to the hero array
-        heroArr = AllowedHeroes() + prevHero;
+            # add the previous hero back to the hero array
+            heroArr = AllowedHeroes() + prevHero;
+        }
+        else 
+        {
+            StopForcingHero();
+            randomHeroEnabled = false;
+        }
     }
 
     MinWait();
