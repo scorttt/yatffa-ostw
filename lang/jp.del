@@ -1,5 +1,4 @@
 import "../main.del";
-globalvar String[] JP_STR;
 ////////////////////////
 //     JP strings     //
 // translator: saruyo //
