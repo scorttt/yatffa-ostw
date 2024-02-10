@@ -195,7 +195,7 @@ rule: "Initial Global"
     S_HEAL_TYPE = WorkshopSettingCombo("E. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
     S_MODIFY_HEAL = WorkshopSettingToggle("E. Healing", "Allow Modifying Healing menu settings", true, 1);
     S_DEF_HEAL = WorkshopSettingToggle("E. Healing", "\"Healing\" default menu toggle", true, 2);
-    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 8, 
+    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 7, 
         ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
          "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
          "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
