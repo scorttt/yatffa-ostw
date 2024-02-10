@@ -509,7 +509,7 @@ if (IsGameInProgress())
 if (All().Length > 0) // if at least one person has loaded into the lobby
 if (validMap)
 {
-    for (Number i = 0; i < projLoc.Length; i++)
+    for (Number i! = 0; i < projLoc.Length; i++)
     {
         CreateProjectile(
             ProjectileType: ProjectileType.OrbProjectile, 
