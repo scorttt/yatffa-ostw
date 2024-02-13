@@ -184,7 +184,7 @@ rule: "Initial Global"
     S_MENU = WorkshopSettingToggle("B. Menu", "Use Menu", true, 0);
     S_USE_MENU_ANIM = WorkshopSettingToggle("B. Menu", "Menu Animations", true, 1);
 
-    S_MODIFY_HUD = WorkshopSettingToggle("C. HUD", "Allow Modifying Workshop HUD menu toggle", true, 1);
+    S_MODIFY_HUD = WorkshopSettingToggle("C. HUD", "Allow Modifying Workshop HUD menu toggles", true, 1);
     S_DEF_HUD = WorkshopSettingToggle("C. HUD", "\"Show Workshop HUD\" default menu toggle", true, 2);
     S_DEF_STREAK = WorkshopSettingToggle("C. HUD", "\"Show Kill Streaks\" default menu toggle", true, 3);
     S_DEF_STATS = WorkshopSettingToggle("C. HUD", "\"Show Player Stats\" default menu toggle", true, 4);
@@ -195,7 +195,7 @@ rule: "Initial Global"
     S_HEAL_TYPE = WorkshopSettingCombo("E. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
     S_MODIFY_HEAL = WorkshopSettingToggle("E. Healing", "Allow Modifying Healing menu settings", true, 1);
     S_DEF_HEAL = WorkshopSettingToggle("E. Healing", "\"Healing\" default menu toggle", true, 2);
-    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 7, 
+    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 9, 
         ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
          "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
          "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
@@ -205,7 +205,7 @@ rule: "Initial Global"
          "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
 
     S_FLAT_HEAL_AMT = WorkshopSettingInteger("E. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 100, 1, 700, 4);
-    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 4, 0, 16, 5) * 2) / 2;
+    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 5, 0, 16, 5) * 2) / 2;
     S_DISABLE_HEALSTACK = WorkshopSettingToggle("E. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
     S_HOT_INTERRUPT = WorkshopSettingToggle("E. Healing", "Interrupt Healing upon damage taken", true, 7);
     S_HOT_MINDMG = WorkshopSettingReal("E. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
