@@ -59,7 +59,7 @@ void StopHealReward() playervar "Healing : Stop Heal Reward"
 void GetHealRewardAmount() playervar "Healing : Get Heal Reward Amount Sub" // should only be called in OnFinalBlow/OnDamageTaken/OnDamageGiven events
 {
     if (!flatHeal)
-        healReward = Max((MaxHealth(Victim()) * healAmt), 200 * healAmt);
+        healReward = Max((MaxHealth(Victim()) * healAmt), 250 * healAmt);
     else 
         healReward = healAmt;
 }
