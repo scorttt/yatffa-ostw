@@ -177,7 +177,7 @@ rule: "Initial Global"
     S_SCORE_TO_WIN = WorkshopSettingToggle("A. General", "Enable Score Win Condition", true, 3);
     S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 4);
     S_AFK_TIME = WorkshopSettingReal("A. General", "Time to put players in AFK (Seconds)", 20, 5, 600, 5);
-    S_AFK_KICK_TIME = WorkshopSettingReal("A. General", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 6) - 20;
+    S_AFK_KICK_TIME = WorkshopSettingReal("A. General", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 6) - S_AFK_TIME;
     S_HERO_HEALTH_CAP = WorkshopSettingToggle("A. General", "Cap Hero Health (On)", true, 7);
     S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("A. General", "Maximum Hero Health (Only applicable if \"Cap Hero Health\" is enabled)", 325, 150, 800, 8);
 
@@ -205,7 +205,7 @@ rule: "Initial Global"
          "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
 
     S_FLAT_HEAL_AMT = WorkshopSettingInteger("E. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 100, 1, 700, 4);
-    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 5, 0, 16, 5) * 2) / 2;
+    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 4.5, 0, 16, 5) * 2) / 2;
     S_DISABLE_HEALSTACK = WorkshopSettingToggle("E. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
     S_HOT_INTERRUPT = WorkshopSettingToggle("E. Healing", "Interrupt Healing upon damage taken", true, 7);
     S_HOT_MINDMG = WorkshopSettingReal("E. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
