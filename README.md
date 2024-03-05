@@ -45,6 +45,7 @@ yatffa-ostw
     ├ main.del
     └ other yatffa files
 ```
-After opening `main.del`, press `Ctrl + Alt + C` to copy the compiled workshop code into your clipboard that can then be pasted into Overwatch, VSCode output is not needed
+After opening `main.del`, press `Ctrl + Alt + C` to copy the compiled workshop code into your clipboard that can then be pasted into Overwatch, VSCode output is not needed.
+
 If compiling on Linux, make sure you are not using VSCode forks such as VSCodium or Code OSS, to my knowledge only the official Microsoft version of VSCode plays nicely with OSTW.
 
