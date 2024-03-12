@@ -11,6 +11,7 @@ import "debug.del";
 
 import "menu/menu.del";
 
+import "lang/lang_funcs.del";
 import "lang/en.del";
 import "lang/jp.del";
 // import "lang/es.del";
@@ -66,78 +67,9 @@ playervar Boolean isDbgUsr;
 playervar Boolean checkSpawn;
 playervar Boolean hasOpenedMenu;
 
-//////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////
-////// giant fuckin list of localized strings start //////
-//////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////
-playervar String holdToOpenMenuStr!;
-playervar String releaseToHideMenuStr!;
-playervar String doubleTapToToggleFavStr!;
-
-playervar String pressToRespawnInstantlyStr!;
-playervar String useNormalHeroSelectStr!;
-
-playervar String currentKillStreakStr!;
-playervar String lastKillstreakStr!;
-playervar String killStreakPersonalBestStr!;
-playervar String killStreakServerBestStr!;
-playervar String playerGotServerBestKillStreakStr!;
-playervar String youStr!;
-playervar String bestKillStreakByPlayer!;
-
-playervar String kdrStatStr!;
-playervar String dmgRatioStatStr!;
-playervar String dmgOutStatStr!;
-playervar String dmgInStatStr!;
-playervar String accuracyStatStr!;
-playervar String critAccuracyStatStr!;
-playervar String scopeAccuracyStatStr!;
-playervar String scopeCritAccuracyStatStr!;
-playervar String environmentKillsStatStr!;
-playervar String healingStatStr!;
-playervar String bestKillStreakStatStr!;
-
-playervar String playerWasKickedStr!;
-playervar String playerKickTimerStr!;
-playervar String navigateMenuStr!;
-playervar String selectMenuItemStr!;
-playervar String favoriteMenuItemStr!;
-playervar String welcomeStr!;
-playervar String healToFullStr!;
-playervar String instantHealDurStr!;
-playervar String quote1Str!;
-playervar String quote2Str!;
-playervar String amountOfMinutesStr!;
-playervar String amountOfSecondsStr!;
-playervar String oneMinuteStr!;
-playervar String oneSecondStr!;
-playervar String healTypeDescriptorStr!;
-
-playervar String showWorkshopHudItemStr!;
-playervar String showStatsItemStr!;
-playervar String showKillStreaksItemStr!;
-playervar String healingItemStr!;
-playervar String randomHeroItemStr!;
-playervar String languageItemStr!;
-
-playervar String showWorkshopHudNotifStr!;
-playervar String showStatsNotifStr!;
-playervar String showKillStreaksNotifStr!;
-playervar String enableHealNotifStr!;
-playervar String enableRandomHeroNotifStr!;
-
-playervar String hideWorkshopHudNotifStr!;
-playervar String hideStatsNotifStr!;
-playervar String hideKillStreaksNotifStr!;
-playervar String disableHealNotifStr!;
-playervar String disableRandomHeroNotifStr!;
-
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-////// end of giant fuckin list of localized strings //////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
+playervar String heroStat1Str;
+playervar String heroStat2Str;
+playervar String heroStat3Str;
 
 enum LStr
 {
@@ -416,6 +348,9 @@ if (HasSpawned())
             randomHeroEnabled = false;
         }
     }
+
+    if (prevHero != HeroOf())
+        SetHeroStatStrings();
 
     MinWait();
 

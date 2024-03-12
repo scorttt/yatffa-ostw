@@ -8,6 +8,10 @@ globalvar Number | String bestStreakServerHero;
 playervar Number | String bestStreakHero;
 playervar Boolean streak;
 
+playervar String heroStat1;
+playervar String heroStat2;
+playervar String heroStat3;
+
 Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
                              128 + 127 * CosineFromDegrees((Time() * 150) + 120),
                              128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
@@ -140,7 +144,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
         # stats
         CreateHudText(
             VisibleTo: !local.afk && local.showStatsEnabled ? local : null, 
-            Subheader: <" \n\n\n\n<0><1><2><3><4><5><6><7><8><9><10>\n", 
+            Subheader: <" \n\n\n\n<0><1><2><3><4><5><6><7><8><9><10><11><12><13>", 
 
             // 0
             <"<0><1>\n", local.kdrStatStr, 
@@ -172,7 +176,16 @@ rule: "HUD : Global HUD : Welcome to Hell"
 
             <"<0><1>\n", local.healingStatStr, PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
 
-            local.bestStreak != 0 // 10
+            local.amountOfStats >= 1 
+                ? <" \n<0><1>\n", local.heroStat1Str, PrettyNumber(<"<0>", local.heroStat1>)> : "", // 10
+
+            local.amountOfStats >= 2 
+                ? <"<0><1>\n", local.heroStat2Str, PrettyNumber(<"<0>", local.heroStat2>)> : "", // 11
+
+            local.amountOfStats >= 3 
+                ? <"<0><1>\n", local.heroStat3Str, PrettyNumber(<"<0>", local.heroStat3>)> : "", // 12
+
+            local.bestStreak != 0 // 13
                 ? <" \n<0>", StringReplace(local.bestKillStreakStatStr, "{number}", local.bestStreak)> : "">,
 
             Location: Location.Left, 

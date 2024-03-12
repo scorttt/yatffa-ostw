@@ -1,0 +1,197 @@
+import "../main.del";
+
+// menu info
+playervar String holdToOpenMenuStr!;
+playervar String releaseToHideMenuStr!;
+playervar String doubleTapToToggleFavStr!;
+playervar String navigateMenuStr!;
+playervar String selectMenuItemStr!;
+playervar String favoriteMenuItemStr!;
+playervar String healTypeDescriptorStr!;
+
+// respawn
+playervar String pressToRespawnInstantlyStr!;
+playervar String useNormalHeroSelectStr!;
+
+// kill streak
+playervar String currentKillStreakStr!;
+playervar String lastKillstreakStr!;
+playervar String killStreakPersonalBestStr!;
+playervar String killStreakServerBestStr!;
+playervar String playerGotServerBestKillStreakStr!;
+playervar String youStr!;
+playervar String bestKillStreakByPlayer!;
+
+// generic stats
+playervar String kdrStatStr!;
+playervar String dmgRatioStatStr!;
+playervar String dmgOutStatStr!;
+playervar String dmgInStatStr!;
+playervar String accuracyStatStr!;
+playervar String critAccuracyStatStr!;
+playervar String scopeAccuracyStatStr!;
+playervar String scopeCritAccuracyStatStr!;
+playervar String environmentKillsStatStr!;
+playervar String healingStatStr!;
+playervar String bestKillStreakStatStr!;
+
+// global
+playervar String playerWasKickedStr!;
+playervar String playerKickTimerStr!;
+playervar String welcomeStr!;
+playervar String quote1Str!;
+playervar String quote2Str!;
+playervar String amountOfMinutesStr!;
+playervar String amountOfSecondsStr!;
+playervar String oneMinuteStr!;
+playervar String oneSecondStr!;
+
+// menu items
+playervar String healToFullStr!;
+playervar String instantHealDurStr!;
+playervar String showWorkshopHudItemStr!;
+playervar String showStatsItemStr!;
+playervar String showKillStreaksItemStr!;
+playervar String healingItemStr!;
+playervar String randomHeroItemStr!;
+playervar String languageItemStr!;
+
+// small message enabled notifications
+playervar String showWorkshopHudNotifStr!;
+playervar String showStatsNotifStr!;
+playervar String showKillStreaksNotifStr!;
+playervar String enableHealNotifStr!;
+playervar String enableRandomHeroNotifStr!;
+
+// small message disabled notifications
+playervar String hideWorkshopHudNotifStr!;
+playervar String hideStatsNotifStr!;
+playervar String hideKillStreaksNotifStr!;
+playervar String disableHealNotifStr!;
+playervar String disableRandomHeroNotifStr!;
+
+// hero stats
+playervar String asheCoachGunKillsStr!;
+playervar String bastionGrenadesStuckStr!;
+playervar String bastionGrenadeKillsStr!;
+playervar String echoStickyBombsStuckStr!;
+playervar String genjiDamageDeflectedStr!;
+playervar String pharahDirectHitAccStr!;
+playervar String pharahConcBlastKillsStr!;
+playervar String sojournRailgunKillsStr!;
+playervar String sojournRailgunAccStr!;
+playervar String sojournRailgunAvgChargeStr!;
+playervar String soldierHelixDirectHitsStr!;
+playervar String sombraTotalTimeInStealthStr!;
+playervar String sombraAvgTimeInStealthStr!;
+playervar String sombraDistanceTeleportedStr!;
+playervar String torbHammerKillsStr!;
+playervar String torbOverloadEfficiencyStr!;
+playervar String tracerPulseBombsStuckStr!;
+playervar String tracerHealthRecalledStr!;
+playervar String widowAirKillsStr!;
+playervar String anaSleepDartAccStr!;
+playervar String anaSleepDartsHitStr!;
+playervar String lucioHealUsageStr!;
+playervar String lucioSpeedUsageStr!;
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+////// end of giant fuckin list of localized strings //////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+
+playervar Number amountOfStats;
+
+void SetHeroStatStrings() playervar "Set Hero Stat Strings"
+{
+    WaitUntil(HasSpawned() && IsAlive(), 99999);
+
+    switch (HeroOf())
+    {
+        case Hero.Ana:
+            heroStat1Str = anaSleepDartAccStr;
+            heroStat2Str = anaSleepDartsHitStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Ashe:
+            heroStat1Str = asheCoachGunKillsStr;
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 1;
+            break;
+        case Hero.Bastion:
+            heroStat1Str = bastionGrenadesStuckStr;
+            heroStat2Str = bastionGrenadeKillsStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Echo:
+            heroStat1Str = echoStickyBombsStuckStr;
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 1;
+            break;
+        case Hero.Genji:
+            heroStat1Str = genjiDamageDeflectedStr;
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 1;
+            break;
+        case Hero.Lucio:
+            heroStat1Str = lucioHealUsageStr;
+            heroStat2Str = lucioSpeedUsageStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Pharah:
+            heroStat1Str = pharahDirectHitAccStr;
+            heroStat2Str = pharahConcBlastKillsStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Sojourn:
+            heroStat1Str = sojournRailgunKillsStr;
+            heroStat2Str = sojournRailgunAccStr;
+            heroStat3Str = sojournRailgunAvgChargeStr;
+            amountOfStats = 3;
+            break;
+        case Hero.Soldier76:
+            heroStat1Str = soldierHelixDirectHitsStr;
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 1;
+            break;
+        case Hero.Sombra:
+            heroStat1Str = sombraTotalTimeInStealthStr;
+            heroStat2Str = sombraAvgTimeInStealthStr;
+            heroStat3Str = sombraDistanceTeleportedStr;
+            amountOfStats = 3;
+            break;
+        case Hero.Torbjorn:
+            heroStat1Str = torbHammerKillsStr;
+            heroStat2Str = torbOverloadEfficiencyStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Tracer:
+            heroStat1Str = tracerPulseBombsStuckStr;
+            heroStat2Str = tracerHealthRecalledStr;
+            heroStat3Str = "";
+            amountOfStats = 2;
+            break;
+        case Hero.Widowmaker:
+            heroStat1Str = widowAirKillsStr;
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 1;
+            break;
+        default: 
+            heroStat1Str = "";
+            heroStat2Str = "";
+            heroStat3Str = "";
+            amountOfStats = 0;
+            break;
+    }
+}

@@ -34,10 +34,10 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     dmgRatioStatStr = "DMG Ratio: ";
     dmgOutStatStr = "DMG Out: ";
     dmgInStatStr = "DMG In: ";
-    accuracyStatStr = "Accuracy: ";
-    critAccuracyStatStr = "Crit Accuracy: ";
-    scopeAccuracyStatStr = "Scope Accuracy: ";
-    scopeCritAccuracyStatStr = "Scope Crit Accuracy: ";
+    accuracyStatStr = "Acc: ";
+    critAccuracyStatStr = "Crit Acc: ";
+    scopeAccuracyStatStr = "Scope Acc: ";
+    scopeCritAccuracyStatStr = "Scope Crit Acc: ";
     environmentKillsStatStr = "Environment Kills: ";
     healingStatStr = "Healing: ";
     bestKillStreakStatStr = "Best Streak: {number}";
@@ -93,6 +93,37 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     hideKillStreaksNotifStr = "Kill Streaks Hidden!";
     disableHealNotifStr = "Healing Disabled!";
     disableRandomHeroNotifStr = "Random Hero Disabled!";
+    Wait(0.2);
+
+    //////////////////////
+    // hero stats start //
+    //////////////////////
+
+    anaSleepDartAccStr = "Sleep Dart Acc: ";
+    anaSleepDartsHitStr = "Sleep Darts Hit: ";
+    asheCoachGunKillsStr = "Coach Gun Kills: ";
+    bastionGrenadesStuckStr = "Grenades Stuck: ";
+    bastionGrenadeKillsStr = "Grenade Kills: ";
+    echoStickyBombsStuckStr = "Sticky Bombs Hit: ";
+    genjiDamageDeflectedStr = "Damage Deflected: ";
+    lucioHealUsageStr = "Heal Boost Usage: ";
+    lucioSpeedUsageStr = "Speed Boost Usage: ";
+    pharahDirectHitAccStr = "Direct Hit Acc: ";
+    pharahConcBlastKillsStr = "Conc. Blast Kills: ";
+    sojournRailgunKillsStr = "Railgun Kills: ";
+    sojournRailgunAccStr = "Railgun Acc: ";
+    sojournRailgunAvgChargeStr = "Avg Railgun Charge: ";
+    soldierHelixDirectHitsStr = "Helix Direct Hits: ";
+    sombraTotalTimeInStealthStr = "Stealth Time: ";
+    sombraAvgTimeInStealthStr = "Avg Stealth Time: ";
+    sombraDistanceTeleportedStr = "Dist. Teleported: ";
+    torbHammerKillsStr = "Hammer Kills: ";
+    torbOverloadEfficiencyStr = "Overload Efficacy: ";
+    tracerPulseBombsStuckStr = "Pulse Bombs Hit: ";
+    tracerHealthRecalledStr = "Health Recalled: ";
+    widowAirKillsStr = "Air Kills: ";
+
+    SetHeroStatStrings();
 
     spin = false;
     Wait(0.1);

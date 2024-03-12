@@ -93,6 +93,37 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     hideKillStreaksNotifStr = "連続キルを隠した！";
     disableHealNotifStr = "回復を無効！";
     disableRandomHeroNotifStr = "ランダム・ヒーローを無効！";
+    Wait(0.2);
+
+    //////////////////////
+    // hero stats start //
+    //////////////////////
+
+    anaSleepDartAccStr = "スリープ・ダーツ命中率：";
+    anaSleepDartsHitStr = "スリープ・ダーツ命中：";
+    asheCoachGunKillsStr = "コーチ・ガンキル：";
+    bastionGrenadesStuckStr = "タクティカル・グレネード直撃：";
+    bastionGrenadeKillsStr = "タクティカル・グレネードキル：";
+    echoStickyBombsStuckStr = "スティッキー・ボム直撃：";
+    genjiDamageDeflectedStr = "反射ダメージ：";
+    lucioHealUsageStr = "ヒーリング・ブースト使用：";
+    lucioSpeedUsageStr = "スピード・ブースト使用：";
+    pharahDirectHitAccStr = "ロケット直撃命中率：";
+    pharahConcBlastKillsStr = "コンカッシブ・ブラストキル：";
+    sojournRailgunKillsStr = "レールガンキル：";
+    sojournRailgunAccStr = "レールガン命中率：";
+    sojournRailgunAvgChargeStr = "平均レールガンのチャージ：";
+    soldierHelixDirectHitsStr = "ヘリックス・ロケット直撃：";
+    sombraTotalTimeInStealthStr = "ステルス時間：";
+    sombraAvgTimeInStealthStr = "平均ステルス時間：";
+    sombraDistanceTeleportedStr = "テレポート距離：";
+    torbHammerKillsStr = "ハンマーキル：";
+    torbOverloadEfficiencyStr = "オーバーロード能率：";
+    tracerPulseBombsStuckStr = "パルス・ボム付着：";
+    tracerHealthRecalledStr = "リコール回復：";
+    widowAirKillsStr = "空中キル：";
+
+    SetHeroStatStrings();
 
     spin = false;
     Wait(0.1);
