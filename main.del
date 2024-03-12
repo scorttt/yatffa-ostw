@@ -303,7 +303,7 @@ if (!IsDummyBot())
     # set menu animation initial value
     if (S_USE_MENU_ANIM)
     {
-        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
             itemYPos[i] = 2.15;
             Wait(0.048);
@@ -313,7 +313,7 @@ if (!IsDummyBot())
     }
     else 
     {
-        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
         {
             itemYPos[i] = ITEM_Y_POS[i];
             Wait(0.048);
@@ -532,7 +532,7 @@ if (IsGameInProgress())
 if (All().Length > 0) // if at least one person has loaded into the lobby
 if (validMap)
 {
-    for (Number i! = 0; i < projLoc.Length; i++)
+    for (Number i = 0; i < projLoc.Length; i++)
     {
         CreateProjectile(
             ProjectileType: ProjectileType.OrbProjectile, 

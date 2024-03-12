@@ -358,7 +358,7 @@ if (!closeAnim)
 
     while (menu && anim)
     {
-        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
             itemYPos[i] += (ITEM_Y_POS[i] - itemYPos[i]) * anim_speed;
 
         if (itemYPos.Last <= ITEM_Y_POS.Last + 0.01)
@@ -385,7 +385,7 @@ if (!menu)
 
     while (anim && closeAnim)
     {
-        for (Number i! = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
             itemYPos[i] += (anim_start - itemYPos[i]) * anim_speed;
 
         if (itemYPos.Last >= anim_end)

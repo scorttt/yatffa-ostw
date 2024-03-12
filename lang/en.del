@@ -106,7 +106,7 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 
 // void SetLanguageX(Number charWidth) playervar "Set Language X Sub"
 // {
-//     for (Number i! = 0; i < 8; i++)
+//     for (Number i = 0; i < 8; i++)
 //     {
 //         if (langStr[LStr.Items][i] == null)
 //             langX[i] = 0.40;
