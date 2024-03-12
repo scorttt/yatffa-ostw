@@ -110,8 +110,8 @@ rule: "Initial Global"
     S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 4);
     S_AFK_TIME = WorkshopSettingReal("A. General", "Time to put players in AFK (Seconds)", 20, 5, 600, 5);
     S_AFK_KICK_TIME = WorkshopSettingReal("A. General", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 6) - S_AFK_TIME;
-    S_HERO_HEALTH_CAP = WorkshopSettingToggle("A. General", "Cap Hero Health (On)", true, 7);
-    S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("A. General", "Maximum Hero Health (Only applicable if \"Cap Hero Health\" is enabled)", 325, 150, 800, 8);
+    S_HERO_HEALTH_CAP = WorkshopSettingToggle("A. General", "Cap Hero Health on Spawn (On)", true, 7);
+    S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("A. General", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 8);
 
     S_MENU = WorkshopSettingToggle("B. Menu", "Use Menu", true, 0);
     S_USE_MENU_ANIM = WorkshopSettingToggle("B. Menu", "Menu Animations", true, 1);

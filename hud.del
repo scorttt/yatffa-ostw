@@ -104,7 +104,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
         # double tap for fav_item
         CreateHudText(
             VisibleTo:  !local.afk && local.favItem != Item.Invalid ? local : null, 
-            Subheader:  StringReplace(local.doubleTapToToggleFavStr, "{interact}", BindString(Button.Interact)) + local.quote1Str + local.favedItemStr + local.quote1Str, 
+            Subheader:  StringReplace(local.doubleTapToToggleFavStr, "{interact}", BindString(Button.Interact)) + local.quote1Str + local.favedItemStr + local.quote2Str, 
             Location:   Location.Right, 
             SortOrder:  0.3,
             Spectators: Spectators.VisibleNever);
