@@ -182,13 +182,13 @@ rule: "HUD : Global HUD : Welcome to Hell"
             <"<0><1>\n", local.healingStatStr, PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
 
             local.amountOfStats >= 1 
-                ? <" \n<0><1>\n", local.heroStat1Str, PrettyNumber(<"<0>", local.heroStat1>)> : "", // 10
+                ? <" \n<0><1><2>\n", local.heroStat1Str, PrettyNumber(<"<0>", local.heroStat1>), local.stat1Metric> : "", // 10
 
             local.amountOfStats >= 2 
-                ? <"<0><1>\n", local.heroStat2Str, PrettyNumber(<"<0>", local.heroStat2>)> : "", // 11
+                ? <"<0><1><2>\n", local.heroStat2Str, PrettyNumber(<"<0>", local.heroStat2>), local.stat2Metric> : "", // 11
 
             local.amountOfStats >= 3 
-                ? <"<0><1>\n", local.heroStat3Str, PrettyNumber(<"<0>", local.heroStat3>)> : "", // 12
+                ? <"<0><1><2>\n", local.heroStat3Str, PrettyNumber(<"<0>", local.heroStat3>), local.stat3Metric> : "", // 12
 
             local.bestStreak != 0 // 13
                 ? <" \n<0>", StringReplace(local.bestKillStreakStatStr, "{number}", local.bestStreak)> : "">,

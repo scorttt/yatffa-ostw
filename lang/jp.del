@@ -10,6 +10,9 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     langSwap = true;
     spin = true;
     language = Lang.JP;
+    stat1Metric = "";
+    stat2Metric = "";
+    stat3Metric = "";
 
     holdToOpenMenuStr = "メニューを開く「{interact}を長押し」";
     releaseToHideMenuStr = "メニューを非表示「{interact}を放す」";
@@ -44,7 +47,7 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 
     playerWasKickedStr = <"さん<0>分間のAFKの後キックされった", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
     playerKickTimerStr = "AFKだから{minutes}{seconds}でキックされる";
-    navigateMenuStr = "操作：マウス";
+    navigateMenuStr = "操作：視点移動";
     selectMenuItemStr = "選ぶ：";
     favoriteMenuItemStr = "お気に入り：";
     welcomeStr = "ようこそ！";
@@ -54,8 +57,10 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     quote2Str = "」";
     amountOfMinutesStr = "分";
     amountOfSecondsStr = "秒";
-    oneMinuteStr = "分";
-    oneSecondStr = "秒";
+    oneMinuteStr = amountOfMinutesStr;
+    oneSecondStr = amountOfSecondsStr;
+    amountOfMinutesShortStr = amountOfMinutesStr;
+    amountOfSecondsShortStr = amountOfSecondsStr;
 
     if (S_HEAL_TYPE == 0)
         healTypeDescriptorStr = "（キルヒーリング）";
@@ -101,29 +106,53 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 
     anaSleepDartAccStr = "スリープ・ダーツ命中率：";
     anaSleepDartsHitStr = "スリープ・ダーツ命中：";
+
     asheCoachGunKillsStr = "コーチ・ガンキル：";
-    bastionGrenadesStuckStr = "タクティカル・グレネード直撃：";
-    bastionGrenadeKillsStr = "タクティカル・グレネードキル：";
+
+    bastionGrenadesStuckStr = "グレネード直撃：";
+    bastionGrenadeStickAccStr = "グレネード直撃命中率：";
+    bastionGrenadeKillsStr = "グレネードキル：";
+
     echoStickyBombsStuckStr = "スティッキー・ボム直撃：";
+    echoStickyBombStickAccStr = "スティッキー・ボム直撃命中率：";
+
     genjiDamageDeflectedStr = "反射ダメージ：";
+
     lucioHealUsageStr = "ヒーリング・ブースト使用：";
     lucioSpeedUsageStr = "スピード・ブースト使用：";
+
     pharahDirectHitAccStr = "ロケット直撃命中率：";
-    pharahConcBlastKillsStr = "コンカッシブ・ブラストキル：";
+    pharahConcBlastKillsStr = "コンカッシブキル：";
+
     sojournRailgunKillsStr = "レールガンキル：";
     sojournRailgunAccStr = "レールガン命中率：";
     sojournRailgunAvgChargeStr = "平均レールガンのチャージ：";
-    soldierHelixDirectHitsStr = "ヘリックス・ロケット直撃：";
+
+    soldierHelixDirectHitsStr = "ヘリックス直撃：";
+    soldierHelixDirectAccStr = "ヘリックス直撃命中率：";
+
     sombraTotalTimeInStealthStr = "ステルス時間：";
     sombraAvgTimeInStealthStr = "平均ステルス時間：";
     sombraDistanceTeleportedStr = "テレポート距離：";
+
     torbHammerKillsStr = "ハンマーキル：";
     torbOverloadEfficiencyStr = "オーバーロード能率：";
-    tracerPulseBombsStuckStr = "パルス・ボム付着：";
-    tracerHealthRecalledStr = "リコール回復：";
-    widowAirKillsStr = "空中キル：";
 
-    SetHeroStatStrings();
+    tracerPulseBombsStuckStr = "パルス・ボム付着：";
+    tracerPulseBombsStickAccStr = "パルス・ボム付着命中率：";
+    tracerHealthRecalledStr = "リコール回復：";
+
+    ventureDirectHitAccStr = "直撃命中率：";
+    ventureAirShotAccStr = "空中攻撃命中率：";
+
+    widowAirKillsStr = "空中キル：";
+    Wait(0.2);
+
+    SetHeroStats();
+
+    ////////////////////
+    // hero stats end //
+    ////////////////////
 
     spin = false;
     Wait(0.1);

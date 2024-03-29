@@ -11,6 +11,9 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     langSwap = true;
     spin = true;
     language = Lang.EN;
+    stat1Metric = "";
+    stat2Metric = "";
+    stat3Metric = "";
 
     holdToOpenMenuStr = "Hold [{interact}] to open menu";
     releaseToHideMenuStr = "Release [{interact}] to hide menu";
@@ -57,6 +60,8 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     amountOfSecondsStr = " seconds";
     oneMinuteStr = " minute ";
     oneSecondStr = " second";
+    amountOfMinutesShortStr = "m";
+    amountOfSecondsShortStr = "s";
 
     if (S_HEAL_TYPE == 0)
         healTypeDescriptorStr = " (Heal on Kill) ";
@@ -101,29 +106,53 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 
     anaSleepDartAccStr = "Sleep Dart Acc: ";
     anaSleepDartsHitStr = "Sleep Darts Hit: ";
+
     asheCoachGunKillsStr = "Coach Gun Kills: ";
+
     bastionGrenadesStuckStr = "Grenades Stuck: ";
+    bastionGrenadeStickAccStr = "Grenade Stick Acc: ";
     bastionGrenadeKillsStr = "Grenade Kills: ";
-    echoStickyBombsStuckStr = "Sticky Bombs Hit: ";
+
+    echoStickyBombsStuckStr = "Bombs Stuck: ";
+    echoStickyBombStickAccStr = "Bombs Stick Acc: ";
+
     genjiDamageDeflectedStr = "Damage Deflected: ";
-    lucioHealUsageStr = "Heal Boost Usage: ";
-    lucioSpeedUsageStr = "Speed Boost Usage: ";
+
+    lucioHealUsageStr = "Heal Usage: ";
+    lucioSpeedUsageStr = "Speed Usage: ";
+
     pharahDirectHitAccStr = "Direct Hit Acc: ";
-    pharahConcBlastKillsStr = "Conc. Blast Kills: ";
+    pharahConcBlastKillsStr = "Conc Blast Kills: ";
+
     sojournRailgunKillsStr = "Railgun Kills: ";
     sojournRailgunAccStr = "Railgun Acc: ";
     sojournRailgunAvgChargeStr = "Avg Railgun Charge: ";
+
     soldierHelixDirectHitsStr = "Helix Direct Hits: ";
+    soldierHelixDirectAccStr = "Helix Direct Hit Acc: ";
+
     sombraTotalTimeInStealthStr = "Stealth Time: ";
     sombraAvgTimeInStealthStr = "Avg Stealth Time: ";
-    sombraDistanceTeleportedStr = "Dist. Teleported: ";
+    sombraDistanceTeleportedStr = "Dist Teleported: ";
+
     torbHammerKillsStr = "Hammer Kills: ";
     torbOverloadEfficiencyStr = "Overload Efficacy: ";
-    tracerPulseBombsStuckStr = "Pulse Bombs Hit: ";
-    tracerHealthRecalledStr = "Health Recalled: ";
-    widowAirKillsStr = "Air Kills: ";
 
-    SetHeroStatStrings();
+    tracerPulseBombsStuckStr = "Bombs Stuck: ";
+    tracerPulseBombsStickAccStr = "Bomb Stick Acc: ";
+    tracerHealthRecalledStr = "Health Recalled: ";
+
+    ventureDirectHitAccStr = "Direct Hit Acc: ";
+    ventureAirShotAccStr = "Air Shot Acc: ";
+
+    widowAirKillsStr = "Air Kills: ";
+    Wait(0.2);
+
+    SetHeroStats();
+
+    ////////////////////
+    // hero stats end //
+    ////////////////////
 
     spin = false;
     Wait(0.1);

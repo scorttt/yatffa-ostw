@@ -239,11 +239,22 @@ if (!IsDummyBot())
     healEnabled = S_DEF_HEAL;
     randomHeroEnabled = S_DEF_RANDOMHERO;
 
-    # set language, should replace this with a switch if i ever add more languages
-    if (S_LANG == Lang.EN)
-        SetEnglish();
-    else if (S_LANG == Lang.JP)
-        SetJapanese(); 
+    // set language
+    switch (S_LANG)
+    {
+        case (Lang.EN):
+            SetEnglish();
+            break;
+        case (Lang.JP):
+            SetJapanese(); 
+            break;
+        case (Lang.KR):
+            // SetKorean();
+            break;
+        case (Lang.MX):
+            // SetMXSpanish();
+            break;
+    }
 
     # set menu animation initial value
     if (S_USE_MENU_ANIM)

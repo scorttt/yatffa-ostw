@@ -1,5 +1,13 @@
 import "../main.del";
 
+enum Lang
+{
+    EN,
+    JP,
+    KR,
+    MX
+}
+
 // menu info
 playervar String holdToOpenMenuStr!;
 playervar String releaseToHideMenuStr!;
@@ -43,6 +51,8 @@ playervar String quote1Str!;
 playervar String quote2Str!;
 playervar String amountOfMinutesStr!;
 playervar String amountOfSecondsStr!;
+playervar String amountOfMinutesShortStr!;
+playervar String amountOfSecondsShortStr!;
 playervar String oneMinuteStr!;
 playervar String oneSecondStr!;
 
@@ -70,42 +80,67 @@ playervar String hideKillStreaksNotifStr!;
 playervar String disableHealNotifStr!;
 playervar String disableRandomHeroNotifStr!;
 
-// hero stats
-playervar String asheCoachGunKillsStr!;
-playervar String bastionGrenadesStuckStr!;
-playervar String bastionGrenadeKillsStr!;
-playervar String echoStickyBombsStuckStr!;
-playervar String genjiDamageDeflectedStr!;
-playervar String pharahDirectHitAccStr!;
-playervar String pharahConcBlastKillsStr!;
-playervar String sojournRailgunKillsStr!;
-playervar String sojournRailgunAccStr!;
-playervar String sojournRailgunAvgChargeStr!;
-playervar String soldierHelixDirectHitsStr!;
-playervar String sombraTotalTimeInStealthStr!;
-playervar String sombraAvgTimeInStealthStr!;
-playervar String sombraDistanceTeleportedStr!;
-playervar String torbHammerKillsStr!;
-playervar String torbOverloadEfficiencyStr!;
-playervar String tracerPulseBombsStuckStr!;
-playervar String tracerHealthRecalledStr!;
-playervar String widowAirKillsStr!;
+// hero stat values
+playervar Number asheCoachGunKills;
+playervar Number bastionGrenadeKills;
+
+playervar Number amountOfStats;
+playervar String stat1Metric;
+playervar String stat2Metric;
+playervar String stat3Metric;
+
+// hero stats strings
 playervar String anaSleepDartAccStr!;
 playervar String anaSleepDartsHitStr!;
+
+playervar String asheCoachGunKillsStr!;
+
+playervar String bastionGrenadesStuckStr!;
+playervar String bastionGrenadeStickAccStr!;
+playervar String bastionGrenadeKillsStr!;
+
+playervar String echoStickyBombsStuckStr!;
+playervar String echoStickyBombStickAccStr!;
+
+playervar String genjiDamageDeflectedStr!;
+
 playervar String lucioHealUsageStr!;
 playervar String lucioSpeedUsageStr!;
 
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-////// end of giant fuckin list of localized strings //////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
+playervar String pharahDirectHitAccStr!;
+playervar String pharahConcBlastKillsStr!;
 
-playervar Number amountOfStats;
+playervar String sojournRailgunKillsStr!;
+playervar String sojournRailgunAccStr!;
+playervar String sojournRailgunAvgChargeStr!;
 
-void SetHeroStatStrings() playervar "Set Hero Stat Strings"
+playervar String soldierHelixDirectHitsStr!;
+playervar String soldierHelixDirectAccStr!;
+
+playervar String sombraTotalTimeInStealthStr!;
+playervar String sombraAvgTimeInStealthStr!;
+playervar String sombraDistanceTeleportedStr!;
+
+playervar String torbHammerKillsStr!;
+playervar String torbOverloadEfficiencyStr!;
+
+playervar String tracerPulseBombsStuckStr!;
+playervar String tracerPulseBombsStickAccStr!;
+playervar String tracerHealthRecalledStr!;
+
+playervar String ventureDirectHitAccStr!;
+playervar String ventureAirShotAccStr!;
+
+playervar String widowAirKillsStr!;
+
+void SetHeroStats() playervar "Set Hero Stat"
 {
     WaitUntil(HasSpawned() && IsAlive(), 99999);
+
+    amountOfStats = 0;
+    stat1Metric = "";
+    stat2Metric = "";
+    stat3Metric = "";
 
     switch (HeroOf())
     {
@@ -113,85 +148,144 @@ void SetHeroStatStrings() playervar "Set Hero Stat Strings"
             heroStat1Str = anaSleepDartAccStr;
             heroStat2Str = anaSleepDartsHitStr;
             heroStat3Str = "";
+
             amountOfStats = 2;
+            stat1Metric = "%";
             break;
         case Hero.Ashe:
             heroStat1Str = asheCoachGunKillsStr;
             heroStat2Str = "";
             heroStat3Str = "";
+
             amountOfStats = 1;
             break;
         case Hero.Bastion:
-            heroStat1Str = bastionGrenadesStuckStr;
-            heroStat2Str = bastionGrenadeKillsStr;
-            heroStat3Str = "";
-            amountOfStats = 2;
+            heroStat1Str = bastionGrenadeKillsStr;
+            heroStat2Str = bastionGrenadesStuckStr;
+            heroStat3Str = bastionGrenadeStickAccStr;
+
+            amountOfStats = 3;
+            stat3Metric = "%";
             break;
         case Hero.Echo:
             heroStat1Str = echoStickyBombsStuckStr;
-            heroStat2Str = "";
+            heroStat2Str = echoStickyBombStickAccStr;
             heroStat3Str = "";
-            amountOfStats = 1;
+
+            amountOfStats = 2;
+            stat2Metric = "%";
             break;
         case Hero.Genji:
             heroStat1Str = genjiDamageDeflectedStr;
             heroStat2Str = "";
             heroStat3Str = "";
+
             amountOfStats = 1;
             break;
         case Hero.Lucio:
             heroStat1Str = lucioHealUsageStr;
             heroStat2Str = lucioSpeedUsageStr;
             heroStat3Str = "";
+ 
             amountOfStats = 2;
+            stat1Metric = "%";
+            stat2Metric = "%";
             break;
         case Hero.Pharah:
             heroStat1Str = pharahDirectHitAccStr;
             heroStat2Str = pharahConcBlastKillsStr;
             heroStat3Str = "";
+
             amountOfStats = 2;
+            stat1Metric = "%";
             break;
         case Hero.Sojourn:
             heroStat1Str = sojournRailgunKillsStr;
             heroStat2Str = sojournRailgunAccStr;
             heroStat3Str = sojournRailgunAvgChargeStr;
+
             amountOfStats = 3;
+            stat2Metric = "%";
+            stat3Metric = "%";
             break;
         case Hero.Soldier76:
             heroStat1Str = soldierHelixDirectHitsStr;
-            heroStat2Str = "";
+            heroStat2Str = soldierHelixDirectAccStr;
             heroStat3Str = "";
-            amountOfStats = 1;
+
+            amountOfStats = 2;
+            stat2Metric = "%";
             break;
         case Hero.Sombra:
             heroStat1Str = sombraTotalTimeInStealthStr;
             heroStat2Str = sombraAvgTimeInStealthStr;
             heroStat3Str = sombraDistanceTeleportedStr;
+
+            stat1Metric = amountOfSecondsShortStr;
+            stat2Metric = amountOfSecondsShortStr;
+            stat3Metric = "m";
             amountOfStats = 3;
             break;
         case Hero.Torbjorn:
             heroStat1Str = torbHammerKillsStr;
             heroStat2Str = torbOverloadEfficiencyStr;
             heroStat3Str = "";
+
+            stat2Metric = "%";
             amountOfStats = 2;
             break;
         case Hero.Tracer:
             heroStat1Str = tracerPulseBombsStuckStr;
-            heroStat2Str = tracerHealthRecalledStr;
-            heroStat3Str = "";
-            amountOfStats = 2;
+            heroStat2Str = tracerPulseBombsStickAccStr;
+            heroStat3Str = tracerHealthRecalledStr;
+
+            amountOfStats = 3;
+            stat2Metric = "%";
             break;
+        // case Hero.Venture:
+        //     heroStat1Str = ventureDirectHitAccStr;
+        //     heroStat2Str = ventureAirShotAccStr;
+        //     heroStat3Str = "";
+
+        //     amountOfStats = 2;
+        //     stat1Metric = "%";
+        //     stat2Metric = "%";
         case Hero.Widowmaker:
             heroStat1Str = widowAirKillsStr;
             heroStat2Str = "";
             heroStat3Str = "";
+
             amountOfStats = 1;
             break;
         default: 
             heroStat1Str = "";
             heroStat2Str = "";
             heroStat3Str = "";
+
             amountOfStats = 0;
+            stat1Metric = "";
+            stat2Metric = "";
+            stat3Metric = "";
             break;
+    }
+}
+
+playervar Boolean spin;
+void DumbWait(Number wait) { if (spin) Wait(wait); } // why cant i just use WaitIfTrue in a while
+void StupidLangSwapSpin() playervar "Language Swap Spin Load Thing"
+{
+    while (spin)
+    {
+        langProgStr = AltFont("ー");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("／");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("｜");
+        DumbWait(0.1);
+
+        langProgStr = AltFont("\\");
+        DumbWait(0.1);
     }
 }
