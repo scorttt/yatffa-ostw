@@ -89,7 +89,7 @@ rule: "Initial Global"
 {
     dbgUsrs = ["scort", "gigaballs"];
 
-    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira]; // array of heroes that do NOT crit
+    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira/* , Hero.Venture */]; // array of heroes that do NOT crit
     scopeArr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scopeCritArr = [Hero.Widowmaker, Hero.Ashe];
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
