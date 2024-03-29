@@ -79,23 +79,6 @@ playervar String heroStat1Str;
 playervar String heroStat2Str;
 playervar String heroStat3Str;
 
-enum LStr
-{
-    MenuStatus, // 0
-    Death, // 1
-    Streak, // 2
-    Stats, // 3
-    Misc, // 4
-    Items, // 5
-    Enabled, // 6
-    Disabled // 7
-}
-enum Lang
-{
-    EN,
-    JP
-}
-
 rule: "v2.3.5.231010 | Created by scort#12211" 
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw
@@ -407,6 +390,7 @@ if (HasSpawned())
 playervar Hero prevHero;
 rule: "Spawning : Previous Hero"
 Event.OnDeath
+if (prevHero != HeroOf())
 {
     prevHero = HeroOf();
 }
@@ -511,7 +495,7 @@ if (validMap)
             AffectedTeam: Team.All, 
             Amount: 0, 
             AmountScalar: 99999, 
-            ExplosionRadius: 30, // explosion radius is capped to some internal arbitrary number (around 30)
+            ExplosionRadius: 30, // explosion radius is capped to some internal arbitrary number (around 30?)
             ExplosionEffect: PlayEffect.BadExplosion, 
             ExplosionSoundEffect: PlayEffect.ExplosionSound, 
             Oversize: 0, 
@@ -540,24 +524,4 @@ if (IsInRange(PosOf().X, 187.22, 199.50))
         ApplyImpulse(player, Vector(0, 0, 1), 1);
     Wait(0.05);
     LoopIfConditionIsTrue();
-}
-
-playervar Boolean spin;
-void DumbWait(Number wait) { if (spin) Wait(wait); } // why cant i just use WaitIfTrue in a while
-void LangSwapSpin() playervar "Language Swap Spin Load Thing"
-{
-    while (spin)
-    {
-        langProgStr = AltFont("ー");
-        DumbWait(0.1);
-
-        langProgStr = AltFont("／");
-        DumbWait(0.1);
-
-        langProgStr = AltFont("｜");
-        DumbWait(0.1);
-
-        langProgStr = AltFont("\\");
-        DumbWait(0.1);
-    }
 }
