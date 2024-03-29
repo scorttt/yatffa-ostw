@@ -5,6 +5,7 @@ playervar Number afkTime;
 // ugly
 rule: "AFK : Player AFK"
 Event.OngoingPlayer
+if (S_AFK_ENABLED)
 if (!isDbgUsr)
 if (!IsDummyBot())
 if (!HasSpawned() ||

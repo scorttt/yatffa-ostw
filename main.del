@@ -20,8 +20,13 @@ globalvar Hero[] critExcArr;
 globalvar Hero[] scopeArr;
 globalvar Hero[] scopeCritArr;
 globalvar Hero[] boundingBoxArr;
+globalvar Boolean S_LITE_MODE;
+
 globalvar Number S_MATCH_TIME;
 globalvar Boolean S_DESTROY_RAILINGS;
+
+globalvar Boolean S_STREAKS_ENABLED;
+globalvar Boolean S_USE_OW_SCOREBORD;
 
 globalvar Number S_HEAL_TYPE;
 globalvar Boolean S_MENU;
@@ -37,6 +42,7 @@ globalvar Number S_ORB_TIME;
 globalvar Boolean S_ORB_COLLECTION_DESPAWN;
 globalvar Number S_ORB_COLLECT_DIST;
 
+globalvar Boolean S_AFK_ENABLED;
 globalvar Number S_AFK_TIME;
 globalvar Number S_AFK_KICK_TIME;
 
@@ -47,7 +53,7 @@ globalvar Boolean S_MODIFY_RANDOMHERO;
 globalvar Boolean S_DISABLE_HEALSTACK;
 globalvar Number S_HOT_TIME;
 globalvar Boolean S_HOT_INTERRUPT;
-globalvar Number S_HOT_MINDMG;
+globalvar Number S_HOT_INTERRUPT_MIN_DMG;
 globalvar Boolean S_INSTANT_RESPAWN;
 globalvar Boolean S_SCORE_TO_WIN;
 globalvar Number S_FLAT_HEAL_AMT;
@@ -103,31 +109,35 @@ rule: "Initial Global"
     scopeCritArr = [Hero.Widowmaker, Hero.Ashe];
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
 
+    S_LITE_MODE = WorkshopSettingToggle("!. YATFFA Lite", "Enable Lite Mode (Disables everything except for Healing, destroying railings, and instant respawns)", false, 0);
+
     S_LANG = WorkshopSettingCombo("A. General", "Language", 0, ["English", "日本語"], 0);
     S_MATCH_TIME = WorkshopSettingInteger("A. General", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     S_INSTANT_RESPAWN = WorkshopSettingToggle("A. General", "Respawn instantly on Interact", true, 2);
     S_SCORE_TO_WIN = WorkshopSettingToggle("A. General", "Enable Score Win Condition", true, 3);
-    S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 4);
-    S_AFK_TIME = WorkshopSettingReal("A. General", "Time to put players in AFK (Seconds)", 20, 5, 600, 5);
-    S_AFK_KICK_TIME = WorkshopSettingReal("A. General", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 6) - S_AFK_TIME;
-    S_HERO_HEALTH_CAP = WorkshopSettingToggle("A. General", "Cap Hero Health on Spawn (On)", true, 7);
-    S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("A. General", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 8);
+    S_USE_OW_SCOREBORD = WorkshopSettingToggle("A. General", "Use Overwatch's Deathmatch Scoreboard", false, 4);
+    S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 5);
 
-    S_MENU = WorkshopSettingToggle("B. Menu", "Use Menu", true, 0);
-    S_USE_MENU_ANIM = WorkshopSettingToggle("B. Menu", "Menu Animations", true, 1);
+    S_AFK_ENABLED = WorkshopSettingToggle("B. AFK", "Enable AFK", true, 0);
+    S_AFK_TIME = WorkshopSettingReal("B. AFK", "Time to put players in AFK (Seconds)", 20, 5, 600, 1);
+    S_AFK_KICK_TIME = WorkshopSettingReal("B. AFK", "Time to Kick AFK Players (Seconds)", 300, 10, 600, 2) - S_AFK_TIME;
 
-    S_MODIFY_HUD = WorkshopSettingToggle("C. HUD", "Allow Modifying Workshop HUD menu toggles", true, 1);
-    S_DEF_HUD = WorkshopSettingToggle("C. HUD", "\"Show Workshop HUD\" default menu toggle", true, 2);
-    S_DEF_STREAK = WorkshopSettingToggle("C. HUD", "\"Show Kill Streaks\" default menu toggle", true, 3);
-    S_DEF_STATS = WorkshopSettingToggle("C. HUD", "\"Show Player Stats\" default menu toggle", true, 4);
+    S_MENU = WorkshopSettingToggle("C. Menu", "Use Menu", true, 0);
+    S_USE_MENU_ANIM = WorkshopSettingToggle("C. Menu", "Menu Animations", true, 1);
 
-    S_MODIFY_RANDOMHERO = WorkshopSettingToggle("D. Random Hero", "Allow Modifying \"Random Hero\" menu toggle", true, 0);
-    S_DEF_RANDOMHERO = WorkshopSettingToggle("D. Random Hero", "\"Random Hero\" default menu toggle", false, 1);
+    S_STREAKS_ENABLED = WorkshopSettingToggle("D. HUD", "Enable Player Kill Streaks (On)", true, 0);
+    S_MODIFY_HUD = WorkshopSettingToggle("D. HUD", "Allow Modifying Workshop HUD menu toggles", true, 1);
+    S_DEF_HUD = WorkshopSettingToggle("D. HUD", "\"Show Workshop HUD\" default menu toggle", true, 2);
+    S_DEF_STREAK = WorkshopSettingToggle("D. HUD", "\"Show Kill Streaks\" default menu toggle", true, 3);
+    S_DEF_STATS = WorkshopSettingToggle("D. HUD", "\"Show Player Stats\" default menu toggle", true, 4);
 
-    S_HEAL_TYPE = WorkshopSettingCombo("E. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
-    S_MODIFY_HEAL = WorkshopSettingToggle("E. Healing", "Allow Modifying Healing menu settings", true, 1);
-    S_DEF_HEAL = WorkshopSettingToggle("E. Healing", "\"Healing\" default menu toggle", true, 2);
-    S_HEAL_PERCENT = WorkshopSettingCombo("E. Healing", "Heal Reward", 9, 
+    S_MODIFY_RANDOMHERO = WorkshopSettingToggle("E. Random Hero", "Allow Modifying \"Random Hero\" menu toggle", true, 0);
+    S_DEF_RANDOMHERO = WorkshopSettingToggle("E. Random Hero", "\"Random Hero\" default menu toggle", false, 1);
+
+    S_HEAL_TYPE = WorkshopSettingCombo("F. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
+    S_MODIFY_HEAL = WorkshopSettingToggle("F. Healing", "Allow Modifying Healing menu settings", true, 1);
+    S_DEF_HEAL = WorkshopSettingToggle("F. Healing", "\"Healing\" default menu toggle", true, 2);
+    S_HEAL_PERCENT = WorkshopSettingCombo("F. Healing", "Heal Reward", 9, 
         ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
          "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
          "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
@@ -136,20 +146,24 @@ rule: "Initial Global"
          "80% of Victims Max HP", "85% of Victims Max HP", "90% of Victims Max HP", 
          "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
 
-    S_FLAT_HEAL_AMT = WorkshopSettingInteger("E. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 100, 1, 700, 4);
-    S_HOT_TIME = Near(WorkshopSettingReal("E. Healing", "Healing Duration", 4.5, 0, 16, 5) * 2) / 2;
-    S_DISABLE_HEALSTACK = WorkshopSettingToggle("E. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
-    S_HOT_INTERRUPT = WorkshopSettingToggle("E. Healing", "Interrupt Healing upon damage taken", true, 7);
-    S_HOT_MINDMG = WorkshopSettingReal("E. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
+    S_FLAT_HEAL_AMT = WorkshopSettingInteger("F. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 120, 1, 700, 4);
+    S_HOT_TIME = Near(WorkshopSettingReal("F. Healing", "Healing Duration", 4.5, 0, 16, 5) * 2) / 2;
+    S_DISABLE_HEALSTACK = WorkshopSettingToggle("F. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
+    S_HOT_INTERRUPT = WorkshopSettingToggle("F. Healing", "Interrupt Healing upon damage taken", true, 7);
+    S_HOT_INTERRUPT_MIN_DMG = WorkshopSettingReal("F. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
 
-    S_ORB_TIME = WorkshopSettingInteger("F. Healing Pickups", "Pickup Lifetime", 8, 2, 30, 0);
-    S_MAX_HEAL_ORBS = WorkshopSettingInteger("F. Healing Pickups", "Maximum amount of pickups per player (11+ may go over the 128 effect limit)", 10, 1, 20, 1);
-    S_ORB_COLLECTION_DESPAWN = WorkshopSettingToggle("F. Healing Pickups", "All pickups disappear after collection", false, 2);
-    S_ORB_COLLECT_DIST = WorkshopSettingReal("F. Healing Pickups", "Pickup Collection Distance", 1.5, 1, 3, 3);
+    S_HERO_HEALTH_CAP = WorkshopSettingToggle("G. Health", "Cap Hero Health on Spawn (On)", true, 0);
+    S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("G. Health", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 1);
+
+    S_ORB_TIME = WorkshopSettingInteger("H. Healing Pickups", "Pickup Lifetime", 8, 2, 30, 0);
+    S_MAX_HEAL_ORBS = WorkshopSettingInteger("H. Healing Pickups", "Maximum amount of pickups per player (11+ may go over the 128 effect limit)", 10, 1, 20, 1);
+    S_ORB_COLLECTION_DESPAWN = WorkshopSettingToggle("H. Healing Pickups", "All pickups disappear after collection", false, 2);
+    S_ORB_COLLECT_DIST = WorkshopSettingReal("H. Healing Pickups", "Pickup Collection Distance", 1.5, 1, 3, 3);
 
     Number credit! = WorkshopSettingCombo("Z. Credit", "Credit", 0, ["scort#11221", "さるよ (JP Localization)", "Josbird (Cursor math)", "Please credit!"], 1000);
     credit = WorkshopSettingCombo("Z. Credit", "Import Codes", 0, ["BXRXY (NA/EU)", "5RKYY (JP)"], 1000);
 
+    // heal amount
     if (S_HEAL_PERCENT != 20)
     {
         flatHeal = false;
@@ -163,14 +177,27 @@ rule: "Initial Global"
         healIncrement = 5;
     }
 
+    // heal reward type (hok, pickups, none)
     if (S_HEAL_TYPE == 3)
     {
         S_MODIFY_HEAL = false;
         S_DEF_HEAL = false;
     }
 
+    // set healing to none if all heal related options are disabled
     if (!S_MODIFY_HEAL && !S_DEF_HEAL)
         S_HEAL_TYPE = 3;
+
+    // set lite mode
+    if (S_LITE_MODE)
+    {
+        S_USE_OW_SCOREBORD = true;
+        S_MENU = false;
+        S_DEF_HUD = false;
+        S_DEF_STREAK = false;
+        S_DEF_STATS = false;
+        S_AFK_ENABLED = false;
+    }
 
     if (IsMap(Map.Chateau_Guillard) || IsMap(Map.Chateau_Guillard_Halloween))
     {
@@ -196,7 +223,8 @@ rule: "Initial Player Join"
 Event.OnPlayerJoin
 if (!IsDummyBot())
 {
-    DisableGameModeHud();
+    if (!S_USE_OW_SCOREBORD)
+        DisableGameModeHud();
 
     # invalidate sel_item and fav_item
     selItem = Item.Invalid;
@@ -297,7 +325,8 @@ if (HasSpawned())
     Wait(1);
     WaitUntil(!langSwap, 1);
 
-    SmallMessage(player, <"   <0><1>", local.welcomeStr, S_MENU ? StringReplace(local.holdToOpenMenuStr, "{interact}", BindString(Button.Interact)) : "">);
+    if (S_MENU)
+        SmallMessage(player, <"   <0><1>", local.welcomeStr, StringReplace(local.holdToOpenMenuStr, "{interact}", BindString(Button.Interact))>);
 }
 
 rule: "Spawning : Respawn"
