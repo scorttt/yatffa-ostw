@@ -350,7 +350,10 @@ if (HasSpawned())
     }
 
     if (prevHero != HeroOf())
-        SetHeroStatStrings();
+    {
+        SetHeroStats();
+        SetMaxHealth(player, 100);
+    }
 
     MinWait();
 
@@ -366,7 +369,8 @@ if (HasSpawned())
     SetAbilityCooldown(player, Button.PrimaryFire, 0);
     SetAbilityCooldown(player, Button.SecondaryFire, 0);
 
-    CapSpawnHealth();
+    Wait(0.5);
+    async CapSpawnHealth();
 }
 
 playervar Hero prevHero;
@@ -378,13 +382,10 @@ Event.OnDeath
 
 void CapSpawnHealth() playervar "Cap Spawn Health"
 {
-    # cap hero spawn health
     if (S_HERO_HEALTH_CAP)
     {
         if (MaxHealth() > S_HERO_HEALTH_CAP_AMT)
             SetMaxHealth(player, (S_HERO_HEALTH_CAP_AMT / MaxHealth()) * 100);
-        else 
-            SetMaxHealth(player, 100);
 
         Wait(0.1);
         SetPlayerHealth(player, MaxHealth());
