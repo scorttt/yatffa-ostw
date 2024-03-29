@@ -1,0 +1,22 @@
+{
+    "Lobby": {
+      "Allow Players Who Are In Queue": true,
+      "Match Voice Chat": true,
+      "Map Rotation": "After A Game",
+      "Max FFA Players": 12,
+      "Max Spectators": 3,
+      "Return To Lobby": "Never"
+    },
+    "Modes": {
+      "All": {
+        "Game Mode Start": "Immediately",
+        "Hero Limit": "Off"
+      },
+      "Deathmatch": {
+        "Enabled Maps": ["Château Guillard"],
+        "Score To Win": 60
+    }
+  },
+  "Mode Name": "Tryhard FFA (YATFFA)",
+  "Description": "Debug YATFFA Settings"
+}

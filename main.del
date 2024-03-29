@@ -1,5 +1,7 @@
-import "settings/settings.json";
+// import "settings/settings.json";
 // import "settings/jpsettings.json";
+import "settings/no_balance_settings.json";
+
 import "../macros-ostw/main.del";
 
 import "afk.del";
