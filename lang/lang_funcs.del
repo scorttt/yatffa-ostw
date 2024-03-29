@@ -85,9 +85,13 @@ playervar Number asheCoachGunKills;
 playervar Number bastionGrenadeKills;
 
 playervar Number amountOfStats;
-playervar String stat1Metric;
+playervar String stat1Metric; // using individual variables to avoid using 2d/3d arrays within ostws extended var collection
 playervar String stat2Metric;
 playervar String stat3Metric;
+
+playervar String heroStat1;
+playervar String heroStat2;
+playervar String heroStat3;
 
 // hero stats strings
 playervar String anaSleepDartAccStr!;

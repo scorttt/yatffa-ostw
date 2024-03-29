@@ -8,10 +8,6 @@ globalvar Number | String bestStreakServerHero;
 playervar Number | String bestStreakHero;
 playervar Boolean streak;
 
-playervar String heroStat1;
-playervar String heroStat2;
-playervar String heroStat3;
-
 Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
                              128 + 127 * CosineFromDegrees((Time() * 150) + 120),
                              128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
