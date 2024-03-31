@@ -1,0 +1,40 @@
+settings
+{
+    lobby
+    {
+        Allow Players Who Are In Queue: No
+        Match Voice Chat: Disabled
+        Map Rotation: After A Game
+        Max FFA Players: 12
+        Max Spectators: 3
+        Return To Lobby: Never
+    }
+    modes
+    {
+        General
+        {
+            Game Mode Start: Immediately
+            Hero Limit: Off
+        }
+        Deathmatch
+        {
+            enabled maps
+            {
+                Château Guillard
+            }
+            Score To Win: 60
+        }
+    }
+    heroes
+    {
+        General
+        {
+            Ability Cooldown Time: 0%
+        }
+    }
+    main
+    {
+        Mode Name: "Debug YATFFA"
+        Description: "Debug YATFFA Settings"
+    }
+}

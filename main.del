@@ -1,6 +1,6 @@
-// import "settings/settings.json";
-// import "settings/jpsettings.json";
-import "settings/no_balance_settings.json";
+// import "settings/settings.del";
+// import "settings/jpsettings.del";
+import "settings/debug_settings.del";
 
 import "../macros-ostw/main.del";
 

@@ -1,0 +1,206 @@
+settings
+{
+    lobby
+    {
+        Allow Players Who Are In Queue: No
+        Match Voice Chat: Disabled
+        Map Rotation: After A Game
+        Max FFA Players: 12
+        Max Spectators: 3
+        Return To Lobby: Never
+    }
+    modes
+    {
+        General
+        {
+            Game Mode Start: Immediately
+            Hero Limit: Off
+        }
+        Deathmatch
+        {
+            enabled maps
+            {
+                Château Guillard
+            }
+            Score To Win: 60
+        }
+    }
+    heroes
+    {
+        General
+        {
+            enabled heroes
+            {
+                Ana
+                Ashe
+                Baptiste
+                Bastion
+                Doomfist
+                Genji
+                Hanzo
+                Junker Queen
+                Orisa
+                Illari
+                Lúcio
+                Lifeweaver
+                Cassidy
+                Mei
+                Echo
+                Kiriko
+                Sombra
+                Pharah
+                Soldier: 76
+                Sojourn
+                Tracer
+                Torbjörn
+                Venture
+                Widowmaker
+                Zenyatta
+            }
+            Ana
+            {
+                Ultimate Ability Nano Boost: Off
+                Sleep Dart Cooldown Time: 80%
+            }
+            Cassidy
+            {
+                Secondary Fire: Off
+                Magnetic Grenade: Off
+                Ultimate Ability Deadeye: Off
+            }
+            D.va
+            {
+                Boosters: On
+                Defense Matrix: On
+                Micro Missiles: On
+                Spawn Without Mech: Off
+                Ultimate Ability Self-Destruct: Off
+            }
+            Doomfist
+            {
+                Ultimate Ability Meteor Strike: Off
+            }
+            Baptiste
+            {
+                Ultimate Ability Amplification Matrix: Off
+                Immortality Field: Off
+                Healing Dealt: 60%
+            }
+            Bastion
+            {
+                Reconfigure: Off
+                Ultimate Ability Configuration: Artillery: Off
+            }
+            Echo
+            {
+                Focusing Beam: Off
+                Ultimate Ability Duplicate: Off
+            }
+            Torbjörn
+            {
+                Deploy Turret: Off
+                Ultimate Ability Molten Core: Off
+            }
+            Mei
+            {
+                No Ammunition Requirement: Off
+                Cryo-Freeze: Off
+                Ice Wall: Off
+                Primary Fire: Off
+                Ultimate Ability Blizzard: Off
+            }
+            Hanzo
+            {
+                Ultimate Ability Dragonstrike: Off
+            }
+            Junker Queen
+            {
+                Commanding Shout: Off
+                Carnage: Off
+                Jagged Blade Cooldown Time: 75%
+                Ultimate Ability Rampage: Off
+            }
+            Orisa
+            {
+                Ultimate Ability Terra Surge: Off
+                Energy Javelin Cooldown Time: 50%
+                Fortify: Off
+                Javelin Spin: Off
+            }
+            Genji
+            {
+                Ultimate Ability Dragonblade: Off
+            }
+            Ramattra
+            {
+                Ultimate Ability Annihilation: Off
+                Void Barrier Omnic Form: Off
+                Ravenous Vortex: Off
+            }
+            Sombra
+            {
+                Hack: Off
+                Virus: Off
+                Ultimate Ability EMP: Off
+            }
+            Soldier: 76
+            {
+                Healing Dealt: 70%
+                Ultimate Ability Tactical Visor: Off
+            }
+            Sojourn
+            {
+                Disruptor Shot: Off
+                Ultimate Ability Overclock: Off
+            }
+            Ashe
+            {
+                Ultimate Ability B.O.B.: Off
+                Dynamite: Off
+            }
+            Pharah
+            {
+                Ultimate Ability Barrage: Off
+            }
+            Illari
+            {
+                Ultimate Ability Captive Sun: Off
+                Healing Pylon: Off
+            }
+            Lifeweaver
+            {
+                Ultimate Ability Tree of Life: Off
+                Petal Platform Health: 25%
+            }
+            Lúcio
+            {
+                Ultimate Ability Sound Barrier: Off
+                Healing Dealt: 40%
+            }
+            Kiriko
+            {
+                Ultimate Ability Kitsune Rush: Off
+                Protection Suzu: Off
+            }
+            Venture
+            {
+                Ultimate Ability Tectonic Shock: Off
+                Burrow: Off
+            }
+            Widowmaker
+            {
+                Ultimate Ability Infra-sight: Off
+                Grappling Hook Cooldown Time: 33.3334%
+            }
+            Zenyatta
+            {
+                Ultimate Ability Transcendence: Off
+            }
+        }
+    }
+    main
+    {
+        Mode Name: "トライハードFFA"
+        Description: "トライハードFFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n3.0.0｜2024年??月??日"
+    }
+}
