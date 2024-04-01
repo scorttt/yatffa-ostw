@@ -1,6 +1,6 @@
-// import "settings/settings.del";
+import "settings/settings.del";
 // import "settings/jpsettings.del";
-import "settings/debug_settings.del";
+// import "settings/debug_settings.del";
 
 import "../macros-ostw/main.del";
 
@@ -17,6 +17,8 @@ import "lang/lang_funcs.del";
 import "lang/en.del";
 import "lang/jp.del";
 // import "lang/es.del";
+
+import "hero specific/venture.del";
 
 globalvar Hero[] critExcArr;
 globalvar Hero[] scopeArr;
@@ -74,10 +76,7 @@ playervar Boolean isDbgUsr;
 
 playervar Boolean checkSpawn;
 playervar Boolean hasOpenedMenu;
-
-playervar String heroStat1Str;
-playervar String heroStat2Str;
-playervar String heroStat3Str;
+playervar Boolean jumppadBugged; // check if the world jump pad is broken for whatever reason thanks blizzard fuck yourselves
 
 rule: "v2.3.5.231010 | Created by scort#12211" 
 {
@@ -89,7 +88,7 @@ rule: "Initial Global"
 {
     dbgUsrs = ["scort", "gigaballs"];
 
-    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira/* , Hero.Venture */]; // array of heroes that do NOT crit
+    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira, Hero.Venture]; // array of heroes that do NOT crit
     scopeArr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
     scopeCritArr = [Hero.Widowmaker, Hero.Ashe];
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
@@ -248,12 +247,12 @@ if (!IsDummyBot())
         case (Lang.JP):
             SetJapanese(); 
             break;
-        case (Lang.KR):
-            // SetKorean();
-            break;
-        case (Lang.MX):
-            // SetMXSpanish();
-            break;
+        // case (Lang.KR):
+        //     SetKorean();
+        //     break;
+        // case (Lang.MX):
+        //     SetMXSpanish();
+        //     break;
     }
 
     # set menu animation initial value
@@ -441,6 +440,7 @@ if (IsDead())
 
 rule: "Streak : Update Killstreak"
 Event.OnFinalBlow
+if (S_STREAKS_ENABLED)
 if (IsAlive(Attacker())) 
 if (Attacker() != Victim())
 {
@@ -452,6 +452,7 @@ if (Attacker() != Victim())
 
 rule: "Streak : Player died, Reset Kills"
 Event.OnDeath
+if (S_STREAKS_ENABLED)
 if (killStreak > 0)
 {
     streak = false;
@@ -535,4 +536,18 @@ if (IsInRange(PosOf().X, 187.22, 199.50))
         ApplyImpulse(player, Vector(0, 0, 1), 1);
     Wait(0.05);
     LoopIfConditionIsTrue();
+}
+
+rule: "Overwatch Jump pad Bug Failsafe"
+Event.OngoingPlayer
+if (validMap)
+if (IsOnGround())
+if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 53.72)) < 2) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 2))
+{
+    // todo: remove this when blizzard gets their shit together and actually hires a QA team
+    # workaround for an overwatch bug that breaks jump pads after swapping heroes
+    WaitIfTrue(0.2);
+    PlayEffect(All(), PlayEffect.RingExplosionSound, Color.White, player, 40);
+    PlayEffect(All(), PlayEffect.ExplosionSound, Color.White, player, 40);
+    ApplyImpulse(player, Up(), 25.25);
 }
