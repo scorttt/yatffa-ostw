@@ -544,7 +544,7 @@ Event.OngoingPlayer
 if (validMap)
 if (HasSpawned())
 if (IsOnGround())
-if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 53.72)) < 2) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 2))
+if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 51.99)) < 1.5) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 1.5))
 {
     // todo: remove this when blizzard gets their shit together and actually hires a QA team
     # workaround for an overwatch bug that breaks jump pads after swapping heroes
