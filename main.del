@@ -421,6 +421,7 @@ rule: "Spawning : Remove Chateau Pier Spawn"
 Event.OngoingPlayer
 if (checkSpawn)
 if (validMap)
+if (HasSpawned())
 if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
 {
     checkSpawn = false;
@@ -541,12 +542,19 @@ if (IsInRange(PosOf().X, 187.22, 199.50))
 rule: "Overwatch Jump pad Bug Failsafe"
 Event.OngoingPlayer
 if (validMap)
+if (HasSpawned())
 if (IsOnGround())
 if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 53.72)) < 2) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 2))
 {
     // todo: remove this when blizzard gets their shit together and actually hires a QA team
     # workaround for an overwatch bug that breaks jump pads after swapping heroes
-    WaitIfTrue(0.2);
+    if (!jumppadBugged)
+    {
+        WaitIfTrue(0.5);
+        jumppadBugged = true;
+        LogToInspector($"{player}'s jumppads are bugged");
+    }
+
     PlayEffect(All(), PlayEffect.RingExplosionSound, Color.White, player, 40);
     PlayEffect(All(), PlayEffect.ExplosionSound, Color.White, player, 40);
     ApplyImpulse(player, Up(), 25.25);
