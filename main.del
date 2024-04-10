@@ -527,11 +527,11 @@ if (validMap)
 if (boundingBoxArr.Contains(HeroOf()))
 if (PosOf().Y < 6)
 if (IsInRange(PosOf().Z, 108.50, 116.50))
-if (IsInRange(PosOf().X, 187.22, 199.50))
+if (IsInRange(PosOf().X, 186.50, 199.50))
 {
     if (IsInRange(PosOf().X, 198.60, 199.50))
         ApplyImpulse(player, Vector(1, 0, 0), 1);
-    else if (IsInRange(PosOf().X, 187.00, 188.10))
+    else if (IsInRange(PosOf().X, 186.50, 189.70))
         ApplyImpulse(player, Vector(-1, 0, 0), 1);
     else if (IsInRange(PosOf().Z, 112.70, 116.50))
         ApplyImpulse(player, Vector(0, 0, 1), 1);
@@ -539,23 +539,29 @@ if (IsInRange(PosOf().X, 187.22, 199.50))
     LoopIfConditionIsTrue();
 }
 
-rule: "Overwatch Jump pad Bug Failsafe"
-Event.OngoingPlayer
-if (validMap)
-if (HasSpawned())
-if (IsOnGround())
-if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 51.99)) < 1.5) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 1.5))
-{
-    // todo: remove this when blizzard gets their shit together and actually hires a QA team
-    # workaround for an overwatch bug that breaks jump pads after swapping heroes
-    if (!jumppadBugged)
-    {
-        WaitIfTrue(0.5);
-        jumppadBugged = true;
-        LogToInspector($"{player}'s jumppads are bugged");
-    }
+// rule: "Overwatch Jump pad Bug Failsafe"
+// Event.OngoingPlayer
+// if (validMap)
+// if (HasSpawned())
+// if (IsOnGround())
+// if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 51.99)) < 1.5) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 1.5))
+// {
+//     // todo: remove this when blizzard gets their shit together and actually hires a QA team
+//     # workaround for an overwatch bug that breaks jump pads after swapping heroes
+//     if (!jumppadBugged)
+//     {
+//         WaitIfTrue(0.7);
+//         jumppadBugged = true;
+//         LogToInspector($"{player}'s jumppads are bugged");
+//     }
 
-    PlayEffect(All(), PlayEffect.RingExplosionSound, Color.White, player, 40);
-    PlayEffect(All(), PlayEffect.ExplosionSound, Color.White, player, 40);
-    ApplyImpulse(player, Up(), 25.25);
-}
+//     PlayEffect(All(), PlayEffect.RingExplosionSound, Color.White, player, 40);
+//     PlayEffect(All(), PlayEffect.ExplosionSound, Color.White, player, 40);
+//     ApplyImpulse(player, Up(), 25.25);
+// }
+
+// rule: "jumppad pos"
+// {
+//     CreateEffect(All(), Effect.Sphere, Color.Green, Vector(192.50, 3.22, 51.99), 1.5);
+//     CreateEffect(All(), Effect.Sphere, Color.Green, Vector(220.93, 5.29, 112.02), 1.5);
+// }
