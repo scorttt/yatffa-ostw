@@ -1,0 +1,8 @@
+import "../main.del";
+
+rule: "Venture: "
+Event.OngoingPlayer
+Player.Venture
+{
+    
+}
