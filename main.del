@@ -294,13 +294,11 @@ if (IsGameInProgress())
 globalvar Number timeResets;
 rule: "Match : Reset Match time if lobby becomes empty"
 if (IsGameInProgress())
-if (All().Length == 0)
-if (Time() > 10)
+if (All().Length <= 1)
+if (MatchTime() > 60)
 if (timeResets < 3)
 {
     SetMatchTime(S_MATCH_TIME);
-
-    WaitIfTrue(10);
     timeResets++;
 }
 
