@@ -11,18 +11,15 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     langSwap = true;
     spin = true;
     language = Lang.EN;
-    stat1Metric = "";
-    stat2Metric = "";
-    stat3Metric = "";
+
+    statMetric = [];
 
     holdToOpenMenuStr = "Hold [{interact}] to open menu";
     releaseToHideMenuStr = "Release [{interact}] to hide menu";
     doubleTapToToggleFavStr ="Double tap [{interact}] to toggle ";
-    Wait(0.2);
 
     pressToRespawnInstantlyStr = "{interact} to respawn instantly";
     useNormalHeroSelectStr = "Use normal hero select to change hero";
-    Wait(0.2);
 
     currentKillStreakStr = "Streak: ";
     lastKillstreakStr = "{number} player killstreak!";
@@ -31,6 +28,7 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     playerGotServerBestKillStreakStr = "{player} got a {number} player killstreak! The lobby's best!";
     youStr = " (You)";
     bestKillStreakByPlayer = "Best Streak: {number} by {player}";
+
     Wait(0.2);
 
     kdrStatStr = "KDR: ";
@@ -42,9 +40,8 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     scopeAccuracyStatStr = "Scope Acc: ";
     scopeCritAccuracyStatStr = "Scope Crit Acc: ";
     environmentKillsStatStr = "Environment Kills: ";
-    healingStatStr = "Healing: ";
+    healingStatStr = "Heal: ";
     bestKillStreakStatStr = "Best Streak: {number}";
-    Wait(0.2);
 
     playerWasKickedStr = <" was kicked after <0> minutes of inactivity", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
     playerKickTimerStr = "You will be kicked for inactivity in {minutes}{seconds}";
@@ -55,13 +52,15 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     healToFullStr = " (To Full)";
     instantHealDurStr = "Instant";
     quote1Str = "\"";
-    quote2Str = "\"";
+    quote2Str = quote1Str;
     amountOfMinutesStr = " minutes ";
     amountOfSecondsStr = " seconds";
     oneMinuteStr = " minute ";
     oneSecondStr = " second";
     amountOfMinutesShortStr = "m";
     amountOfSecondsShortStr = "s";
+
+    Wait(0.2);
 
     if (S_HEAL_TYPE == 0)
         healTypeDescriptorStr = " (Heal on Kill) ";
@@ -72,80 +71,95 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     else
         healTypeDescriptorStr = " (Disabled) ";
 
-    Wait(0.2);
-
-    ////////////////////////////////////////////////////////////////////////////
-    // !!! reminder to self: manually set itemWidth when changing strings !!! //
-    showWorkshopHudItemStr = "Show Workshop HUD"; itemWidth[0] = 0.474;
-    showStatsItemStr =       "Show Stats";        itemWidth[1] = 0.320;
-    showKillStreaksItemStr = "Show Kill Streaks"; itemWidth[2] = 0.474;
-    healingItemStr =         "Healing";           itemWidth[3] = 0.606;
-                                                  itemWidth[4] = 0.400;
-                                                  itemWidth[5] = 0.400;
-    randomHeroItemStr =      "Random Hero";       itemWidth[6] = 0.342;
-    languageItemStr =        "Language";          itemWidth[7] = 0.276;
-    Wait(0.2);
+    showWorkshopHudItemStr = "Show Workshop HUD";
+    showStatsItemStr =       "Show Stats";
+    showKillStreaksItemStr = "Show Kill Streaks";
+    healingItemStr =         "Healing";
+    randomHeroItemStr =      "Random Hero";
+    languageItemStr =        "Language";
 
     showWorkshopHudNotifStr = "Workshop HUD shown!";
     showStatsNotifStr = "Stats shown!";
     showKillStreaksNotifStr = "Kill Streaks shown!";
     enableHealNotifStr = "Healing Enabled!";
     enableRandomHeroNotifStr = "Random Hero Enabled!";
-    Wait(0.2);
 
     hideWorkshopHudNotifStr = "Workshop HUD Hidden!";
     hideStatsNotifStr = "Stats Hidden!";
     hideKillStreaksNotifStr = "Kill Streaks Hidden!";
     disableHealNotifStr = "Healing Disabled!";
     disableRandomHeroNotifStr = "Random Hero Disabled!";
+
     Wait(0.2);
 
     //////////////////////
     // hero stats start //
     //////////////////////
 
-    anaSleepDartAccStr = "Sleep Dart Acc: ";
-    anaSleepDartsHitStr = "Sleep Darts Hit: ";
+    sleepDartAccStr = "Sleep Dart Acc: ";
+    sleepDartsHitStr = "Sleep Darts Hit: ";
+    coachGunKillsStr = "Coach Gun Kills: ";
+    dynamiteKillsStr = "Dynamite Kills: ";
+    grenadesStuckStr = "Grenades Stuck: ";
+    grenadeStickAccStr = "Grenade Stick Acc: ";
+    grenadeKillsStr = "Grenade Kills: ";
+    damageDeflectedStr = "DMG Deflected: ";
+    healUsageStr = "Heal Usage: ";
+    speedUsageStr = "Speed Usage: ";
+    directHitAccStr = "Dir Hit Acc: ";
+    concBlastKillsStr = "Conc Blast Kills: ";
+    airTimeEfficacyStr = "Air Time Efficacy: ";
+    avgTimeInAirStr = "Avg Time In Air: ";
+    railgunKillsStr = "Railgun Kills: ";
+    railgunAccStr = "Railgun Acc: ";
+    railgunAvgChargeStr = "Avg Railgun Charge: ";
+    helixDirectHitsStr = "Helix Dir Hits: ";
+    helixDirectAccStr = "Helix Dir Hit Acc: ";
+    distanceTeleportedStr = "Dist Teleported: ";
+    virusHitsStr = "Virus Hits: ";
+    virusAccStr = "Virus Acc: ";
+    virusKillsStr = "Virus Kills: ";
+    hammerKillsStr = "Hammer Kills: ";
+    overloadEfficacyStr = "Overload Efficacy: ";
+    bombsStuckStr = "Bombs Stuck: ";
+    bombsStickAccStr = "Bomb Stick Acc: ";
+    bombKillsStr = "Bomb Kills: ";
+    healthRecalledStr = "HP Recalled: ";
+    airShotAccStr = "Air Shot Acc: ";
+    airKillsStr = "Air Kills: ";
+    fortifyEfficacyStr = "Fortify Efficacy: ";
+    javelinsHitStr = "Javelins Hit: ";
+    javelinAccStr = "Javelin Acc: ";
+    javelinKillsStr = "Javelin Kills: ";
+    shoutEfficacyStr = "Shout Efficacy: ";
+    healedFromAbilitiesStr = "HP from abilities: ";
+    knivesHitStr = "Knives Hit: ";
+    knifeAccStr = "Knife Acc: ";
+    knifeKillsStr = "Knife Kills: ";
+    rocksHitStr = "Rocks Hit: ";
+    rockAccStr = "Rock Acc: ";
+    focusingBeamAccStr = "Beam Acc: ";
+    focusingBeamKillsStr = "Beam Kills: ";
+    focusingBeamEfficacyStr = "Beam Efficacy: ";
+    hooksHitStr = "Hooks Hit: ";
+    hookAccStr = "Hook Acc: ";
+    firestrikesHitStr = "Firestrikes Hit: ";
+    firestrikeAccStr = "Firestrike Acc: ";
+    firestrikeKillsStr = "Firestrike Kills: ";
+    whipshotsHitStr = "Whipshots Hit: ";
+    whipshotAccStr = "Whipshot Acc: ";
+    whipshotKillsStr = "Whipshot Kills: ";
+    nemesisEfficacyStr = "Nemesis Efficacy: ";
 
-    asheCoachGunKillsStr = "Coach Gun Kills: ";
+    itemWidth[0] = 0.474;
+    itemWidth[1] = 0.320;
+    itemWidth[2] = 0.474;
+    itemWidth[3] = 0.606;
+    itemWidth[4] = 0.400;
+    itemWidth[5] = 0.400;
+    itemWidth[6] = 0.342;
+    itemWidth[7] = 0.276;
 
-    bastionGrenadesStuckStr = "Grenades Stuck: ";
-    bastionGrenadeStickAccStr = "Grenade Stick Acc: ";
-    bastionGrenadeKillsStr = "Grenade Kills: ";
-
-    echoStickyBombsStuckStr = "Bombs Stuck: ";
-    echoStickyBombStickAccStr = "Bombs Stick Acc: ";
-
-    genjiDamageDeflectedStr = "Damage Deflected: ";
-
-    lucioHealUsageStr = "Heal Usage: ";
-    lucioSpeedUsageStr = "Speed Usage: ";
-
-    pharahDirectHitAccStr = "Direct Hit Acc: ";
-    pharahConcBlastKillsStr = "Conc Blast Kills: ";
-
-    sojournRailgunKillsStr = "Railgun Kills: ";
-    sojournRailgunAccStr = "Railgun Acc: ";
-    sojournRailgunAvgChargeStr = "Avg Railgun Charge: ";
-
-    soldierHelixDirectHitsStr = "Helix Direct Hits: ";
-    soldierHelixDirectAccStr = "Helix Direct Hit Acc: ";
-
-    sombraTotalTimeInStealthStr = "Stealth Time: ";
-    sombraAvgTimeInStealthStr = "Avg Stealth Time: ";
-    sombraDistanceTeleportedStr = "Dist Teleported: ";
-
-    torbHammerKillsStr = "Hammer Kills: ";
-    torbOverloadEfficiencyStr = "Overload Efficacy: ";
-
-    tracerPulseBombsStuckStr = "Bombs Stuck: ";
-    tracerPulseBombsStickAccStr = "Bomb Stick Acc: ";
-    tracerHealthRecalledStr = "Health Recalled: ";
-
-    ventureDirectHitAccStr = "Direct Hit Acc: ";
-    ventureAirShotAccStr = "Air Shot Acc: ";
-
-    widowAirKillsStr = "Air Kills: ";
     Wait(0.2);
 
     SetHeroStats();
@@ -163,22 +177,3 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     langSwap = false;
     langProgStr = "";
 }
-
-// void SetLanguageX(Number charWidth) playervar "Set Language X Sub"
-// {
-//     for (Number i = 0; i < 8; i++)
-//     {
-//         if (langStr[LStr.Items][i] == null)
-//             langX[i] = 0.40;
-//         else
-//         {
-//             Number strLen = StringLength(langStr[LStr.Items][i]);
-//             if (i != Item.Heal)
-//                 langX[i] = 0.10 + (strLen * charWidth);
-//             else
-//                 langX[i] = 0.10 + (strLen + StringLength(langStr[LStr.Misc][12 + S_HEAL_TYPE])) * charWidth;
-//         }
-
-//         MinWait();
-//     }
-// }

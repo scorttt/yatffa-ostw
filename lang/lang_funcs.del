@@ -84,212 +84,235 @@ playervar String disableRandomHeroNotifStr!;
 playervar Number asheCoachGunKills;
 playervar Number bastionGrenadeKills;
 
-playervar Number amountOfStats;
-playervar String stat1Metric; // using individual variables to avoid using 2d/3d arrays within ostws extended var collection
-playervar String stat2Metric;
-playervar String stat3Metric;
-
-playervar String heroStat1;
-playervar String heroStat2;
-playervar String heroStat3;
+playervar String[] statMetric;
+playervar String[] heroStatStr;
+playervar Number[] heroStatVal;
+playervar Boolean[] statIsConditional; // requires the user to affect the statistic in some way before displaying
 
 // hero stats strings
-playervar String anaSleepDartAccStr!;
-playervar String anaSleepDartsHitStr!;
+playervar String sleepDartAccStr!;
+playervar String sleepDartsHitStr!;
 
-playervar String asheCoachGunKillsStr!;
+playervar String coachGunKillsStr!;
+playervar String dynamiteKillsStr!;
 
-playervar String bastionGrenadesStuckStr!;
-playervar String bastionGrenadeStickAccStr!;
-playervar String bastionGrenadeKillsStr!;
+playervar String grenadesStuckStr!;
+playervar String grenadeStickAccStr!;
+playervar String grenadeKillsStr!;
 
-playervar String echoStickyBombsStuckStr!;
-playervar String echoStickyBombStickAccStr!;
+playervar String damageDeflectedStr!;
 
-playervar String genjiDamageDeflectedStr!;
+playervar String healUsageStr!;
+playervar String speedUsageStr!;
 
-playervar String lucioHealUsageStr!;
-playervar String lucioSpeedUsageStr!;
+playervar String directHitAccStr!;
+playervar String concBlastKillsStr!;
+playervar String airTimeEfficacyStr!; // time spent in air vs on ground
+playervar String avgTimeInAirStr!;
 
-playervar String pharahDirectHitAccStr!;
-playervar String pharahConcBlastKillsStr!;
+playervar String railgunKillsStr!;
+playervar String railgunAccStr!;
+playervar String railgunAvgChargeStr!;
 
-playervar String sojournRailgunKillsStr!;
-playervar String sojournRailgunAccStr!;
-playervar String sojournRailgunAvgChargeStr!;
+playervar String helixDirectHitsStr!;
+playervar String helixDirectAccStr!;
 
-playervar String soldierHelixDirectHitsStr!;
-playervar String soldierHelixDirectAccStr!;
+playervar String distanceTeleportedStr!;
+playervar String virusHitsStr!;
+playervar String virusKillsStr!;
+playervar String virusAccStr!;
 
-playervar String sombraTotalTimeInStealthStr!;
-playervar String sombraAvgTimeInStealthStr!;
-playervar String sombraDistanceTeleportedStr!;
+playervar String hammerKillsStr!;
+playervar String overloadEfficacyStr!;
 
-playervar String torbHammerKillsStr!;
-playervar String torbOverloadEfficiencyStr!;
+playervar String bombsStuckStr!;
+playervar String bombsStickAccStr!;
+playervar String bombKillsStr!;
+playervar String healthRecalledStr!;
 
-playervar String tracerPulseBombsStuckStr!;
-playervar String tracerPulseBombsStickAccStr!;
-playervar String tracerHealthRecalledStr!;
+playervar String airShotAccStr!;
 
-playervar String ventureDirectHitAccStr!;
-playervar String ventureAirShotAccStr!;
+playervar String airKillsStr!;
 
-playervar String widowAirKillsStr!;
+playervar String fortifyEfficacyStr!;
+playervar String javelinsHitStr!;
+playervar String javelinKillsStr!;
+playervar String javelinAccStr!;
+
+playervar String shoutEfficacyStr!;
+playervar String healedFromAbilitiesStr!;
+playervar String knivesHitStr!;
+playervar String knifeKillsStr!;
+playervar String knifeAccStr!;
+
+playervar String rocksHitStr!;
+playervar String rockAccStr!;
+
+playervar String focusingBeamAccStr!;
+playervar String focusingBeamKillsStr!;
+playervar String focusingBeamEfficacyStr!; // percentage of time focusing beam is dealing bonus damage on low health targets
+
+playervar String hooksHitStr!;
+playervar String hookAccStr!;
+
+playervar String firestrikesHitStr!;
+playervar String firestrikeKillsStr!;
+playervar String firestrikeAccStr!;
+
+playervar String whipshotsHitStr!;
+playervar String whipshotKillsStr!;
+playervar String whipshotAccStr!;
+
+playervar String nemesisEfficacyStr!;
+
+
 
 void SetHeroStats() playervar "Set Hero Stat"
 {
     WaitUntil(HasSpawned() && IsAlive(), 99999);
 
-    amountOfStats = 0;
-    stat1Metric = "";
-    stat2Metric = "";
-    stat3Metric = "";
+    heroStatStr = [];
+    statMetric = [];
 
     switch (HeroOf())
     {
         case Hero.Ana:
-            heroStat1Str = anaSleepDartAccStr;
-            heroStat2Str = anaSleepDartsHitStr;
-            heroStat3Str = "";
+            heroStatStr[0] = sleepDartAccStr;
+            heroStatStr[1] = sleepDartsHitStr;
 
-            amountOfStats = 2;
-            stat1Metric = "%";
+            statMetric[0] = "%";
             break;
         case Hero.Ashe:
-            heroStat1Str = asheCoachGunKillsStr;
-            heroStat2Str = "";
-            heroStat3Str = "";
+            heroStatStr[0] = coachGunKillsStr;
+            heroStatStr[1] = dynamiteKillsStr;
 
-            amountOfStats = 1;
             break;
         case Hero.Bastion:
-            heroStat1Str = bastionGrenadeKillsStr;
-            heroStat2Str = bastionGrenadesStuckStr;
-            heroStat3Str = bastionGrenadeStickAccStr;
+            heroStatStr[0] = grenadeKillsStr;
+            heroStatStr[1] = grenadesStuckStr;
+            heroStatStr[2] = grenadeStickAccStr;
 
-            amountOfStats = 3;
-            stat3Metric = "%";
+            statMetric[2] = "%";
             break;
         case Hero.Echo:
-            heroStat1Str = echoStickyBombsStuckStr;
-            heroStat2Str = echoStickyBombStickAccStr;
-            heroStat3Str = "";
+            heroStatStr[0] = bombKillsStr;
+            heroStatStr[1] = bombsStuckStr;
+            heroStatStr[2] = bombsStickAccStr;
+            heroStatStr[3] = focusingBeamAccStr;
+            heroStatStr[4] = focusingBeamKillsStr;
+            heroStatStr[5] = focusingBeamEfficacyStr;
+            heroStatStr[6] = avgTimeInAirStr;
 
-            amountOfStats = 2;
-            stat2Metric = "%";
+            statMetric[2] = "%";
+            statMetric[3] = "%";
+            statMetric[5] = "%";
+            statMetric[6] = amountOfSecondsShortStr;
             break;
         case Hero.Genji:
-            heroStat1Str = genjiDamageDeflectedStr;
-            heroStat2Str = "";
-            heroStat3Str = "";
+            heroStatStr[0] = damageDeflectedStr;
 
-            amountOfStats = 1;
             break;
         case Hero.Lucio:
-            heroStat1Str = lucioHealUsageStr;
-            heroStat2Str = lucioSpeedUsageStr;
-            heroStat3Str = "";
+            heroStatStr[0] = healUsageStr;
+            heroStatStr[1] = speedUsageStr;
  
-            amountOfStats = 2;
-            stat1Metric = "%";
-            stat2Metric = "%";
+            statMetric[0] = "%";
+            statMetric[1] = "%";
             break;
         case Hero.Pharah:
-            heroStat1Str = pharahDirectHitAccStr;
-            heroStat2Str = pharahConcBlastKillsStr;
-            heroStat3Str = "";
+            heroStatStr[0] = directHitAccStr;
+            heroStatStr[1] = concBlastKillsStr;
+            heroStatStr[2] = avgTimeInAirStr;
+            heroStatStr[3] = airTimeEfficacyStr;
 
-            amountOfStats = 2;
-            stat1Metric = "%";
+            statMetric[0] = "%";
+            statMetric[2] = amountOfMinutesShortStr;
+            statMetric[3] = "%";
             break;
         case Hero.Sojourn:
-            heroStat1Str = sojournRailgunKillsStr;
-            heroStat2Str = sojournRailgunAccStr;
-            heroStat3Str = sojournRailgunAvgChargeStr;
+            heroStatStr[0] = railgunKillsStr;
+            heroStatStr[1] = railgunAccStr;
+            heroStatStr[2] = railgunAvgChargeStr;
 
-            amountOfStats = 3;
-            stat2Metric = "%";
-            stat3Metric = "%";
+            statMetric[1] = "%";
+            statMetric[2] = "%";
             break;
         case Hero.Soldier76:
-            heroStat1Str = soldierHelixDirectHitsStr;
-            heroStat2Str = soldierHelixDirectAccStr;
-            heroStat3Str = "";
+            heroStatStr[0] = helixDirectHitsStr;
+            heroStatStr[1] = helixDirectAccStr;
 
-            amountOfStats = 2;
-            stat2Metric = "%";
+            statMetric[1] = "%";
             break;
         case Hero.Sombra:
-            heroStat1Str = sombraTotalTimeInStealthStr;
-            heroStat2Str = sombraAvgTimeInStealthStr;
-            heroStat3Str = sombraDistanceTeleportedStr;
+            heroStatStr[0] = distanceTeleportedStr;
+            heroStatStr[1] = virusHitsStr;
+            heroStatStr[2] = virusAccStr;
+            heroStatStr[3] = virusKillsStr;
 
-            stat1Metric = amountOfSecondsShortStr;
-            stat2Metric = amountOfSecondsShortStr;
-            stat3Metric = "m";
-            amountOfStats = 3;
+            statMetric[0] = "m";
+            statMetric[2] = "%";
             break;
         case Hero.Torbjorn:
-            heroStat1Str = torbHammerKillsStr;
-            heroStat2Str = torbOverloadEfficiencyStr;
-            heroStat3Str = "";
+            heroStatStr[0] = hammerKillsStr;
+            heroStatStr[1] = overloadEfficacyStr;
 
-            stat2Metric = "%";
-            amountOfStats = 2;
+            statMetric[1] = "%";
             break;
         case Hero.Tracer:
-            heroStat1Str = tracerPulseBombsStuckStr;
-            heroStat2Str = tracerPulseBombsStickAccStr;
-            heroStat3Str = tracerHealthRecalledStr;
+            heroStatStr[0] = bombKillsStr;
+            heroStatStr[1] = bombsStuckStr;
+            heroStatStr[2] = bombsStickAccStr;
+            heroStatStr[3] = healthRecalledStr;
 
-            amountOfStats = 3;
-            stat2Metric = "%";
+            statMetric[2] = "%";
             break;
-        // case Hero.Venture:
-        //     heroStat1Str = ventureDirectHitAccStr;
-        //     heroStat2Str = ventureAirShotAccStr;
-        //     heroStat3Str = "";
+        case Hero.Venture:
+            heroStatStr[0] = directHitAccStr;
+            heroStatStr[1] = airShotAccStr;
 
-        //     amountOfStats = 2;
-        //     stat1Metric = "%";
-        //     stat2Metric = "%";
+            statMetric[0] = "%";
+            statMetric[1] = "%";
+            break;
         case Hero.Widowmaker:
-            heroStat1Str = widowAirKillsStr;
-            heroStat2Str = "";
-            heroStat3Str = "";
-
-            amountOfStats = 1;
+            heroStatStr[0] = airKillsStr;
             break;
         default: 
-            heroStat1Str = "";
-            heroStat2Str = "";
-            heroStat3Str = "";
-
-            amountOfStats = 0;
-            stat1Metric = "";
-            stat2Metric = "";
-            stat3Metric = "";
+            heroStatStr = [];
+            statMetric = [];
             break;
     }
 }
 
+// void SetLanguageX(Number charWidth) playervar "Set Language X Sub"
+// {
+//     itemWidth[4] = 0.400;
+//     itemWidth[5] = 0.400;
+
+//     Number strLen = StringLength(langStr[LStr.Items][i]);
+//     if (i != Item.Heal)
+//         langX[i] = 0.10 + (strLen * charWidth);
+//     else
+//         langX[i] = 0.10 + (strLen + StringLength(langStr[LStr.Misc][12 + S_HEAL_TYPE])) * charWidth;
+
+//     MinWait();
+// }
+
 playervar Boolean spin;
 void DumbWait(Number wait) { if (spin) Wait(wait); } // why cant i just use WaitIfTrue in a while
-void StupidLangSwapSpin() playervar "Language Swap Spin Load Thing"
+void StupidLangSwapSpin() playervar "Stupid Language Swap Spin Load Thing"
 {
     while (spin)
     {
-        langProgStr = AltFont("ー");
+        langProgStr = "ー";
         DumbWait(0.1);
 
-        langProgStr = AltFont("／");
+        langProgStr = "/";
         DumbWait(0.1);
 
-        langProgStr = AltFont("｜");
+        langProgStr = "|";
         DumbWait(0.1);
 
-        langProgStr = AltFont("\\");
+        langProgStr = "\\";
         DumbWait(0.1);
     }
 }
