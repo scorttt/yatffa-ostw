@@ -1,6 +1,6 @@
-import "settings/settings.del";
+// import "settings/settings.del";
 // import "settings/jpsettings.del";
-// import "settings/debug_settings.del";
+import "settings/debug_settings.del";
 
 import "../macros-ostw/main.del";
 
@@ -355,15 +355,15 @@ if (HasSpawned())
     else
     {
         # remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
-        Hero[] heroArr! = AllowedHeroes() - prevHero;
+        Hero[] heroArr! = AllowedHeroes() - currHero;
 
-        if (prevHero == HeroOf())
+        if (!PlayerSwappedHero())
         {
             ForcePlayerHero(player, heroArr.Random());
             StopForcingHero();
 
             # add the previous hero back to the hero array
-            heroArr = AllowedHeroes() + prevHero;
+            heroArr = AllowedHeroes() + currHero;
         }
         else 
         {
@@ -372,7 +372,7 @@ if (HasSpawned())
         }
     }
 
-    if (prevHero != HeroOf())
+    if (PlayerSwappedHero())
     {
         SetHeroStats();
         SetMaxHealth(player, 100);
@@ -396,12 +396,12 @@ if (HasSpawned())
     async CapSpawnHealth();
 }
 
-playervar Hero prevHero;
+playervar Hero currHero;
 rule: "Spawning : Previous Hero"
 Event.OnDeath
-if (prevHero != HeroOf())
+if (PlayerSwappedHero())
 {
-    prevHero = HeroOf();
+    currHero = HeroOf();
 }
 
 void CapSpawnHealth() playervar "Cap Spawn Health"
