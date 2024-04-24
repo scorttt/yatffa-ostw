@@ -1,3 +1,4 @@
+import "../main.del";
 settings
 {
     lobby
@@ -55,6 +56,7 @@ settings
                 Torbjörn
                 Venture
                 Widowmaker
+                Zarya
                 Zenyatta
             }
             Ana
@@ -71,7 +73,7 @@ settings
             D.va
             {
                 Boosters: On
-                Defense Matrix: On
+                Defense Matrix: Off
                 Micro Missiles: On
                 Spawn Without Mech: Off
                 Ultimate Ability Self-Destruct: Off
@@ -93,7 +95,6 @@ settings
             }
             Echo
             {
-                Focusing Beam: Off
                 Ultimate Ability Duplicate: Off
             }
             Torbjörn
@@ -151,7 +152,7 @@ settings
             Sojourn
             {
                 Disruptor Shot: Off
-                Ultimate Ability Overclock: Off
+                Ultimate Generation - Combat Overclock: 80%
             }
             Ashe
             {
@@ -182,25 +183,35 @@ settings
                 Ultimate Ability Kitsune Rush: Off
                 Protection Suzu: Off
             }
-            Venture
+            Venture 
             {
                 Ultimate Ability Tectonic Shock: Off
                 Burrow: Off
+                Drill Dash: Off
             }
             Widowmaker
             {
                 Ultimate Ability Infra-sight: Off
                 Grappling Hook Cooldown Time: 33.3334%
             }
+            Zarya 
+            {
+                Damage Dealt: 140%
+                Ultimate Ability Graviton Surge: Off
+                Projected Barrier: Off
+                Particle Barrier: Off
+            }
             Zenyatta
             {
+                Damage Dealt: 125%
+                Orb Of Discord: Off
                 Ultimate Ability Transcendence: Off
             }
         }
     }
     main
     {
-        Mode Name: "トライハードFFA"
-        Description: "トライハードFFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n3.0.0｜2024年??月??日"
+        Mode Name: "腕試しFFA"
+        Description: "腕試しFFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n3.0.0｜2024年??月??日"
     }
 }
