@@ -16,8 +16,9 @@ import "menu/menu.del";
 import "lang/lang_funcs.del";
 import "lang/en.del";
 import "lang/jp.del";
-// import "lang/es.del";
+// import "lang/mx.del";
 
+import "hero specific/ana.del";
 import "hero specific/venture.del";
 
 globalvar Hero[] critExcArr;
@@ -76,11 +77,11 @@ playervar Boolean isDbgUsr;
 
 playervar Boolean checkSpawn;
 playervar Boolean hasOpenedMenu;
-playervar Boolean jumppadBugged; // check if the world jump pad is broken for whatever reason thanks blizzard fuck yourselves
 
-rule: "v2.3.5.231010 | Created by scort#12211" 
+Boolean PlayerSwappedHero(Player p = player): p.currHero != HeroOf(p);
+rule: "v3.0.0.24???? | Created by scort#12211" 
 {
-    # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw
+    # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
     DisableInspectorRecording(); 
 }
 
@@ -136,7 +137,7 @@ rule: "Initial Global"
     S_HOT_INTERRUPT = WorkshopSettingToggle("F. Healing", "Interrupt Healing upon damage taken", true, 7);
     S_HOT_INTERRUPT_MIN_DMG = WorkshopSettingReal("F. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
 
-    S_HERO_HEALTH_CAP = WorkshopSettingToggle("G. Health", "Cap Hero Health on Spawn (On)", true, 0);
+    S_HERO_HEALTH_CAP = WorkshopSettingToggle("G. Health", "Cap Hero Maximum Health on Spawn (On)", true, 0);
     S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("G. Health", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 1);
 
     S_ORB_TIME = WorkshopSettingInteger("H. Healing Pickups", "Pickup Lifetime", 8, 2, 30, 0);
@@ -316,7 +317,7 @@ if (HasSpawned())
 {
     afk = false;
     Wait(1);
-    WaitUntil(!langSwap, 1);
+    WaitUntil(!langSwap, 3);
 
     if (S_MENU)
         SmallMessage(player, <"   <0><1>", local.welcomeStr, StringReplace(local.holdToOpenMenuStr, "{interact}", BindString(Button.Interact))>);
@@ -424,7 +425,7 @@ if (DistanceBetween(PositionOf(), Vector(177, 0, 51.5)) < 1)
 {
     checkSpawn = false;
 
-    LogToInspector(<"<0> spawned near the Chateau Pier spawn coords, forcing a respawn", player>);
+    LogToInspector(<"<0> spawned at the pier, forcing respawn", player>);
     Respawn();
 }
 
@@ -474,7 +475,7 @@ if (killStreak > 0)
         }
         else 
         {
-            SmallMessage(showStreakEnabled ? player : null, "   " + <"<0> <1>", bestStreakHero, StringReplace(local.killStreakPersonalBestStr, "{number}", killStreak)>);
+            SmallMessage(showStreakEnabled ? player : null, <"   <0> <1>", bestStreakHero, StringReplace(local.killStreakPersonalBestStr, "{number}", killStreak)>);
         }
     }
     else if (killStreak >= 5)
@@ -536,30 +537,3 @@ if (IsInRange(PosOf().X, 186.50, 199.50))
     Wait(0.05);
     LoopIfConditionIsTrue();
 }
-
-// rule: "Overwatch Jump pad Bug Failsafe"
-// Event.OngoingPlayer
-// if (validMap)
-// if (HasSpawned())
-// if (IsOnGround())
-// if ((DistanceBetween(PosOf(), Vector(192.50, 3.22, 51.99)) < 1.5) || (DistanceBetween(PosOf(), Vector(220.93, 5.29, 112.02)) < 1.5))
-// {
-//     // todo: remove this when blizzard gets their shit together and actually hires a QA team
-//     # workaround for an overwatch bug that breaks jump pads after swapping heroes
-//     if (!jumppadBugged)
-//     {
-//         WaitIfTrue(0.7);
-//         jumppadBugged = true;
-//         LogToInspector($"{player}'s jumppads are bugged");
-//     }
-
-//     PlayEffect(All(), PlayEffect.RingExplosionSound, Color.White, player, 40);
-//     PlayEffect(All(), PlayEffect.ExplosionSound, Color.White, player, 40);
-//     ApplyImpulse(player, Up(), 25.25);
-// }
-
-// rule: "jumppad pos"
-// {
-//     CreateEffect(All(), Effect.Sphere, Color.Green, Vector(192.50, 3.22, 51.99), 1.5);
-//     CreateEffect(All(), Effect.Sphere, Color.Green, Vector(220.93, 5.29, 112.02), 1.5);
-// }
