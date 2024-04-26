@@ -20,13 +20,19 @@ Number percentage: (NormalizedHealth() * 100);
 Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
 Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
 
+// String PrettyNumber(String number): 
+//         StringLength(number) <= 3
+//             ? number
+//             : StringLength(number) <= 6
+//                 ? StringSlice(number, 0, StringLength(number) - 3) + "," + StringSlice(number, StringLength(number) - 3, 3)
+//                 : StringSlice(number, 0, StringLength(number) - 6) + "," + StringSlice(number, StringLength(number) - 6, 3) + "," + StringSlice(number, StringLength(number) - 3, 3);
+//                 // breaks when a number is greater than 999,999,999
+
 String PrettyNumber(String number): 
         StringLength(number) <= 3
             ? number
-            : StringLength(number) <= 6
-                ? StringSlice(number, 0, StringLength(number) - 3) + "," + StringSlice(number, StringLength(number) - 3, 3)
-                : StringSlice(number, 0, StringLength(number) - 6) + "," + StringSlice(number, StringLength(number) - 6, 3) + "," + StringSlice(number, StringLength(number) - 3, 3);
-                // breaks when a number is greater than 999,999,999
+            : StringSlice(number, 0, StringLength(number) - 3) + "," + StringSlice(number, StringLength(number) - 3, 3);
+                // breaks when a number is greater than 999,999
 
 rule: "HUD : Global HUD : Welcome to Hell"
 {
