@@ -310,7 +310,8 @@ if (IsInteractHeld())
     cursor = LastTextID(); // store to destroy just in case theres performance issues when menu is not open
 
     menu = true;
-    LogToInspector(<"<0> opened menu", player>);
+    DisableHeroHud();
+    Number openTime = TotalTimeElapsed();
 
     if (!hasOpenedMenu)
         hasOpenedMenu = true;
@@ -327,8 +328,9 @@ if (IsInteractHeld())
     WaitUntil(!IsInteractHeld() || IsDead(), 99999);
 
     menu = false;
+    EnableHeroHud();
     selItem = Item.Invalid;
-    LogToInspector(<"<0> closed menu", player>);
+    LogToInspector(<"<0> had menu open for <1> seconds", player, TotalTimeElapsed() - openTime>);
     DestroyInWorldText(cursor);
 
     MinWait();
@@ -581,6 +583,8 @@ if (!exclFav.Contains(selItem))
             favedItemStr = randomHeroItemStr;
             break;
     }
+
+    LogToInspector(<"<0> favorited ID <1> (\"<2>\")", player, favItem, favedItemStr>);
 
     Wait(0.5);
 }

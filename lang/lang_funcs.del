@@ -226,7 +226,7 @@ void SetHeroStats() playervar "Set Hero Stat"
             heroStatStr[3] = airTimeEfficacyStr;
 
             statMetric[0] = "%";
-            statMetric[2] = amountOfMinutesShortStr;
+            statMetric[2] = amountOfSecondsShortStr;
             statMetric[3] = "%";
             break;
         case Hero.Sojourn:

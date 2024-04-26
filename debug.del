@@ -61,19 +61,27 @@ if (isDbgUsr)
 //         CreateEffect(All(), Effect.Sphere, Color.White, RayCastHitPosition(SpawnPoints(Team.All)[Once(i)], SpawnPoints(Team.All)[Once(i)] + Down(), null, null), 0.5, EffectRev.VisibleToPositionRadiusAndColor);
 // }
 
-// rule: "Bots"
-// Event.OngoingPlayer
-// if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
-// {
-//     CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
-// }
+rule: "Bots"
+Event.OngoingPlayer
+if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
+{
+    CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
+}
 
-// rule: "Destroy Bots"
-// Event.OngoingPlayer
-// if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
-// {
-//     DestroyAllDummyBots();
-// }
+rule: "Destroy Bots"
+Event.OngoingPlayer
+if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
+{
+    DestroyAllDummyBots();
+}
+
+rule: "Damage Log"
+Event.OnDamageDealt
+{
+    // LogToInspector(EventDamage());
+    Number rand = RandomInteger(10000, 999999);
+    LogToInspector(<"<0>, <1>", PrettyNumber(<"<0>", rand>), rand>);
+}
 
 // rule: "Randomize Kill Streak"
 // Event.OngoingPlayer

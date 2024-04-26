@@ -109,7 +109,7 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     directHitAccStr = "直撃命中率：";
     concBlastKillsStr = "コンカッシブキル：";
     airTimeEfficacyStr = "滞空時間能率：";
-    avgTimeInAirStr = "平均滞空時間";
+    avgTimeInAirStr = "平均滞空時間：";
     railgunKillsStr = "レールガンキル：";
     railgunAccStr = "レールガン命中率：";
     railgunAvgChargeStr = "平均レールガンのチャージ：";
@@ -138,9 +138,9 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     knifeKillsStr = "ナイフキル：";
     rocksHitStr = "アクリーション命中：";
     rockAccStr = "アクリーション命中率：";
-    focusingBeamAccStr = "フォーカス・ビーム命中率：";
-    focusingBeamKillsStr = "フォーカス・ビームキル：";
-    focusingBeamEfficacyStr = "フォーカス・ビーム能率：";
+    focusingBeamAccStr = "ビーム命中率：";
+    focusingBeamKillsStr = "ビームキル：";
+    focusingBeamEfficacyStr = "ビーム能率：";
     hooksHitStr = "フック命中：";
     hookAccStr = "フック命中率：";
     firestrikesHitStr = "ファイア・ストライク命中：";
