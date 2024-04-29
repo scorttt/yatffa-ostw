@@ -12,7 +12,7 @@ Event.OnFinalBlow
 if (Attacker() != Victim())
 if (healEnabled)
 if (orbPos.Length < S_MAX_HEAL_ORBS)
-if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
+if (S_HEAL_TYPE == HealType.Pickup || S_HEAL_TYPE == HealType.HOKPickup)
 {
     orbIn++;
     Vector pos! = RayHit(PosOf(Victim()), PosOf(Victim()) + Down() * 1000, null, All()) + Up();
@@ -48,7 +48,7 @@ if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
 
 rule: "Healing : Pickup : Pickup Timer"
 Event.OngoingPlayer
-if (S_HEAL_TYPE == 1 || S_HEAL_TYPE == 2)
+if (S_HEAL_TYPE == HealType.Pickup || S_HEAL_TYPE == HealType.HOKPickup)
 if (orbIn != -1)
 if (orbTime.Length > 0)
 {

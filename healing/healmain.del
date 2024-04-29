@@ -4,6 +4,14 @@ playervar Number healReward;
 playervar Any hot;
 playervar Boolean healing;
 
+enum HealType
+{
+    HOK,
+    Pickup,
+    HOKPickup,
+    None
+}
+
 rule: "Healing : Player Took Damage"
 Event.OnDamageTaken
 if (S_HOT_INTERRUPT)

@@ -62,11 +62,11 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
 
     Wait(0.2);
 
-    if (S_HEAL_TYPE == 0)
+    if (S_HEAL_TYPE == HealType.HOK)
         healTypeDescriptorStr = " (Heal on Kill) ";
-    else if (S_HEAL_TYPE == 1)
+    else if (S_HEAL_TYPE == HealType.Pickup)
         healTypeDescriptorStr = " (Health pickups) ";
-    else if (S_HEAL_TYPE == 2)
+    else if (S_HEAL_TYPE == HealType.HOKPickup)
         healTypeDescriptorStr = " (HOK and Pickups) ";
     else
         healTypeDescriptorStr = " (Disabled) ";

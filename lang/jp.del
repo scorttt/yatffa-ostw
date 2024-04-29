@@ -62,11 +62,11 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 
     Wait(0.2);
 
-    if (S_HEAL_TYPE == 0)
+    if (S_HEAL_TYPE == HealType.HOK)
         healTypeDescriptorStr = "（キルヒーリング）";
-    else if (S_HEAL_TYPE == 1)
+    else if (S_HEAL_TYPE == HealType.Pickup)
         healTypeDescriptorStr = "（ピックアップ）";
-    else if (S_HEAL_TYPE == 2)
+    else if (S_HEAL_TYPE == HealType.HOKPickup)
         healTypeDescriptorStr = "（キルとピックアップ）";
     else 
         healTypeDescriptorStr = "（無効）";

@@ -50,7 +50,7 @@ if (isDbgUsr)
 
     CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\nanim: <4>\ncloseAnim: <5>", CursorX(), CursorY(), selItem, favItem, anim, closeAnim>, null, Location.Right, 0.6);
 
-    if (S_HEAL_TYPE != 0)
+    if ((S_HEAL_TYPE != HealType.HOK) && S_HEAL_TYPE != HealType.None)
         CreateHudText(player, null, <"orbIn: <0>\norbPos len: <1>", orbIn, orbPos.Length>, null, Location.Right, 0.7);
 }
 

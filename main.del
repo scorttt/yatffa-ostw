@@ -163,7 +163,7 @@ rule: "Initial Global"
     }
 
     // heal reward type (hok, pickups, none)
-    if (S_HEAL_TYPE == 3)
+    if (S_HEAL_TYPE == HealType.None)
     {
         S_MODIFY_HEAL = false;
         S_DEF_HEAL = false;
@@ -171,7 +171,7 @@ rule: "Initial Global"
 
     // set healing to none if all heal related options are disabled
     if (!S_MODIFY_HEAL && !S_DEF_HEAL)
-        S_HEAL_TYPE = 3;
+        S_HEAL_TYPE = HealType.None;
 
     // set lite mode
     if (S_LITE_MODE)
@@ -221,8 +221,7 @@ if (!IsDummyBot())
     healDur = S_HOT_TIME;
 
     # invalidate orb index
-    if (S_HEAL_TYPE != 0)
-        orbIn = -1;
+    orbIn = -1;
 
     # set afk timer
     afkTime = S_AFK_KICK_TIME;
