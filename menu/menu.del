@@ -50,7 +50,7 @@ rule: "Menu : Create Menu Options : Welcome to Hell 2"
 if (S_MENU)
 {
     # excluded options from favoriting
-    exclFav = [Item.HealMod, Item.HealDurMod, Item.Language, Item.EN, Item.JP];
+    exclFav = [Item.Invalid, Item.HealMod, Item.HealDurMod, Item.Language, Item.EN, Item.JP];
 
     ITEM_Y_POS = [1.62, // 0 (frame)
                   1.50, // 1
