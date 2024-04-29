@@ -81,7 +81,7 @@ Event.OngoingPlayer
 if (afk)
 if (afkTime <= 0)
 {
-    SmallMessage(All(), <"   <0><1>", player, local.playerWasKickedStr>);
+    SmallMessage(All(), "   " + StringReplace(local.playerWasAFKKickedStr, "{player}", <String>player));
     Wait(2);
     RemovePlayer(player);
 }

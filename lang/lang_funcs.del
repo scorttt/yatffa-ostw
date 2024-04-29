@@ -44,8 +44,6 @@ playervar String healingStatStr!;
 playervar String bestKillStreakStatStr!;
 
 // global
-playervar String playerWasKickedStr!;
-playervar String playerKickTimerStr!;
 playervar String welcomeStr!;
 playervar String quote1Str!;
 playervar String quote2Str!;
@@ -55,6 +53,22 @@ playervar String amountOfMinutesShortStr!;
 playervar String amountOfSecondsShortStr!;
 playervar String oneMinuteStr!;
 playervar String oneSecondStr!;
+playervar String metersStr!;
+
+// kick/ban
+playervar String voteStartedByStr!;
+playervar String voteSelectionStr!;
+playervar String voteYesStr!;
+playervar String voteNoStr!;
+playervar String kickTargetStr!;
+playervar String banTargetStr!;
+playervar String voteChoiceStr!;
+playervar String voteSuccessStr!;
+playervar String voteFailStr!;
+playervar String playerWasVoteKickedStr!;
+playervar String playerWasVoteBannedStr!;
+playervar String playerWasAFKKickedStr!;
+playervar String playerAFKKickTimerStr!;
 
 // menu items
 playervar String healToFullStr!;
@@ -65,6 +79,9 @@ playervar String showKillStreaksItemStr!;
 playervar String healingItemStr!;
 playervar String randomHeroItemStr!;
 playervar String languageItemStr!;
+playervar String startVoteKick!;
+playervar String startVoteBan!;
+playervar String changelog!;
 
 // small message enabled notifications
 playervar String showWorkshopHudNotifStr!;
@@ -123,7 +140,7 @@ playervar String virusKillsStr!;
 playervar String virusAccStr!;
 
 playervar String hammerKillsStr!;
-playervar String overloadEfficacyStr!;
+playervar String overloadEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
 playervar String bombsStuckStr!;
 playervar String bombsStickAccStr!;
@@ -134,16 +151,16 @@ playervar String airShotAccStr!;
 
 playervar String airKillsStr!;
 
-playervar String fortifyEfficacyStr!;
 playervar String javelinsHitStr!;
 playervar String javelinKillsStr!;
 playervar String javelinAccStr!;
+playervar String fortifyEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
-playervar String shoutEfficacyStr!;
-playervar String healedFromAbilitiesStr!;
 playervar String knivesHitStr!;
 playervar String knifeKillsStr!;
 playervar String knifeAccStr!;
+playervar String shoutEfficacyStr!; // percentage of health that is absorbed by bonus hp
+playervar String healedFromAbilitiesStr!;
 
 playervar String rocksHitStr!;
 playervar String rockAccStr!;
@@ -163,7 +180,7 @@ playervar String whipshotsHitStr!;
 playervar String whipshotKillsStr!;
 playervar String whipshotAccStr!;
 
-playervar String nemesisEfficacyStr!;
+playervar String nemesisEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
 
 
@@ -302,7 +319,7 @@ void SetHeroStats() playervar "Set Hero Stat"
             heroStatStr[2] = virusAccStr;
             heroStatStr[3] = virusKillsStr;
 
-            statMetric[0] = "m";
+            statMetric[0] = metersStr;
             statMetric[2] = "%";
             break;
         case Hero.Torbjorn:

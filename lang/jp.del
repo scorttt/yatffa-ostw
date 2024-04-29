@@ -5,7 +5,7 @@ import "../main.del";
 // translator: saruyo //
 ////////////////////////
 
-void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
+void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
     # translator: saruyo/さるよ
     langSwap = true;
@@ -43,8 +43,19 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     healingStatStr = "回復：";
     bestKillStreakStatStr = "最高連続キル：{number}人";
 
-    playerWasKickedStr = <"さん<0>分間のAFKの後キックされった", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
-    playerKickTimerStr = "AFKだから{minutes}{seconds}でキックされる";
+    voteYesStr = "はい";
+    voteNoStr = "いいえ";
+    voteStartedByStr = "{player}さんによる投票";
+    kickTargetStr = "{player}さんをキックしますか？";
+    banTargetStr = "{player}さんをBANしますか？";
+    voteChoiceStr = "あなたは「{vote}」に投票しました";
+    voteSuccessStr = "投票成功！";
+    voteFailStr = "投票失敗！";
+    playerWasVoteKickedStr = "{player}さんは投票でキックされました";
+    playerWasVoteKickedStr = "{player}さんは投票でBANされました";
+    playerWasAFKKickedStr = <"{player}さん<0>分間のAFKの後キックされました", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
+    playerAFKKickTimerStr = "AFKだから{minutes}{seconds}でキックされる";
+
     navigateMenuStr = "操作：視点移動";
     selectMenuItemStr = "選ぶ：";
     favoriteMenuItemStr = "お気に入り：";
@@ -55,10 +66,11 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     quote2Str = "」";
     amountOfMinutesStr = "分";
     amountOfSecondsStr = "秒";
-    oneMinuteStr = amountOfMinutesStr;
-    oneSecondStr = amountOfSecondsStr;
-    amountOfMinutesShortStr = amountOfMinutesStr;
-    amountOfSecondsShortStr = amountOfSecondsStr;
+    oneMinuteStr = "分";
+    oneSecondStr = "秒";
+    amountOfMinutesShortStr = "分";
+    amountOfSecondsShortStr = "秒";
+    metersStr = "メートル";
 
     Wait(0.2);
 
@@ -77,6 +89,9 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     healingItemStr =         "回復";
     randomHeroItemStr =      "ランダム・ヒーロー";
     languageItemStr =        "言語";
+    startVoteKick =          "投票キックを開始する";
+    startVoteBan =           "投票BANを開始する";
+    changelog =              "更新履歴（英語だけ）";
 
     showWorkshopHudNotifStr = "HUDを見る!";
     showStatsNotifStr = "統計を見る!";
@@ -150,6 +165,8 @@ void SetJapanese() playervar "Menu Option Sub : Set Language to Japanese"
     whipshotAccStr = "ウィップ・ショット命中率：";
     whipshotKillsStr = "ウィップ・ショットキル：";
     nemesisEfficacyStr = "ネメシス・フォーム能率：";
+
+    Wait(0.2);
 
     itemWidth[0] = 0.380;
     itemWidth[1] = 0.340;

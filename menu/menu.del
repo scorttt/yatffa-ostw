@@ -487,7 +487,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             if (language != Lang.EN && !langSwap)
             {
                 async! StupidLangSwapSpin();
-                async! SetEnglish();
+                async! SetStringsToEnglish();
             }
 
             LogToInspector(<"<0> set language to English", player>);
@@ -496,7 +496,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
             if (language != Lang.JP && !langSwap)
             {
                 async! StupidLangSwapSpin();
-                async! SetJapanese();
+                async! SetStringsToJapanese();
             }
 
             LogToInspector(<"<0> set language to Japanese", player>);

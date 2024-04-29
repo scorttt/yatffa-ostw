@@ -78,7 +78,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
         # afk kick warning
         CreateInWorldText(
             VisibleTo:      local.afk ? local : null, 
-            Header:         DuoStringReplace(local.playerKickTimerStr, "{minutes}", "{seconds}",
+            Header:         DuoStringReplace(local.playerAFKKickTimerStr, "{minutes}", "{seconds}",
                                 Floor(local.afkTime % 3600 / 60) != 0 // if minute is not 0
                                     ? <"<0><1>", Floor(local.afkTime % 3600 / 60),
                                     Floor(local.afkTime % 3600 / 60) != 1 // if minute is not 1

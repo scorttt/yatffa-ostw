@@ -229,7 +229,7 @@ if (!IsDummyBot())
     # in debug list?
     isDbgUsr = dbgUsrs.Contains(<"<0>", player>);
 
-    Wait(0.032);
+    Wait(0.1);
 
     # set menu defaults
     showAllEnabled = S_DEF_STATS && S_DEF_STREAK;
@@ -242,10 +242,10 @@ if (!IsDummyBot())
     switch (S_LANG)
     {
         case (Lang.EN):
-            SetEnglish();
+            SetStringsToEnglish();
             break;
         case (Lang.JP):
-            SetJapanese(); 
+            SetStringsToJapanese(); 
             break;
         // case (Lang.KR):
         //     SetKorean();

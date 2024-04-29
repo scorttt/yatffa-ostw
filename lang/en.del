@@ -5,7 +5,7 @@ import "../main.del";
 // translator: ME //
 ////////////////////
 
-void SetEnglish() playervar "Menu Option Sub : Set Language to English"
+void SetStringsToEnglish() playervar "Menu Option Sub : Set Language to English"
 {
     # \"translator\": scort
     langSwap = true;
@@ -43,8 +43,19 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     healingStatStr = "Heal: ";
     bestKillStreakStatStr = "Best Streak: {number}";
 
-    playerWasKickedStr = <" was kicked after <0> minutes of inactivity", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
-    playerKickTimerStr = "You will be kicked for inactivity in {minutes}{seconds}";
+    voteYesStr = "Yes";
+    voteNoStr = "No";
+    voteStartedByStr = "Vote by: {player}";
+    kickTargetStr = "Kick {player}?";
+    banTargetStr = "Ban {player}?";
+    voteChoiceStr = "You voted {vote}";
+    voteSuccessStr = "Vote success!";
+    voteFailStr = "Vote failed!";
+    playerWasVoteKickedStr = "{player} was vote kicked";
+    playerWasVoteKickedStr = "{player} was vote banned";
+    playerWasAFKKickedStr = <"{player} was kicked after <0> minutes of inactivity", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
+    playerAFKKickTimerStr = "You will be kicked for inactivity in {minutes}{seconds}";
+
     navigateMenuStr = "Navigate: Aim";
     selectMenuItemStr = "Select: ";
     favoriteMenuItemStr = "Favorite: ";
@@ -59,6 +70,7 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     oneSecondStr = " second";
     amountOfMinutesShortStr = "m";
     amountOfSecondsShortStr = "s";
+    metersStr = "m";
 
     Wait(0.2);
 
@@ -77,6 +89,9 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     healingItemStr =         "Healing";
     randomHeroItemStr =      "Random Hero";
     languageItemStr =        "Language";
+    startVoteKick =          "Start Vote Kick";
+    startVoteBan =           "Start Vote Ban";
+    changelog =              "Changelog";
 
     showWorkshopHudNotifStr = "Workshop HUD shown!";
     showStatsNotifStr = "Stats shown!";
@@ -150,6 +165,8 @@ void SetEnglish() playervar "Menu Option Sub : Set Language to English"
     whipshotAccStr = "Whipshot Acc: ";
     whipshotKillsStr = "Whipshot Kills: ";
     nemesisEfficacyStr = "Nemesis Efficacy: ";
+
+    Wait(0.2);
 
     itemWidth[0] = 0.474;
     itemWidth[1] = 0.320;
