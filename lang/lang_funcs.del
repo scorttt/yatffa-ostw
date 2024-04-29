@@ -241,12 +241,11 @@ void SetHeroStats() playervar "Set Hero Stat"
             heroStatStr[1] = knivesHitStr;
             heroStatStr[2] = knifeAccStr;
             heroStatStr[3] = shoutEfficacyStr;
-            heroStatStr[4] = shoutEfficacyStr;
-            heroStatStr[5] = healedFromAbilitiesStr;
+            heroStatStr[4] = healedFromAbilitiesStr;
  
             statMetric[2] = "%";
             statMetric[3] = "%";
-            statMetric[5] = "HP";
+            statMetric[4] = " HP";
             break;
         case Hero.Lucio:
             heroStatStr[0] = healUsageStr;
