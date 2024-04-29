@@ -8,7 +8,7 @@ playervar Boolean menuInit;
 globalvar Number[] exclFav;
 playervar Number selItem;
 playervar Number favItem;
-playervar String favedItemStr;
+playervar String favItemStr;
 playervar Boolean menu;
 playervar Any cursor;
 playervar Vector facing;
@@ -562,29 +562,29 @@ if (!exclFav.Contains(selItem))
 {
     WaitUntil(!IsReloadHeld(), 99999);
 
-    favedItemStr = "";
+    favItemStr = "";
     favItem = selItem == favItem ? Item.Invalid : selItem;
 
     switch (selItem)
     {
         case Item.AllHUD: 
-            favedItemStr = showWorkshopHudItemStr;
+            favItemStr = showWorkshopHudItemStr;
             break;
         case Item.Stats: 
-            favedItemStr = showStatsItemStr;
+            favItemStr = showStatsItemStr;
             break;
         case Item.Streak: 
-            favedItemStr = showKillStreaksItemStr;
+            favItemStr = showKillStreaksItemStr;
             break;
         case Item.Heal: 
-            favedItemStr = healingItemStr;
+            favItemStr = healingItemStr;
             break;
         case Item.Random: 
-            favedItemStr = randomHeroItemStr;
+            favItemStr = randomHeroItemStr;
             break;
     }
 
-    LogToInspector(<"<0> favorited ID <1> (\"<2>\")", player, favItem, favedItemStr>);
+    LogToInspector(<"<0> favorited ID <1> (\"<2>\")", player, favItem, favItemStr>);
 
     Wait(0.5);
 }

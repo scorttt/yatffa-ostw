@@ -214,7 +214,7 @@ if (!IsDummyBot())
     # invalidate sel_item and fav_item
     selItem = Item.Invalid;
     favItem = Item.Invalid;
-    favedItemStr = "";
+    favItemStr = "";
 
     # set healing properties
     healAmt = finalHeal;
