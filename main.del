@@ -19,6 +19,7 @@ import "lang/jp.del";
 // import "lang/mx.del";
 
 import "hero specific/ana.del";
+import "hero specific/soldier.del";
 import "hero specific/venture.del";
 
 globalvar Hero[] critExcArr;
@@ -78,7 +79,7 @@ playervar Boolean isDbgUsr;
 playervar Boolean checkSpawn;
 playervar Boolean hasOpenedMenu;
 
-Boolean PlayerSwappedHero(Player p = player): p.currHero != HeroOf(p);
+Boolean PlayerSwappedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
 rule: "v3.0.0.24???? | Created by scort#12211" 
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
@@ -354,7 +355,7 @@ if (HasSpawned())
     else
     {
         # remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
-        Hero[] heroArr! = AllowedHeroes() - currHero;
+        Hero[] heroArr! = AllowedHeroes() - heroOnLastDeath;
 
         if (!PlayerSwappedHero())
         {
@@ -362,7 +363,7 @@ if (HasSpawned())
             StopForcingHero();
 
             # add the previous hero back to the hero array
-            heroArr = AllowedHeroes() + currHero;
+            heroArr = AllowedHeroes() + heroOnLastDeath;
         }
         else 
         {
@@ -375,6 +376,14 @@ if (HasSpawned())
     {
         SetHeroStats();
         SetMaxHealth(player, 100);
+
+        Number currHeroIndex = IndexOfArrayValue(AllHeroes(), HeroOf());
+        Number storageIndex = IndexOfArrayValue(AllHeroes(), heroOnLastDeath);
+        for (Number i = 0; i < 6; i++)
+        {
+            heroStatStorage[i][storageIndex] = heroStatVal[i];
+            heroStatVal[i] = heroStatStorage[i][currHeroIndex];
+        }
     }
 
     MinWait();
@@ -396,11 +405,12 @@ if (HasSpawned())
 }
 
 playervar Hero currHero;
+playervar Hero heroOnLastDeath;
 rule: "Spawning : Previous Hero"
 Event.OnDeath
 if (PlayerSwappedHero())
 {
-    currHero = HeroOf();
+    heroOnLastDeath = HeroOf();
 }
 
 void CapSpawnHealth() playervar "Cap Spawn Health"
@@ -470,7 +480,7 @@ if (killStreak > 0)
             SmallMessage(showStreakEnabled ? player : null, "   " + StringReplace(local.killStreakServerBestStr, "{number}", killStreak));
             Wait(0.1);
             SmallMessage(FilteredArray(All().Remove(player), Curr().showStreakEnabled), 
-            <"   <0> <1>", bestStreakServerHero, DuoStringReplace(local.playerGotServerBestKillStreakStr, "{player}", "{number}", bestStreakServerUser, killStreak)>);
+                <"   <0> <1>", bestStreakServerHero, DuoStringReplace(local.playerGotServerBestKillStreakStr, "{player}", "{number}", bestStreakServerUser, killStreak)>);
         }
         else 
         {

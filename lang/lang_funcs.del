@@ -104,6 +104,7 @@ playervar Number bastionGrenadeKills;
 playervar String[] statMetric;
 playervar String[] heroStatStr;
 playervar Number[] heroStatVal;
+playervar Number[][] heroStatStorage;
 playervar Boolean[] statIsConditional; // requires the user to affect the statistic in some way before displaying
 
 // hero stats strings
