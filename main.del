@@ -65,6 +65,7 @@ globalvar Boolean S_SCORE_TO_WIN;
 globalvar Number S_FLAT_HEAL_AMT;
 globalvar Boolean S_HERO_HEALTH_CAP;
 globalvar Number S_HERO_HEALTH_CAP_AMT;
+globalvar Boolean S_STOP_OW_AUTOHEAL;
 globalvar Boolean flatHeal;
 globalvar Number S_HEAL_PERCENT;
 globalvar Number finalHeal; 
@@ -123,7 +124,7 @@ rule: "Initial Global"
     S_HEAL_TYPE = WorkshopSettingCombo("F. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "Heal On Kill and Health Pickups", "None"], 0);
     S_MODIFY_HEAL = WorkshopSettingToggle("F. Healing", "Allow Modifying Healing menu settings", true, 1);
     S_DEF_HEAL = WorkshopSettingToggle("F. Healing", "\"Healing\" default menu toggle", true, 2);
-    S_HEAL_PERCENT = WorkshopSettingCombo("F. Healing", "Heal Reward", 9, 
+    S_HEAL_PERCENT = WorkshopSettingCombo("F. Healing", "Heal Reward", 10, 
         ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
          "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
          "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
@@ -133,10 +134,11 @@ rule: "Initial Global"
          "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
 
     S_FLAT_HEAL_AMT = WorkshopSettingInteger("F. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 120, 1, 700, 4);
-    S_HOT_TIME = Near(WorkshopSettingReal("F. Healing", "Healing Duration", 4.5, 0, 16, 5) * 2) / 2;
+    S_HOT_TIME = Near(WorkshopSettingReal("F. Healing", "Healing Duration", 5, 0, 16, 5) * 2) / 2;
     S_DISABLE_HEALSTACK = WorkshopSettingToggle("F. Healing", "Disable Stacking Heal Rewards with Healing Abilities", true, 6);
-    S_HOT_INTERRUPT = WorkshopSettingToggle("F. Healing", "Interrupt Healing upon damage taken", true, 7);
-    S_HOT_INTERRUPT_MIN_DMG = WorkshopSettingReal("F. Healing", "Minimum Damage to Interrupt Healing", 1, 0, 200, 8);
+    S_STOP_OW_AUTOHEAL = WorkshopSettingToggle("F. Healing", "Disable Overwatch Automatic Healing", true, 7);
+    S_HOT_INTERRUPT = WorkshopSettingToggle("F. Healing", "Interrupt Healing on damage taken", true, 8);
+    S_HOT_INTERRUPT_MIN_DMG = WorkshopSettingReal("F. Healing", "Minimum Damage to Interrupt Healing (Only applicable if \"Interrupt Healing on damage taken\" is enabled)", 1, 0.1, 200, 9);
 
     S_HERO_HEALTH_CAP = WorkshopSettingToggle("G. Health", "Cap Hero Maximum Health on Spawn (On)", true, 0);
     S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("G. Health", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 1);
@@ -379,6 +381,9 @@ if (HasSpawned())
 
         Number currHeroIndex = IndexOfArrayValue(AllHeroes(), HeroOf());
         Number storageIndex = IndexOfArrayValue(AllHeroes(), heroOnLastDeath);
+
+        MinWait();
+
         for (Number i = 0; i < 6; i++)
         {
             heroStatStorage[i][storageIndex] = heroStatVal[i];
@@ -544,5 +549,52 @@ if (IsInRange(PosOf().X, 186.50, 199.50))
     else if (IsInRange(PosOf().Z, 112.70, 116.50))
         ApplyImpulse(player, Vector(0, 0, 1), 1);
     Wait(0.05);
+    LoopIfConditionIsTrue();
+}
+
+playervar Boolean playerCCed;
+rule: "Player cced" // this is so fucking ugly
+Event.OngoingPlayer
+if (HasStatus(player, Status.Asleep) || 
+    HasStatus(player, Status.Frozen) || 
+    HasStatus(player, Status.KnockedDown) || 
+    HasStatus(player, Status.Rooted) || 
+    HasStatus(player, Status.Stunned))
+{
+    playerCCed = true;
+
+    WaitUntil(!HasStatus(player, Status.Asleep) && 
+              !HasStatus(player, Status.Frozen) && 
+              !HasStatus(player, Status.KnockedDown) && 
+              !HasStatus(player, Status.Rooted) && 
+              !HasStatus(player, Status.Stunned), 
+    5);
+
+    playerCCed = false;
+}
+
+rule: "Stop OW Auto Heal DPS/Tank"
+Event.OngoingPlayer
+if (S_STOP_OW_AUTOHEAL)
+if (IsAlive())
+if (HasSpawned())
+if (!AllSupportHeroes().Contains(HeroOf()))
+if (NormalizedHealth() != 1)
+{
+    Wait(4.95);
+    Damage(player, null, 0.000001);
+    LoopIfConditionIsTrue();
+}
+
+rule: "Stop OW Auto Heal Support"
+Event.OngoingPlayer
+if (S_STOP_OW_AUTOHEAL)
+if (IsAlive())
+if (HasSpawned())
+if (AllSupportHeroes().Contains(HeroOf()))
+if (NormalizedHealth() != 1)
+{
+    Wait(2.45);
+    Damage(player, null, 0.000001);
     LoopIfConditionIsTrue();
 }

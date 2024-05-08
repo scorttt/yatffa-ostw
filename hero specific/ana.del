@@ -1,0 +1,50 @@
+import "../main.del";
+
+playervar Number anaSleepsFired!;
+playervar Number anaSleepsHit!;
+playervar Boolean anaSleepInAir!;
+playervar Boolean anaAccUpdated!;
+void AnaUpdateAcc() playervar "Ana : Update Accuracy"
+{
+    if (!anaAccUpdated)
+    {
+        heroStatVal[0] = Near((anaSleepsHit / anaSleepsFired) * 100);
+        anaAccUpdated = true;
+    }
+}
+rule: "Ana : Sleep Fired"
+Event.OngoingPlayer
+Player.Ana
+if (IsAbility1Held())
+if (AbilityCooldown(player, Button.Ability1) == 0)
+if (IsUsingAbility1())
+if (!playerCCed)
+{
+    Wait(0.304); // time for projectile to spawn
+
+    Number prevHit! = anaSleepsHit;
+    anaSleepInAir = true;
+    anaSleepsFired++;
+
+    WaitUntil(!anaSleepInAir || prevHit < anaSleepsHit, 2);
+    anaSleepInAir = false;
+
+    AnaUpdateAcc();
+
+    anaAccUpdated = false;
+}
+
+rule: "Ana : Sleeps Hit"
+Event.OnDamageDealt
+Player.Ana
+if (EventAbility() == Button.Ability1)
+{
+    anaSleepsHit++;
+    anaSleepInAir = false;
+
+    heroStatVal[1] = anaSleepsHit;
+
+    AnaUpdateAcc();
+
+    anaAccUpdated = false;
+}

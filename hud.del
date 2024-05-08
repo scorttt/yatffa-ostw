@@ -183,25 +183,25 @@ rule: "HUD : Global HUD : Welcome to Hell"
 
             <"<0><1>\n", local.healingStatStr, PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
 
-            local.heroStatStr.Length >= 1
+            local.heroStatStr.Length >= 1 && local.heroStatVal[0] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[0], PrettyNumber(<"<0>", local.heroStatVal[0]>), local.statMetric[0] != null ? local.statMetric[0] : ""> : "", // 10
 
-            local.heroStatStr.Length >= 2
+            local.heroStatStr.Length >= 2 && local.heroStatVal[1] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[1], PrettyNumber(<"<0>", local.heroStatVal[1]>), local.statMetric[1] != null ? local.statMetric[1] : ""> : "", // 11
 
-            local.heroStatStr.Length >= 3
+            local.heroStatStr.Length >= 3 && local.heroStatVal[2] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[2], PrettyNumber(<"<0>", local.heroStatVal[2]>), local.statMetric[2] != null ? local.statMetric[2] : ""> : "", // 12
 
-            local.heroStatStr.Length >= 4
+            local.heroStatStr.Length >= 4 && local.heroStatVal[3] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[3], PrettyNumber(<"<0>", local.heroStatVal[3]>), local.statMetric[3] != null ? local.statMetric[3] : ""> : "", // 13
 
-            local.heroStatStr.Length >= 5
+            local.heroStatStr.Length >= 5 && local.heroStatVal[4] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[4], PrettyNumber(<"<0>", local.heroStatVal[4]>), local.statMetric[4] != null ? local.statMetric[4] : ""> : "", // 14
             
-            local.heroStatStr.Length >= 6
+            local.heroStatStr.Length >= 6 && local.heroStatVal[5] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[5], PrettyNumber(<"<0>", local.heroStatVal[5]>), local.statMetric[5] != null ? local.statMetric[5] : ""> : "", // 15
 
-            local.heroStatStr.Length >= 7
+            local.heroStatStr.Length >= 7 && local.heroStatVal[6] != 0
                 ? <"<0><1><2>\n", local.heroStatStr[6], PrettyNumber(<"<0>", local.heroStatVal[6]>), local.statMetric[6] != null ? local.statMetric[6] : ""> : "", // 16
 
             local.bestStreak != 0 // 17
