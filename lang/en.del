@@ -18,6 +18,8 @@ void SetStringsToEnglish() playervar "Menu Option Sub : Set Language to English"
     releaseToHideMenuStr = "Release [{interact}] to hide menu";
     doubleTapToToggleFavStr ="Double tap [{interact}] to toggle ";
 
+    warningStr = "This is a public test version! Please do not save!";
+
     pressToRespawnInstantlyStr = "{interact} to respawn instantly";
     useNormalHeroSelectStr = "Use normal hero select to change hero";
 

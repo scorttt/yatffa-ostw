@@ -62,6 +62,16 @@ rule: "HUD : Global HUD : Welcome to Hell"
             Spectators:     Spectators.VisibleNever);
     }
 
+    # warning
+    CreateHudText(
+        VisibleTo:      local, 
+        Subheader:      <"<1> <0> <1>", local.warningStr, IconString(Icon.Warning)>,
+        Location:       Location.Top, 
+        SortOrder:      1, 
+        SubheaderColor: Color.Yellow, 
+        Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
+        Spectators:     Spectators.VisibleNever);
+
     if (S_AFK_ENABLED)
     {
         # afk text

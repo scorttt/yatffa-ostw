@@ -8,15 +8,12 @@ import "../main.del";
 void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanese"
 {
     # translator: saruyo/さるよ
-    langSwap = true;
-    spin = true;
-    language = Lang.JP;
 
-    statMetric = [];
-
-    holdToOpenMenuStr = "メニューを開く「{interact}を長押し」";
-    releaseToHideMenuStr = "メニューを非表示「{interact}を放す」";
+    holdToOpenMenuStr = "メニューを開く「{interact}」を長押し";
+    releaseToHideMenuStr = "メニューを非表示「{interact}」を放す";
     doubleTapToToggleFavStr ="「{interact}」をダブルタップして";
+
+    warningStr = "公開テスト版です！セーブしないでください！";
 
     pressToRespawnInstantlyStr = "「{interact}」を直ぐにリスポーンする";
     useNormalHeroSelectStr = "普通ヒーロー選択で変更する";
@@ -26,7 +23,7 @@ void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanes
     killStreakPersonalBestStr = "{number}人連続キル！あなたの自己最高！";
     killStreakServerBestStr = "{number}人連続キル！このロビーで最高！";
     playerGotServerBestKillStreakStr = "{player}さんは{number}人連続キルを得ました！このロビーで最高！";
-    youStr = "（あなた）";
+    youStr = "「あなた」";
     bestKillStreakByPlayer = "最高連続キル：{player}さん{number}人殺した";
 
     Wait(0.2);
@@ -49,8 +46,10 @@ void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanes
     kickTargetStr = "{player}さんをキックしますか？";
     banTargetStr = "{player}さんをBANしますか？";
     voteChoiceStr = "あなたは「{vote}」に投票しました";
-    voteSuccessStr = "投票成功！";
-    voteFailStr = "投票失敗！";
+    voteSucceedStr = "投票成功！";
+    voteFailStarterLeftStr = "投票失敗！投票開始者が退出しました。";
+    voteFailTimeOutStr = "投票失敗！投票時間が切れました。";
+    voteFailNotEnoughPlayersStr = "投票失敗！賛成票が足りません。";
     playerWasVoteKickedStr = "{player}さんは投票でキックされました";
     playerWasVoteKickedStr = "{player}さんは投票でBANされました";
     playerWasAFKKickedStr = <"{player}さん<0>分間のAFKの後キックされました", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
@@ -60,7 +59,7 @@ void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanes
     selectMenuItemStr = "選ぶ：";
     favoriteMenuItemStr = "お気に入り：";
     welcomeStr = "ようこそ！";
-    healToFullStr = "（フルに）";
+    healToFullStr = "「フルに」";
     instantHealDurStr = "即時";
     quote1Str = "「";
     quote2Str = "」";
@@ -75,13 +74,13 @@ void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanes
     Wait(0.2);
 
     if (S_HEAL_TYPE == HealType.HOK)
-        healTypeDescriptorStr = "（キルヒーリング）";
+        healTypeDescriptorStr = "「キルヒーリング」";
     else if (S_HEAL_TYPE == HealType.Pickup)
-        healTypeDescriptorStr = "（ピックアップ）";
+        healTypeDescriptorStr = "「ピックアップ」";
     else if (S_HEAL_TYPE == HealType.HOKPickup)
-        healTypeDescriptorStr = "（キルとピックアップ）";
+        healTypeDescriptorStr = "「キルとピックアップ」";
     else 
-        healTypeDescriptorStr = "（無効）";
+        healTypeDescriptorStr = "「無効」";
 
     showWorkshopHudItemStr = "HUDを見せる";
     showStatsItemStr =       "統計を見せる";
@@ -121,13 +120,14 @@ void SetStringsToJapanese() playervar "Menu Option Sub : Set Language to Japanes
     damageDeflectedStr = "反射ダメージ：";
     healUsageStr = "ヒーリング使用：";
     speedUsageStr = "スピード使用：";
+    avgTimeOnWallStr = "平均壁の上時間："; // todo: fix this its probably wrong
     directHitAccStr = "直撃命中率：";
     concBlastKillsStr = "コンカッシブキル：";
     airTimeEfficacyStr = "滞空時間能率：";
     avgTimeInAirStr = "平均滞空時間：";
     railgunKillsStr = "レールガンキル：";
     railgunAccStr = "レールガン命中率：";
-    railgunAvgChargeStr = "平均レールガンのチャージ：";
+    avgChargeStr = "平均チャージ：";
     helixDirectHitsStr = "ヘリックス直撃：";
     helixDirectAccStr = "ヘリックス直撃命中率：";
     distanceTeleportedStr = "テレポート距離：";
