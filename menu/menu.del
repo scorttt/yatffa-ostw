@@ -486,6 +486,12 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
         case Item.EN:
             if (language != Lang.EN && !langSwap)
             {
+                langSwap = true;
+                spin = true;
+                language = Lang.EN;
+
+                statMetric = [];
+
                 async! StupidLangSwapSpin();
                 async! SetStringsToEnglish();
             }
@@ -495,6 +501,12 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
         case Item.JP:
             if (language != Lang.JP && !langSwap)
             {
+                langSwap = true;
+                spin = true;
+                language = Lang.JP;
+
+                statMetric = [];
+
                 async! StupidLangSwapSpin();
                 async! SetStringsToJapanese();
             }

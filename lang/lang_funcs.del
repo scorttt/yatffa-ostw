@@ -12,6 +12,7 @@ enum Lang
 playervar String holdToOpenMenuStr!;
 playervar String releaseToHideMenuStr!;
 playervar String doubleTapToToggleFavStr!;
+playervar String warningStr!;
 playervar String navigateMenuStr!;
 playervar String selectMenuItemStr!;
 playervar String favoriteMenuItemStr!;
@@ -63,8 +64,10 @@ playervar String voteNoStr!;
 playervar String kickTargetStr!;
 playervar String banTargetStr!;
 playervar String voteChoiceStr!;
-playervar String voteSuccessStr!;
-playervar String voteFailStr!;
+playervar String voteSucceedStr!;
+playervar String voteFailStarterLeftStr!;
+playervar String voteFailNotEnoughPlayersStr!;
+playervar String voteFailTimeOutStr!;
 playervar String playerWasVoteKickedStr!;
 playervar String playerWasVoteBannedStr!;
 playervar String playerWasAFKKickedStr!;
@@ -98,14 +101,10 @@ playervar String disableHealNotifStr!;
 playervar String disableRandomHeroNotifStr!;
 
 // hero stat values
-playervar Number asheCoachGunKills;
-playervar Number bastionGrenadeKills;
-
 playervar String[] statMetric;
 playervar String[] heroStatStr;
 playervar Number[] heroStatVal;
 playervar Number[][] heroStatStorage;
-playervar Boolean[] statIsConditional; // requires the user to affect the statistic in some way before displaying
 
 // hero stats strings
 playervar String sleepDartAccStr!;
@@ -122,6 +121,7 @@ playervar String damageDeflectedStr!;
 
 playervar String healUsageStr!;
 playervar String speedUsageStr!;
+playervar String avgTimeOnWallStr!;
 
 playervar String directHitAccStr!;
 playervar String concBlastKillsStr!;
@@ -130,7 +130,7 @@ playervar String avgTimeInAirStr!;
 
 playervar String railgunKillsStr!;
 playervar String railgunAccStr!;
-playervar String railgunAvgChargeStr!;
+playervar String avgChargeStr!;
 
 playervar String helixDirectHitsStr!;
 playervar String helixDirectAccStr!;
@@ -246,14 +246,15 @@ void SetHeroStats() playervar "Set Hero Stat"
  
             statMetric[2] = "%";
             statMetric[3] = "%";
-            statMetric[4] = " HP";
             break;
         case Hero.Lucio:
             heroStatStr[0] = healUsageStr;
             heroStatStr[1] = speedUsageStr;
+            heroStatStr[2] = avgTimeOnWallStr;
  
             statMetric[0] = "%";
             statMetric[1] = "%";
+            statMetric[2] = amountOfSecondsShortStr;
             break;
         case Hero.Orisa:
             heroStatStr[0] = javelinKillsStr;
@@ -285,24 +286,22 @@ void SetHeroStats() playervar "Set Hero Stat"
             heroStatStr[2] = firestrikeAccStr;
 
             statMetric[2] = "%";
+            break;
         case Hero.Roadhog:
             heroStatStr[0] = hooksHitStr;
             heroStatStr[1] = hookAccStr;
             heroStatStr[2] = healedFromAbilitiesStr;
-
-            statMetric[2] = "HP";
             break;
         case Hero.Sigma:
             heroStatStr[0] = rocksHitStr;
             heroStatStr[1] = rockAccStr;
             heroStatStr[2] = healedFromAbilitiesStr;
 
-            statMetric[2] = "HP";
             break;
         case Hero.Sojourn:
             heroStatStr[0] = railgunKillsStr;
             heroStatStr[1] = railgunAccStr;
-            heroStatStr[2] = railgunAvgChargeStr;
+            heroStatStr[2] = avgChargeStr;
 
             statMetric[1] = "%";
             statMetric[2] = "%";
@@ -315,12 +314,12 @@ void SetHeroStats() playervar "Set Hero Stat"
             break;
         case Hero.Sombra:
             heroStatStr[0] = distanceTeleportedStr;
-            heroStatStr[1] = virusHitsStr;
-            heroStatStr[2] = virusAccStr;
-            heroStatStr[3] = virusKillsStr;
+            heroStatStr[1] = virusKillsStr;
+            heroStatStr[2] = virusHitsStr;
+            heroStatStr[3] = virusAccStr;
 
             statMetric[0] = metersStr;
-            statMetric[2] = "%";
+            statMetric[3] = "%";
             break;
         case Hero.Torbjorn:
             heroStatStr[0] = hammerKillsStr;

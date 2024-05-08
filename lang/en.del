@@ -1,18 +1,13 @@
 import "../main.del";
 
-////////////////////
-//   EN strings   //
-// translator: ME //
-////////////////////
+/////////////////////////
+// original EN strings //
+//   translator: N/A   //
+/////////////////////////
 
 void SetStringsToEnglish() playervar "Menu Option Sub : Set Language to English"
 {
-    # \"translator\": scort
-    langSwap = true;
-    spin = true;
-    language = Lang.EN;
-
-    statMetric = [];
+    # original EN strings
 
     holdToOpenMenuStr = "Hold [{interact}] to open menu";
     releaseToHideMenuStr = "Release [{interact}] to hide menu";
@@ -50,9 +45,11 @@ void SetStringsToEnglish() playervar "Menu Option Sub : Set Language to English"
     voteStartedByStr = "Vote by: {player}";
     kickTargetStr = "Kick {player}?";
     banTargetStr = "Ban {player}?";
-    voteChoiceStr = "You voted {vote}";
-    voteSuccessStr = "Vote success!";
-    voteFailStr = "Vote failed!";
+    voteChoiceStr = "You voted \"{vote}\"";
+    voteSucceedStr = "Vote succeeded!";
+    voteFailStarterLeftStr = "Vote failed! Vote initiator left.";
+    voteFailTimeOutStr = "Vote failed! Vote timed out.";
+    voteFailNotEnoughPlayersStr = "Vote failed! Not enough players voted yes.";
     playerWasVoteKickedStr = "{player} was vote kicked";
     playerWasVoteKickedStr = "{player} was vote banned";
     playerWasAFKKickedStr = <"{player} was kicked after <0> minutes of inactivity", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>;
@@ -123,13 +120,14 @@ void SetStringsToEnglish() playervar "Menu Option Sub : Set Language to English"
     damageDeflectedStr = "DMG Deflected: ";
     healUsageStr = "Heal Usage: ";
     speedUsageStr = "Speed Usage: ";
+    avgTimeOnWallStr = "Avg Time On Wall: ";
     directHitAccStr = "Dir Hit Acc: ";
     concBlastKillsStr = "Conc Blast Kills: ";
     airTimeEfficacyStr = "Air Time Efficacy: ";
     avgTimeInAirStr = "Avg Time In Air: ";
     railgunKillsStr = "Railgun Kills: ";
     railgunAccStr = "Railgun Acc: ";
-    railgunAvgChargeStr = "Avg Railgun Charge: ";
+    avgChargeStr = "Avg Charge: ";
     helixDirectHitsStr = "Helix Dir Hits: ";
     helixDirectAccStr = "Helix Dir Hit Acc: ";
     distanceTeleportedStr = "Dist Teleported: ";
