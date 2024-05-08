@@ -22,14 +22,14 @@ settings
             {
                 Château Guillard
             }
-            Score To Win: 60
+            Score To Win: 5000
         }
     }
     heroes
     {
         General
         {
-            Ability Cooldown Time: 0%
+            Ability Cooldown Time: 10%
         }
     }
     main
