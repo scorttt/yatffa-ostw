@@ -16,6 +16,7 @@ settings
         {
             Game Mode Start: Immediately
             Hero Limit: Off
+            Tank Role Passive Health Bonus: Disabled
         }
         Deathmatch
         {
