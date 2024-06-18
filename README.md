@@ -12,19 +12,19 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
     - Heal reward options
     - Random hero options
     - Language select
-    - Vote kick/ban
+    - Vote kick
     - Changelog
 - **Favorites:** Quickly toggle a frequently used option without opening the full menu
 - **Multiple Heal Reward Options:** Choose from no heal rewards, heal on kill, or healing pickups for your lobby.
 - **Multiple Randomization Options:** Choose the randomization method used and blacklist unwanted heroes
 - **Healing Interrupted by Damage:** Taking damage pauses any ongoing healing effects
 - **Instant Respawn with Interact Button:** Respawn instantly by pressing interact while dead
-- **Custom Language Localization:** Choice between English and Japanese
+- **Custom Language Localization:** Choice between English, Japanese, and Korean
 - **Kill Streaks:** See who's doing well in your lobby
 - **Dynamic, Custom Stats:** Get insights into your performance with detailed in-game statistics, including hero-specific stats and a letter grade to compare yourself to others.
 - **Railings Destroyed on Round Start:** Games start with railings destroyed, ensuring bullets from no longer interrupting shots
-- **AFK System:** Automatically detects and tags inactive players, eventually kicking them if they remain AFK for too long.
-- **Vote Kick/Ban System:** Maintain a healthy and fair lobby agency with player-driven moderation.
+- **AFK:** Automatically detects and tags inactive players, eventually kicking them if they remain AFK for too long.
+- **Vote Kick:** Maintain lobby agency with player-driven moderation.
 
 ## Known issues
 - Some heroes may have inaccurate generic accuracy stats
@@ -36,7 +36,7 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
 - `5RKYY` (JP)
 
 ## Compiling
-### YATFFA Requires the following:
+### YATFFA requires the following:
 - [OSTW](https://github.com/ItsDeltin/Overwatch-Script-To-Workshop/wiki/Getting-Started) must be set up
 - My [`macros`](https://github.com/scorttt/macros-ostw) repository must be placed in a folder named `macros-ostw` next to YATFFA's parent directory
 
