@@ -8,7 +8,7 @@ void AnaUpdateAcc() playervar "Ana : Update Accuracy"
 {
     if (!anaAccUpdated)
     {
-        heroStatVal[0] = Near((anaSleepsHit / anaSleepsFired) * 100);
+        heroStatVal[1] = Near((anaSleepsHit / anaSleepsFired) * 100);
         anaAccUpdated = true;
     }
 }
@@ -42,7 +42,7 @@ if (EventAbility() == Button.Ability1)
     anaSleepsHit++;
     anaSleepInAir = false;
 
-    heroStatVal[1] = anaSleepsHit;
+    heroStatVal[0] = anaSleepsHit;
 
     AnaUpdateAcc();
 
