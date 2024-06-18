@@ -1,0 +1,920 @@
+import "main.del";
+// import "options.del";
+
+playervar String favStatusIcon;
+
+playervar Boolean showAllEnabled;
+playervar Boolean showStatsEnabled;
+playervar Boolean showStreakEnabled;
+playervar Boolean healEnabled;
+playervar Any healAmt;
+playervar Any healDur;
+
+playervar Boolean randomHeroEnabled;
+playervar Number randomizerType;
+playervar Hero[] randomHeroPool;
+
+playervar Number LangID;
+
+
+globalvar Number[] ITEM_Y_POS;
+playervar Number[] itemYPos;
+playervar Boolean menuInit;
+
+globalvar Number[] exclFav;
+playervar Number selItem;
+playervar Number favItem;
+playervar String favItemPStr;
+playervar Boolean menu;
+playervar Any cursor;
+playervar Vector facing;
+
+enum RandomizerType
+{
+    TrueRandom,
+    Queue, 
+    Performance
+}
+
+enum Item
+{
+    Invalid = -1,
+
+    AllHUD = 0,
+    Stats = 1,
+    Streak = 2,
+
+    Heal = 3,
+    HealMod = 4,
+    HealDurMod = 5,
+
+    Random = 6,
+
+    Language = 7,
+    EN = 8,
+    JP = 9,
+    KR = 10,
+
+    VoteKick = 11,
+    VoteBan = 12,
+
+    Changelog = 13
+}
+
+enum Page
+{
+    Main = -1, // main menu, no page
+    HUDOptions = 0,
+    RandomBlacklist = 1,
+    VoteKick = 2,
+    Changelog = 3
+}
+
+Color HoverPulse(): 
+    CustomColor(Oscillate(500, 0, 116), Oscillate(500, 153, 199), 255, 255);
+
+// cursor math credit to josbird
+Number CursorX(Player p = local): AngleDifference(HorizontalAngleFromDirection(Facing(p)), HorizontalAngleFromDirection(p.facing));
+Number CursorY(Player p = local): AngleDifference(VerticalAngleFromDirection(Facing(p)), VerticalAngleFromDirection(p.facing));
+
+Vector MenuYFromMenuZ(Vector z): DirectionFromAngles(HorizontalAngleFromDirection(z), VerticalAngleFromDirection(z) - 90);
+Any RenderPosOf(Number x = 0, Number y = 0): 
+    Update(EyePos(local) + 100 * (x * Cross(Facing(local), MenuYFromMenuZ(Facing(local))) + y * MenuYFromMenuZ(Facing(local)) + 3 * Facing(local)));
+
+Number SCREEN_WIDTH:   3.65;
+Number SCREEN_HEIGHT:  2.125;
+
+Boolean localPlayerHasMenuOpen: local.menu || local.closeAnim;
+
+rule: "Menu : Create Menu Options : Welcome to Hell 2"
+if (S_MENU)
+{
+    # excluded options from favoriting
+    exclFav = [Item.Invalid, Item.HealMod, Item.HealDurMod, Item.Language, Item.EN, Item.JP];
+
+    ITEM_Y_POS = [1.675, // 0 (frame top)
+                  1.60, // 1 (frame bottom)
+
+                  1.50, // 2 hud toggle
+                  1.40, // 3 stat toggle
+                  1.30, // 4 kill streak toggle
+
+                  1.150, // 5 heal toggle
+                  1.050, // 6 heal amount
+                  0.950, // 7 heal duration
+
+                  0.800, // 8 random hero
+
+                  0.650, // 9 language header
+                  0.550, // 10 english/jp
+                  0.450, // 11 korean
+
+                  0.200, // 12 start vote kick
+
+                  0.075  // 13 changelog
+                ];
+
+    # instructions top row, left
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0>", 
+                      navigateMenuStr[local.LangID]>), 
+        Position:     RenderPosOf(-0.5, local.itemYPos[0]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    # instructions top row, middle
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0>", 
+                      selectMenuItemStr[local.LangID]>), 
+        Position:     RenderPosOf(0, local.itemYPos[0]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    # instructions top row, right
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0>", 
+                      favoriteMenuItemStr[local.LangID]>), 
+        Position:     RenderPosOf(0.5, local.itemYPos[0]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    # instructions bottom row, left
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0>", 
+                      navigateMenuInstructStr[local.LangID]>), 
+        Position:     RenderPosOf(-0.5, local.itemYPos[1]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    # instructions bottom row, middle
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0> / <1>", 
+                      BindString(Button.PrimaryFire), BindString(Button.SecondaryFire)>), 
+        Position:     RenderPosOf(0, local.itemYPos[1]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    # instructions bottom row, right
+    CreateInWorldText(
+        VisibleTo:    localPlayerHasMenuOpen ? local : null,
+        Header:       AltFont(<"<0>", 
+                      BindString(Button.Reload)>), 
+        Position:     RenderPosOf(0.5, local.itemYPos[1]), 
+        Scale:        1,
+        Reevaluation: InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:     Clipping.DoNotClip,
+        Spectators:   Spectators.VisibleNever
+    );
+
+    // contents
+    # all hud toggle
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0>   <1> ▼<2>", local.showStatsEnabled && local.showStreakEnabled 
+                                                ? IconString(Icon.Checkmark) 
+                                                : local.showStatsEnabled || local.showStreakEnabled && !(local.showStatsEnabled && local.showStreakEnabled) 
+                                                    ? IconString(Icon.Asterisk) 
+                                                    : IconString(Icon.No), 
+                                            showWorkshopHudItemStr[local.LangID],
+                                            local.favItem == Item.AllHUD 
+                                                ? "  " + IconString(Icon.Heart) 
+                                                : "">,
+        Position:       RenderPosOf(0, local.itemYPos[2]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.AllHUD 
+                            ? HoverPulse() 
+                            : local.showStatsEnabled && local.showStreakEnabled && S_MODIFY_HUD
+                                ? Color.Green 
+                                : S_MODIFY_HUD 
+                                    ? local.showStatsEnabled || local.showStreakEnabled && !(local.showStatsEnabled && local.showStreakEnabled) 
+                                        ? CustomColor(255, 255, 0, 255)
+                                        : CustomColor(255, 0, 0, 255)
+                                    : Color.Gray, 
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # stats toggle
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0>   <1><2>", local.showStatsEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    showStatsItemStr[local.LangID],
+                                    local.favItem == Item.Stats 
+                                        ? "  " + IconString(Icon.Heart) 
+                                        : "">,
+        Position:       RenderPosOf(0, local.itemYPos[3]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.Stats 
+                            ? HoverPulse() 
+                            : S_MODIFY_HUD
+                                ? local.showStatsEnabled
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # streak toggle
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0>   <1><2>", local.showStreakEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    showKillStreaksItemStr[local.LangID],
+                                    local.favItem == Item.Streak 
+                                        ? "  " + IconString(Icon.Heart) 
+                                        : "">,
+        Position:       RenderPosOf(0, local.itemYPos[4]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.Streak 
+                            ? HoverPulse() 
+                            : S_MODIFY_HUD
+                                ? local.showStreakEnabled
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # healing toggle
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0>   <1><2>▼<3>", local.healEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    healingItemStr[local.LangID],
+                                    healTypeDescriptorStr[local.LangID],
+                                    local.favItem == Item.Heal 
+                                        ? "  " + IconString(Icon.Heart) 
+                                        : "">,
+        Position:       RenderPosOf(0, local.itemYPos[5]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.Heal
+                            ? HoverPulse() 
+                            : S_MODIFY_HEAL
+                                ? local.healEnabled && S_MODIFY_HEAL
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    // todo: replace heal amount and heal duration with sliding progress bars: see "swiss" project
+    # heal amount
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         !flatHeal
+                            ? DuoStringReplace(local.healAmt * 100, ".00", ".50", "", ".5") + "%"
+                            : <"<0> HP<1>", local.healAmt, 
+                                                local.healAmt >= MaxHealth(local) 
+                                                    ? healToFullStr[local.LangID]
+                                                    : "">,
+        Position:       RenderPosOf(0, local.itemYPos[6]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.HealMod 
+                            ? HoverPulse() 
+                            : local.healEnabled && S_MODIFY_HEAL
+                                ? Color.White 
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # heal amount instructions
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         local.selItem == Item.HealMod
+                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : "",
+        Position:       RenderPosOf(0.01, local.itemYPos[6] - 0.005), 
+        Scale:          1.8,
+        TextColor:      HoverPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # heal duration
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         local.healDur >= 0.5
+                            ? local.healDur != 1 
+                                ? DuoStringReplace(local.healDur, ".00", ".50", "", ".5") + amountOfSecondsStr[local.LangID]
+                                : <"<0><1>", local.healDur, oneSecondStr[local.LangID]>
+                            : instantHealDurStr[local.LangID],
+        Position:       RenderPosOf(0, local.itemYPos[7]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.HealDurMod 
+                            ? HoverPulse() 
+                            : local.healEnabled && S_MODIFY_HEAL
+                                ? Color.White 
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # heal duration instructions
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         local.selItem == Item.HealDurMod
+                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : "",
+        Position:       RenderPosOf(0.01, local.itemYPos[7] - 0.005), 
+        Scale:          1.8,
+        TextColor:      HoverPulse(),
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # random hero
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0>   <1><2>", local.randomHeroEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+                                    randomHeroItemStr[local.LangID],
+                                    local.favItem == Item.Random 
+                                        ? "  " + IconString(Icon.Heart) 
+                                        : "">,
+        Position:       RenderPosOf(0, local.itemYPos[8]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.Random 
+                            ? HoverPulse() 
+                            : S_MODIFY_RANDOMHERO
+                                ? local.randomHeroEnabled 
+                                    ? Color.Green
+                                    : CustomColor(255, 0, 0, 255)
+                                : Color.Gray,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # language
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         <"<0> ▼", languageItemStr[local.LangID]>,
+        Position:       RenderPosOf(0, local.itemYPos[9]), 
+        Scale:          1.25,
+        TextColor:      Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # english
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         "English",
+        Position:       RenderPosOf(-0.15, local.itemYPos[10]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.EN 
+                            ? HoverPulse() 
+                                : local.LangID == Lang.EN 
+                                    ? Color.Blue
+                                    : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # japanese
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         "日本語",
+        Position:       RenderPosOf(0.15, local.itemYPos[10]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.JP 
+                            ? HoverPulse() 
+                                : local.LangID == Lang.JP 
+                                    ? Color.Blue
+                                    : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # korean
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         "한국어",
+        Position:       RenderPosOf(0, local.itemYPos[11]), 
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.KR 
+                            ? HoverPulse() 
+                                : local.LangID == Lang.KR 
+                                    ? Color.Blue
+                                    : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # changelog
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         changelogItemStr[local.LangID],
+        Position:       RenderPosOf(0, local.itemYPos[13]),
+        Scale:          1.25,
+        TextColor:      local.selItem == Item.Changelog 
+                            ? HoverPulse() 
+                            : Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+    # version info
+    CreateInWorldText(
+        VisibleTo:      local.menu ? local : null, 
+        Header:         aaaaaCreatedByScort,
+        Position:       RenderPosOf(0, -2.10),
+        Scale:          1.25,
+        TextColor:      Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+}
+
+rule: "Menu : Open/Close"
+Event.OngoingPlayer
+if (S_MENU)
+if (menuInit)
+if (IsAlive())
+if (IsInteractHeld())
+{
+    WaitIfTrue(0.2);
+
+    // cursor
+    CreateInWorldText(
+        VisibleTo:      player,
+        Header:         "↖",
+        Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
+        TextColor:      selItem == Item.Invalid ? Rainbow() : HoverPulse(),
+        Scale:          3,
+        Clipping:       Clipping.DoNotClip,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor
+    );
+    cursor = LastTextID(); // store to destroy just in case theres performance issues when menu is not open
+
+    menu = true;
+    Number openTime = TotalTimeElapsed();
+
+    if (!hasOpenedMenu)
+        hasOpenedMenu = true;
+
+    facing = Facing();
+    SetAimSpeed(player, 10);
+    DisallowButton(player, Button.PrimaryFire);
+    DisallowButton(player, Button.SecondaryFire);
+
+    selItem = Item.Invalid;
+
+    WaitUntil(!IsInteractHeld() || IsDead(), 99999);
+
+    menu = false;
+    selItem = Item.Invalid;
+    LogToInspector(<"<0> had menu open for <1> seconds", player, TotalTimeElapsed() - openTime>);
+    DestroyInWorldText(cursor);
+
+    MinWait();
+
+    SetAimSpeed(player, 100);
+    AllowButton(player, Button.PrimaryFire);
+    AllowButton(player, Button.SecondaryFire);
+
+    if (S_USE_MENU_ANIM)
+        WaitUntil(!closeAnim && !anim, 1);
+    else 
+        Wait(0.1);
+}
+
+playervar Boolean anim;
+playervar Boolean closeAnim;
+Number anim_start: 2.15;
+Number anim_end: 2.14;
+Number anim_speed: 0.3;
+rule: "Menu : Open Animation"
+Event.OngoingPlayer
+if (S_USE_MENU_ANIM)
+if (menu)
+if (!closeAnim)
+{
+    anim = true;
+
+    while (menu && anim)
+    {
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
+            itemYPos[i] += (ITEM_Y_POS[i] - itemYPos[i]) * anim_speed;
+
+        if (itemYPos.Last <= ITEM_Y_POS.Last + 0.01)
+        {
+            anim = false;
+            break;
+        }
+
+        MinWait();
+    }
+
+    anim = false;
+}
+
+rule: "Menu : Close Animation"
+Event.OngoingPlayer
+if (S_USE_MENU_ANIM)
+if (hasOpenedMenu)
+if (!menu)
+{
+    WaitUntil(!anim, 1);
+    closeAnim = true;
+    anim = true;
+
+    while (anim && closeAnim)
+    {
+        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
+            itemYPos[i] += (anim_start - itemYPos[i]) * anim_speed;
+
+        if (itemYPos.Last >= anim_end)
+        {
+            anim = false;
+            break;
+        }
+
+        MinWait();
+    }
+
+    anim = false;
+    closeAnim = false;
+}
+
+rule: "Menu : Hovered Item Loop"
+Event.OngoingPlayer
+if (menu) 
+{
+    Number X = CursorX(player);
+    Number Y = CursorY(player);
+
+    selItem = Item.Invalid;
+
+    // ass to read but its a lot more optimal
+    if (S_MODIFY_HUD) 
+    {
+        if                             (Abs(X) < 0.6 &&                  IsInRange(Y, 1.500, 1.600))
+            selItem = Item.AllHUD;
+
+        else if                        (Abs(X) < 0.6 &&                  IsInRange(Y, 1.400, 1.500))
+            selItem = Item.Stats;
+
+        else if                        (Abs(X) < 0.6 &&                  IsInRange(Y, 1.300, 1.400))
+            selItem = Item.Streak;
+    }
+
+    if (S_MODIFY_HEAL) 
+    {
+        if                             (Abs(X) < 0.6 &&                  IsInRange(Y, 1.125, 1.225))
+            selItem = Item.Heal;
+
+        else if (healEnabled &&         Abs(X) < 0.6 &&                  IsInRange(Y, 1.025, 1.125))
+            selItem = Item.HealMod;
+
+        else if (healEnabled &&         Abs(X) < 0.6 &&                  IsInRange(Y, 0.925, 1.025))
+            selItem = Item.HealDurMod;
+    }
+
+    if (S_MODIFY_RANDOMHERO &&          Abs(X) < 0.6 &&                  IsInRange(Y, 0.800, 0.900))
+        selItem = Item.Random;
+
+    if (LangID != Lang.EN &&            IsInRange(X, -0.300, 0.000) &&   IsInRange(Y, 0.550, 0.650))
+        selItem = Item.EN;
+
+    if (LangID != Lang.JP &&            IsInRange(X,  0.000, 0.250) &&   IsInRange(Y, 0.550, 0.650))
+        selItem = Item.JP;
+
+    if (LangID != Lang.KR &&            Abs(X) < 0.10 &&                 IsInRange(Y, 0.450, 0.550))
+        selItem = Item.KR;
+
+    Wait(0.032);
+    LoopIfConditionIsTrue();
+}
+
+void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handler"
+{
+    switch (item)
+    {
+        case Item.AllHUD:
+            showAllEnabled = showStatsEnabled && showStreakEnabled ? !showAllEnabled : true;
+
+            if (showAllEnabled)
+            {
+                showStatsEnabled = true;
+                showStreakEnabled = true;
+
+                favStatusIcon = IconString(Icon.Checkmark);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), showWorkshopHudNotifStr[local.LangID]>);
+            }
+            else 
+            {
+                showStatsEnabled = false;
+                showStreakEnabled = false;
+
+                favStatusIcon = IconString(Icon.No);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), hideWorkshopHudNotifStr[local.LangID]>);
+            }
+
+            LogToInspector(<"<0> toggled All HUD", player>);
+            break;
+        case Item.Stats:
+            showStatsEnabled = !showStatsEnabled;
+            if (showStatsEnabled)
+            {
+                if (showStreakEnabled)
+                    showAllEnabled = true;
+
+                favStatusIcon = IconString(Icon.Checkmark);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), showStatsNotifStr[local.LangID]>);
+            }
+            else
+            {
+                if (!showStreakEnabled)
+                    showAllEnabled = false;
+
+                favStatusIcon = IconString(Icon.No);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), hideStatsNotifStr[local.LangID]>);
+            }
+
+            LogToInspector(<"<0> toggled Stats", player>);
+            break;
+        case Item.Streak:
+            showStreakEnabled = !showStreakEnabled;
+            if (showStreakEnabled)
+            {
+                if (showStatsEnabled)
+                    showAllEnabled = true;
+
+                favStatusIcon = IconString(Icon.Checkmark);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), showKillStreaksNotifStr[local.LangID]>);
+            }
+            else
+            {
+                if (!showStatsEnabled)
+                    showAllEnabled = false;
+
+                favStatusIcon = IconString(Icon.No);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), hideKillStreaksNotifStr[local.LangID]>);
+            }
+
+            LogToInspector(<"<0> toggled Streak HUD", player>);
+            break;
+        case Item.Heal:
+            healEnabled = !healEnabled;
+            if (healEnabled)
+            {
+                favStatusIcon = IconString(Icon.Checkmark);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), enableHealNotifStr[local.LangID]>);
+            }
+            else
+            {
+                favStatusIcon = IconString(Icon.No);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), disableHealNotifStr[local.LangID]>);
+            }
+
+            LogToInspector(<"<0> toggled Heal", player>);
+            break;
+        case Item.HealMod:
+            if (!sec)
+            {
+                healAmt += healIncrement;
+
+                if (healAmt > finalHeal)
+                    healAmt = healIncrement;
+            }
+            else
+            {
+                healAmt -= healIncrement;
+
+                if (healAmt < healIncrement)
+                    healAmt = finalHeal;
+            }
+
+            break;
+        case Item.HealDurMod:
+            if (!sec)
+            {
+                healDur += 0.50;
+
+                if (healDur > S_HOT_TIME + 8)
+                    healDur = S_HOT_TIME;
+            }
+            else
+            {
+                healDur -= 0.50;
+
+                if (healDur < S_HOT_TIME)
+                    healDur = S_HOT_TIME + 8;
+            }
+
+            break;
+        case Item.Random:
+            randomHeroEnabled = !randomHeroEnabled;
+            if (randomHeroEnabled)
+            {
+                favStatusIcon = IconString(Icon.Checkmark);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.Checkmark), enableRandomHeroNotifStr[local.LangID]>);
+
+                if (!firstPoolRandomized && S_DEF_RANDOMIZER_TYPE == 0)
+                {
+                    firstPoolRandomized = true;
+                    RandomizeHeroPool();
+                }
+            }
+            else
+            {
+                favStatusIcon = IconString(Icon.No);
+                SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), disableRandomHeroNotifStr[local.LangID]>);
+
+                # unsure if these are necessary
+                ResetHeroAvailability();
+                StopForcingHero();
+            }
+
+            LogToInspector(<"<0> toggled Random Hero", player>);
+            break;
+        case Item.EN:
+            if (LangID != Lang.EN)
+            {
+                LogToInspector(<"<0> set language to English", player>);
+
+                favItemPStr = "";
+                LangID = Lang.EN;
+
+                statMetric = [];
+
+                SetHeroStats();
+
+                // wait a whole FUCKING SECOND so strings actually update thanks blizzard
+                Wait(1);
+                async! SetFavoriteToggleIcon(favItem);
+            }
+
+            break;
+        case Item.JP:
+            if (LangID != Lang.JP)
+            {
+                LogToInspector(<"<0> set language to Japanese", player>);
+
+                favItemPStr = "";
+                LangID = Lang.JP;
+
+                statMetric = [];
+
+                SetHeroStats();
+
+                Wait(1);
+                async! SetFavoriteToggleIcon(favItem);
+            }
+
+            break;
+        case Item.KR:
+            if (LangID != Lang.KR)
+            {
+                LogToInspector(<"<0> set language to Korean", player>);
+
+                favItemPStr = "";
+                LangID = Lang.KR;
+
+                statMetric = [];
+
+                SetHeroStats();
+
+                Wait(1);
+                async! SetFavoriteToggleIcon(favItem);
+            }
+
+            break;
+    }
+}
+
+playervar Boolean sec;
+rule: "Menu : Click Hovered Item"
+Event.OngoingPlayer
+if (menu)
+if (selItem != Item.Invalid)
+if (IsPrimaryHeld() || IsSecondaryHeld())
+{
+    Number sel! = selItem;
+    if ((sel != Item.HealMod) && (sel != Item.HealDurMod))
+    {
+        WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
+
+        async! SelectionHandler(sel);
+        Wait(0.5);
+        LoopIfConditionIsTrue(); // loop to prevent players inputs from being eaten cuz otherwise it feels like shit
+    }
+    else 
+    {
+        while (IsPrimaryHeld() || IsSecondaryHeld())
+        {
+            sec = IsSecondaryHeld();
+            async! SelectionHandler(sel);
+            WaitIfTrue(0.15);
+
+            if (selItem != sel)
+                break;
+        }
+    }
+}
+
+
+rule: "Menu : Favorite Item Double Tap Toggle"
+Event.OngoingPlayer
+if (favItem != Item.Invalid) 
+if (IsButtonHeld(player, Button.Interact))
+{
+    WaitUntil(!IsButtonHeld(player, Button.Interact), 99999);
+    WaitUntil(IsButtonHeld(player, Button.Interact), 0.1);
+    AbortIf(!IsButtonHeld(player, Button.Interact));
+
+    if (!menu)
+    {
+        async! SelectionHandler(favItem);
+        Wait(0.5);
+    }
+}
+
+
+rule: "Menu : Favorite Item"
+Event.OngoingPlayer
+if (menu)
+if (IsReloadHeld())
+if (!exclFav.Contains(selItem))
+{
+    WaitUntil(!IsReloadHeld(), 99999);
+
+    favItem = selItem == favItem ? Item.Invalid : selItem;
+
+    async! SetFavoriteToggleIcon(selItem);
+
+    LogToInspector(<"<0> favorited ID <1> (\"<2>\")", player, favItem, favItemPStr>);
+
+    Wait(0.5);
+}
+
+void SetFavoriteToggleIcon(Number | Item item) playervar "Menu Sub : Set Favorite Toggle Icon"
+{
+    switch (item)
+    {
+        case Item.AllHUD: 
+            if (showAllEnabled)
+                favStatusIcon = IconString(Icon.Checkmark);
+            else 
+                favStatusIcon = IconString(Icon.No);
+
+            favItemPStr = showWorkshopHudItemStr[LangID];
+            break;
+        case Item.Stats: 
+            if (showStatsEnabled)
+                favStatusIcon = IconString(Icon.Checkmark);
+            else 
+                favStatusIcon = IconString(Icon.No);
+
+            favItemPStr = showStatsItemStr[LangID];
+            break;
+        case Item.Streak: 
+            if (showStreakEnabled)
+                favStatusIcon = IconString(Icon.Checkmark);
+            else 
+                favStatusIcon = IconString(Icon.No);
+
+            favItemPStr = showKillStreaksItemStr[LangID];
+            break;
+        case Item.Heal: 
+            if (healEnabled)
+                favStatusIcon = IconString(Icon.Checkmark);
+            else 
+                favStatusIcon = IconString(Icon.No);
+
+            favItemPStr = healingItemStr[LangID];
+            break;
+        case Item.Random: 
+            if (randomHeroEnabled)
+                favStatusIcon = IconString(Icon.Checkmark);
+            else 
+                favStatusIcon = IconString(Icon.No);
+
+            favItemPStr = randomHeroItemStr[LangID];
+            break;
+    }
+}
+
+rule: "Menu Cursor : Reset Cursor if outside of screen bounds"
+Event.OngoingPlayer
+if (menu)
+if (Abs(CursorX(player)) > SCREEN_WIDTH || Abs(CursorY(player)) > SCREEN_HEIGHT)
+{
+    SetFacing(Direction: facing);
+
+    MinWait();
+    LoopIfConditionIsTrue();
+}
