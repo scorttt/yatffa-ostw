@@ -46,12 +46,12 @@ if (isDbgUsr)
     PosOf(),
     Facing(),
     RayHit(EyePos(), EyePos() + Facing() * 100, null, All())>,
-    null, Location.Right, 0.5);
+    null, Location.Right, 0.5, Spectators: Spectators.VisibleNever);
 
-    CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\nanim: <4>\ncloseAnim: <5>", CursorX(), CursorY(), selItem, favItem, anim, closeAnim>, null, Location.Right, 0.6);
+    CreateHudText(player, null, <"(<0>, <1>)\nsel: <2>\nfav: <3>\nanim: <4>\ncloseAnim: <5>", CursorX(), CursorY(), selItem, favItem, anim, closeAnim>, null, Location.Right, 0.6, Spectators: Spectators.VisibleNever);
 
     if ((S_HEAL_TYPE != HealType.HOK) && S_HEAL_TYPE != HealType.None)
-        CreateHudText(player, null, <"orbIn: <0>\norbPos len: <1>", orbIn, orbPos.Length>, null, Location.Right, 0.7);
+        CreateHudText(player, null, <"orbIn: <0>\norbPos len: <1>", orbIn, orbPos.Length>, null, Location.Right, 0.7, Spectators: Spectators.VisibleNever);
 }
 
 // rule: "Show OW Spawn Points"
@@ -61,27 +61,32 @@ if (isDbgUsr)
 //         CreateEffect(All(), Effect.Sphere, Color.White, RayCastHitPosition(SpawnPoints(Team.All)[Once(i)], SpawnPoints(Team.All)[Once(i)] + Down(), null, null), 0.5, EffectRev.VisibleToPositionRadiusAndColor);
 // }
 
-rule: "Bots"
-Event.OngoingPlayer
-if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
-{
-    CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
-}
+// rule: "Bots"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
+// {
+//     // SetStatus(player, null, Status.Stunned, 1);
+//     CreateDummyBot(AllowedHeroes().Random(), OppositeTeamOf(TeamOf()), -1, RayCastHitPosition(EyePosition(), EyePosition() + Facing() * 100), Facing() * -1);
+// }
 
-rule: "Destroy Bots"
-Event.OngoingPlayer
-if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
-{
-    DestroyAllDummyBots();
-}
+// rule: "Destroy Bots"
+// Event.OngoingPlayer
+// if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
+// {
+//     DestroyAllDummyBots();
+// }
 
-rule: "Damage Log"
-Event.OnDamageDealt
-{
-    // LogToInspector(EventDamage());
-    Number rand = RandomInteger(10000, 999999);
-    LogToInspector(<"<0>, <1>", PrettyNumber(<"<0>", rand>), rand>);
-}
+// rule: "Damage Log"
+// Event.OnDamageDealt
+// {
+//     LogToInspector(EventDamage());
+// }
+
+// rule: "Heal Log"
+// Event.OnHealingTaken
+// {
+//     LogToInspector(EventHealing());
+// }
 
 // rule: "Randomize Kill Streak"
 // Event.OngoingPlayer
@@ -89,7 +94,7 @@ Event.OnDamageDealt
 // {
 //     for (Number i = 0; i < AllPlayers().Length; i++)
 //     {
-//         AllPlayers().kill_streak[i] = RandomInteger(5, 100);
+//         AllPlayers().killStreak[i] = RandomInteger(5, 100);
 //         AllPlayers().streak = true;
 //     }
 // }
@@ -119,21 +124,27 @@ Event.OnDamageDealt
 // Event.OngoingPlayer
 // {
 //     // DisableMovementCollisionWithEnvironment(player, false);
-//     CreateEffect(player, Effect.Sphere, Color.White, RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, All(), false), 30);
+//     CreateEffect(player, Effect.Sphere, Color.White, RayHit(EyePos(), EyePos() + Facing() * 100, null, All()), 0.1);
+
 // }
 
 // globalvar Any[] effect;
-// globalvar Any[] txt;
+// globalvar Any[] hudTxt;
+// globalvar Any[] iwTxt;
 // globalvar Number placein;
+// globalvar Vector placePos;
 // rule: "place ball"
 // Event.OngoingPlayer
 // if (IsButtonHeld(player, Button.Interact) && !IsButtonHeld(player, Button.Crouch))
 // {
+//     placePos = RayHit(EyePos(), EyePos() + Facing() * 100, null, All());
 //     placein++;
-//     CreateEffect(player, Effect.Sphere, Color.Black, Once(RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, All(), false)), 30);
+//     CreateEffect(player, Effect.Sphere, Color.White, Once(placePos), 0.1);
 //     effect[placein] = LastCreatedEntity();
-//     CreateHudText(player, null, $"{placein}. {Once(RayCastHitPosition(EyePos(), EyePos() + Facing() * 100, null, All(), false) + Vector(0, 4, 0))}", null, Location.Right, 0.99);
-//     txt[placein] = LastTextID();
+//     CreateHudText(player, null, <"<0>. <1>", Once(placein), Once(placePos)>, null, Location.Right, 0.99);
+//     hudTxt[placein] = LastTextID();
+//     CreateInWorldText(player, Once(placein), Once(placePos), 1, Clipping.DoNotClip);
+//     iwTxt[placein] = LastTextID();
 // }
 
 // rule: "remove previous ball"
@@ -142,7 +153,8 @@ Event.OnDamageDealt
 // if (IsButtonHeld(player, Button.Crouch) && IsButtonHeld(player, Button.Interact))
 // {
 //     DestroyEffect(effect[placein]);
-//     DestroyHudText(txt[placein]);
+//     DestroyHudText(hudTxt[placein]);
+//     DestroyInWorldText(iwTxt[placein]);
 //     placein--;
 // }
 
