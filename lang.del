@@ -1,0 +1,864 @@
+import "main.del";
+
+enum Lang
+{
+    EN,
+    JP,
+    KR,
+    MX
+}
+
+// menu info
+globalvar String[] holdToOpenMenuStr!;
+globalvar String[] releaseToHideMenuStr!;
+globalvar String[] doubleTapToToggleFavStr!;
+globalvar String[] warningStr!;
+globalvar String[] navigateMenuStr!;
+globalvar String[] navigateMenuInstructStr!;
+globalvar String[] selectMenuItemStr!;
+globalvar String[] favoriteMenuItemStr!;
+globalvar String[] healTypeDescriptorStr!;
+globalvar String[] randomizerTypeItemStr!;
+globalvar String[] trueRandomStr!;
+globalvar String[] randomQueueStr!;
+globalvar String[] randomPerformanceStr!;
+globalvar String[] Q8yAcsyBZcyCYcyDdMyEZcyFZMyRIGLMhnnMhzogc8yIY8yJb8yJcsyKdMyP;
+
+// respawn
+globalvar String[] pressToRespawnInstantlyStr!;
+globalvar String[] useNormalHeroSelectStr!;
+
+// kill streak
+globalvar String[] currentKillStreakStr!;
+globalvar String[] lastKillstreakStr!;
+globalvar String[] killStreakPersonalBestStr!;
+globalvar String[] killStreakServerBestStr!;
+globalvar String[] playerGotServerBestKillStreakStr!;
+globalvar String[] youStr!;
+globalvar String[] bestKillStreakByPlayer!;
+
+// generic stats
+globalvar String[] kdrStatStr!;
+globalvar String[] dmgRatioStatStr!;
+globalvar String[] dmgOutStatStr!;
+globalvar String[] dmgInStatStr!;
+globalvar String[] accuracyStatStr!;
+globalvar String[] critAccuracyStatStr!;
+globalvar String[] scopeAccuracyStatStr!;
+globalvar String[] scopeCritAccuracyStatStr!;
+globalvar String[] environmentKillsStatStr!;
+globalvar String[] healingStatStr!;
+globalvar String[] bestKillStreakStatStr!;
+
+// global
+globalvar String[] welcomeStr!;
+globalvar String[] amountOfMinutesStr!;
+globalvar String[] amountOfSecondsStr!;
+globalvar String[] amountOfMinutesShortStr!;
+globalvar String[] amountOfSecondsShortStr!;
+globalvar String[] oneMinuteStr!;
+globalvar String[] oneSecondStr!;
+globalvar String[] metersStr!;
+
+// vote kick
+globalvar String[] voteStartedByStr!;
+globalvar String[] voteSelectionStr!;
+globalvar String[] yesStr!;
+globalvar String[] noStr!;
+globalvar String[] selectAKickTargetStr!;
+globalvar String[] kickTargetStr!;
+globalvar String[] voteChoiceStr!;
+globalvar String[] voteSucceedStr!;
+globalvar String[] voteFailTargetLeftStr!;
+globalvar String[] voteFailStarterLeftStr!;
+globalvar String[] voteFailNotEnoughPlayersStr!;
+globalvar String[] voteFailTimeOutStr!;
+globalvar String[] playerWasVoteKickedStr!;
+globalvar String[] playerWasAFKKickedStr!;
+globalvar String[] playerAFKKickTimerStr!;
+
+// menu items
+globalvar String[] healToFullStr!;
+globalvar String[] instantHealDurStr!;
+globalvar String[] showWorkshopHudItemStr!;
+globalvar String[] showStatsItemStr!;
+globalvar String[] showKillStreaksItemStr!;
+globalvar String[] healingItemStr!;
+globalvar String[] randomHeroItemStr!;
+globalvar String[] languageItemStr!;
+globalvar String[] startVoteKickItemStr!;
+globalvar String[] changelogItemStr!;
+
+// small message enabled notifications
+globalvar String[] showWorkshopHudNotifStr!;
+globalvar String[] showStatsNotifStr!;
+globalvar String[] showKillStreaksNotifStr!;
+globalvar String[] enableHealNotifStr!;
+globalvar String[] enableRandomHeroNotifStr!;
+
+// small message disabled notifications
+globalvar String[] hideWorkshopHudNotifStr!;
+globalvar String[] hideStatsNotifStr!;
+globalvar String[] hideKillStreaksNotifStr!;
+globalvar String[] disableHealNotifStr!;
+globalvar String[] disableRandomHeroNotifStr!;
+
+// hero stat values
+playervar String[] statMetric;
+playervar String[] heroStatPStr;
+playervar Number[] heroStatVal;
+playervar Number[][] heroStatStorage;
+
+// hero stats strings
+globalvar String[] sleepDartAccStr!;
+globalvar String[] sleepDartsHitStr!;
+
+globalvar String[] coachGunKillsStr!;
+globalvar String[] dynamiteKillsStr!;
+
+globalvar String[] grenadesStuckStr!;
+globalvar String[] grenadeStickAccStr!;
+globalvar String[] grenadeKillsStr!;
+
+globalvar String[] damageDeflectedStr!;
+
+globalvar String[] healUsageStr!;
+globalvar String[] speedUsageStr!;
+globalvar String[] avgTimeOnWallStr!;
+
+globalvar String[] directHitAccStr!;
+globalvar String[] concBlastKillsStr!;
+globalvar String[] airTimeEfficacyStr!; // time spent in air vs on ground
+globalvar String[] avgTimeInAirStr!;
+
+globalvar String[] railgunKillsStr!;
+globalvar String[] railgunAccStr!;
+globalvar String[] avgChargeStr!;
+
+globalvar String[] distanceTeleportedStr!;
+globalvar String[] virusHitsStr!;
+globalvar String[] virusKillsStr!;
+globalvar String[] virusAccStr!;
+
+globalvar String[] hammerKillsStr!;
+globalvar String[] overloadEfficacyStr!; // percentage of health that is absorbed by bonus hp
+
+globalvar String[] bombsStuckStr!;
+globalvar String[] bombsStickAccStr!;
+globalvar String[] bombKillsStr!;
+globalvar String[] healthRecalledStr!;
+
+globalvar String[] airShotAccStr!;
+
+globalvar String[] airKillsStr!;
+
+globalvar String[] javelinsHitStr!;
+globalvar String[] javelinKillsStr!;
+globalvar String[] javelinAccStr!;
+globalvar String[] fortifyEfficacyStr!; // percentage of health that is absorbed by bonus hp
+
+globalvar String[] knivesHitStr!;
+globalvar String[] knifeKillsStr!;
+globalvar String[] knifeAccStr!;
+globalvar String[] shoutEfficacyStr!; // percentage of health that is absorbed by bonus hp
+globalvar String[] healedFromAbilitiesStr!;
+
+globalvar String[] rocksHitStr!;
+globalvar String[] rockAccStr!;
+
+globalvar String[] focusingBeamAccStr!;
+globalvar String[] focusingBeamKillsStr!;
+globalvar String[] focusingBeamEfficacyStr!; // percentage of time focusing beam is dealing bonus damage on low health targets
+
+globalvar String[] hooksHitStr!;
+globalvar String[] hookAccStr!;
+
+globalvar String[] firestrikesHitStr!;
+globalvar String[] firestrikeKillsStr!;
+globalvar String[] firestrikeAccStr!;
+
+globalvar String[] whipshotsHitStr!;
+globalvar String[] whipshotKillsStr!;
+globalvar String[] whipshotAccStr!;
+
+globalvar String[] nemesisEfficacyStr!; // percentage of health that is absorbed by bonus hp
+
+rule: "Init Strings"
+{
+    # jp translator: saruyo/さるよ, scort. kr translator: N/A, ai translated based on english and japanese strings
+    holdToOpenMenuStr = [
+        "Hold [{interact}] to open menu", 
+        "メニューを開く「{interact}」を長押し",
+        "메뉴를 열려면 [{interact}]를 길게 누릅니다"];
+    releaseToHideMenuStr = [
+        "Release [{interact}] to hide menu", 
+        "メニューを非表示「{interact}」を放す",
+        "메뉴를 숨기려면 [{interact}]를 놓습니다"];
+    doubleTapToToggleFavStr =[
+        "Double tap [{interact}] to toggle \"{fav}\"", 
+        "「{interact}」ダブルタップで「{fav}」切替",
+        "\"{fav}\" 을 전환하려면 [{interact}]를 두 번 누릅니다"];
+
+
+    warningStr = [
+        "This is a public test version! Please do not save!", 
+        "公開テスト版です！セーブしないでください！",
+        "공개 테스트 버전입니다! 저장하지 마세요!"];
+
+
+    pressToRespawnInstantlyStr = [
+        "{interact} to respawn instantly", 
+        "「{interact}」を直ぐにリスポーンする",
+        "즉시 리스폰하려면 [{interact}]를 누릅니다."];
+    useNormalHeroSelectStr = [
+        "Use normal hero select to change hero", 
+        "普通ヒーロー選択で変更する",
+        "일반 영웅 선택을 사용하여 영웅을 변경합니다."];
+
+
+    currentKillStreakStr = [
+        "Streak: ", 
+        "連続キル：",
+        "연속 킬: "];
+    lastKillstreakStr = [
+        "{number} player killstreak!", 
+        "{number}人連続キル！",
+        "{number}명 연속 킬!"];
+    killStreakPersonalBestStr = [
+        "{number} player killstreak! Your personal best!", 
+        "{number}人連続キル！あなたの自己最高！",
+        "{number}명 연속 킬! 당신의 개인 최고 기록입니다!"];
+    killStreakServerBestStr = [
+        "{number} player killstreak! The lobby's best!", 
+        "{number}人連続キル！このロビーで最高！",
+        "{number}명 연속 킬! 이 로비의 최고 기록입니다!"];
+    playerGotServerBestKillStreakStr = [
+        "{player} got a {number} player killstreak! The lobby's best!", 
+        "{player}さんは{number}人連続キルを得ました！このロビーで最高！",
+        "{player}님이 {number}명 연속 킬을 달성했습니다! 이 로비의 최고 기록입니다!"];
+    youStr = [
+        " (You)", 
+        "「あなた」",
+        " (당신)"];
+    bestKillStreakByPlayer = [
+        "Best Streak: {number} by {player}", 
+        "最高連続キル：{player}さん{number}人殺した",
+        "최고 연속 킬: {player}님 {number}명 처치"];
+
+
+    kdrStatStr = [
+        "KDR: ", 
+        "キル・デス率：", 
+        "처치/데스 비율: "];
+    dmgRatioStatStr = [
+        "DMG Ratio: ", 
+        "ダメージ率：", 
+        "피해 비율: "];
+    dmgOutStatStr = [
+        "DMG Out: ", 
+        "与ダメージ：", 
+        "주는 피해: "];
+    dmgInStatStr = [
+        "DMG In: ", 
+        "受けたダメージ：", 
+        "받는 피해: "];
+    accuracyStatStr = [
+        "Acc: ", 
+        "命中率：", 
+        "명중률: "];
+    critAccuracyStatStr = [
+        "Crit Acc: ", 
+        "CRIT命中率：", 
+        "치명타 명중률: "];
+    scopeAccuracyStatStr = [
+        "Scope Acc: ", 
+        "スコープ命中率：", 
+        "저격 명중률: "];
+    scopeCritAccuracyStatStr = [
+        "Scope Crit Acc: ", 
+        "スコープCRIT命中率：", 
+        "저격 치명타 명중률: "];
+    environmentKillsStatStr = [
+        "Environment Kills: ", 
+        "環境キル：", 
+        "환경 요소로 처치: "];
+    healingStatStr = [
+        "Heal: ", 
+        "回復：", 
+        "치유: "];
+    bestKillStreakStatStr = [
+        "Best Streak: {number}", 
+        "最高連続キル：{number}人", 
+        "연속 처치 - 최고기록: {number}"];
+
+
+    yesStr = [
+        "Yes", 
+        "はい", 
+        "네"];
+    noStr = [
+        "No", 
+        "いいえ", 
+        "아니요"];
+    selectAKickTargetStr = [
+        "Select the player to vote kick",
+        "投票キックするプレイヤーを選んで",
+        "투표 킥할 플레이어 골라"
+    ];
+    voteStartedByStr = [
+        "Vote by: {player}", 
+        "{player}さんによる投票", 
+        "{player}님의 투표"];
+    kickTargetStr = [
+        "Kick {player}?", 
+        "{player}さんをキックしますか？", 
+        "{player}님을 추방할까요?"];
+    voteChoiceStr = [
+        "You voted \"{vote}\"", 
+        "あなたは「{vote}」に投票しました", 
+        "당신은 \"{vote}\"에 투표했습니다"];
+    voteSucceedStr = [
+        "Vote succeeded!", 
+        "投票成功！", 
+        "투표 성공!"];
+    voteFailTargetLeftStr = [
+        "Vote failed! Vote target left.", 
+        "投票失敗！投票対象者が退出しました。", 
+        "투표 실패! 투표 대상자가 퇴장했습니다."];
+    voteFailStarterLeftStr = [
+        "Vote failed! Vote initiator left.", 
+        "投票失敗！投票開始者が退出しました。", 
+        "투표 실패! 투표 시작자가 퇴장했습니다."];
+    voteFailTimeOutStr = [
+        "Vote failed! Vote timed out.", 
+        "投票失敗！投票時間が切れました。", 
+        "투표 실패! 투표 시간이 만료되었습니다."];
+    voteFailNotEnoughPlayersStr = [
+        "Vote failed! Not enough players voted yes.", 
+        "投票失敗！賛成票が足りません。", 
+        "투표 실패! 찬성 투표가 부족합니다."];
+    playerWasVoteKickedStr = [
+        "{player} was vote kicked", 
+        "{player}さんは投票でキックされました", 
+        "{player}님이 투표로 추방되었습니다"];
+    playerWasAFKKickedStr = [
+        "{player} was kicked after {minutes} minutes of inactivity", 
+        "{player}さん{minutes}分間のAFKの後キックされました", 
+        "{player}님이 {minutes}분간의 비활동 후 추방되었습니다"];
+    playerAFKKickTimerStr = [
+        "You will be kicked for inactivity in {minutes}{seconds}", 
+        "AFKだから{minutes}{seconds}でキックされる", 
+        "비활동으로 인해 {minutes}{seconds} 후 추방됩니다"];
+
+
+    navigateMenuStr = [
+        "[Navigate]", 
+        "「操作」",
+        "[탐색]"];
+    navigateMenuInstructStr = [
+        "Aim", 
+        "視点移動",
+        "시점 이동"];
+    selectMenuItemStr = [
+        "[Select]", 
+        "「選ぶ」",
+        "[선택]"];
+    favoriteMenuItemStr = [
+        "[Favorite]", 
+        "「お気に入り」",
+        "[즐겨찾기]"];
+    welcomeStr = [
+        "Welcome! ", 
+        "ようこそ！",
+        "환영합니다! "];
+    healToFullStr = [
+        " (To Full)", 
+        "「フルに」",
+        "(최대치)"];
+    instantHealDurStr = [
+        "Instant", 
+        "即時",
+        "즉시"];
+    amountOfMinutesStr = [
+        " minutes ", 
+        "分",
+        " 분 "];
+    amountOfSecondsStr = [
+        " seconds", 
+        "秒",
+        " 초"];
+    oneMinuteStr = [
+        " minute ", 
+        "分",
+        " 분 "];
+    oneSecondStr = [
+        " second", 
+        "秒",
+        " 초"];
+    amountOfMinutesShortStr = [
+        "m", 
+        "分",
+        "분"];
+    amountOfSecondsShortStr = [
+        "s", 
+        "秒",
+        "초"];
+    metersStr = [
+        "m", 
+        "メートル",
+        "미터"];
+
+
+    Wait(0.2);
+
+
+    if (S_HEAL_TYPE == HealType.HOK)
+        healTypeDescriptorStr = [
+            " (Heal on Kill) ",
+             "「キルヒーリング」",
+             " (킬 시 회복) "];
+    else if (S_HEAL_TYPE == HealType.Pickup)
+        healTypeDescriptorStr = [
+            " (Health pickups) ", 
+            "「ピックアップ」",
+            " (체력 픽업) "];
+    else
+        healTypeDescriptorStr = [
+            " (Disabled) ", 
+            "「無効」",
+            " (비활성화됨) "];
+
+
+    trueRandomStr = [
+        "(True Random)", 
+        "「完全ランダム」",
+        "(완전히 무작위)"];
+    randomQueueStr = [
+        "(Randomized Queue)", 
+        "「ランダムキュー」",
+        "(랜덤 큐)"];
+    randomPerformanceStr = [
+        "(Performance Focused)", 
+        "「パフォーマンス重視」",
+        "(성능 중심)"];
+
+
+    showWorkshopHudItemStr = [
+        "Show Workshop HUD", 
+        "HUDを見せる",
+        "워크샵 HUD 표시"];
+    showStatsItemStr = [
+        "Show Stats", 
+        "統計を見せる",
+        "통계 표시"];
+    showKillStreaksItemStr = [
+        "Show Kill Streaks", 
+        "連続キルを見せる",
+        "연속 처치 표시"];
+    healingItemStr = [
+        "Healing", 
+        "回復",
+        "치유"];
+    randomHeroItemStr = [
+        "Random Hero", 
+        "ランダム・ヒーロー",
+        "무작위 영웅"];
+    randomizerTypeItemStr = [
+        "Randomizer Type ", 
+        "ランダム化形式",
+        "랜덤화 형식 "];
+    languageItemStr = [
+        "Language", 
+        "言語",
+        "언어"];
+    startVoteKickItemStr = [
+        "Start Vote Kick", 
+        "投票キックを開始する",
+        "투표 킥 시작"];
+    changelogItemStr = [
+        "Changelog", 
+        "更新履歴「英語だけ」",
+        "업데이트 정보 (영어만)"];
+
+
+    showWorkshopHudNotifStr = [
+        "Workshop HUD shown!", 
+        "HUDを見る!",
+        "워크샵 HUD 표시됨!"];
+    showStatsNotifStr = [
+        "Stats shown!", 
+        "統計を見る!",
+        "통계 표시됨!"];
+    showKillStreaksNotifStr = [
+        "Kill Streaks shown!", 
+        "連続キルを見る!",
+        "연속 처치 표시됨!"];
+    enableHealNotifStr = [
+        "Healing Enabled!", 
+        "回復を有効！",
+        "치유 활성화됨!"];
+    enableRandomHeroNotifStr = [
+        "Random Hero Enabled!", 
+        "ランダム・ヒーローを有効！",
+        "무작위 영웅 활성화됨!"];
+
+
+    hideWorkshopHudNotifStr = [
+        "Workshop HUD Hidden!", 
+        "HUDを隠した！",
+        "워크샵 HUD 숨김!"];
+    hideStatsNotifStr = [
+        "Stats Hidden!", 
+        "統計を隠した！",
+        "통계 숨김!"];
+    hideKillStreaksNotifStr = [
+        "Kill Streaks Hidden!", 
+        "連続キルを隠した！",
+        "연속 처치 숨김!"];
+    disableHealNotifStr = [
+        "Healing Disabled!", 
+        "回復を無効！",
+        "치유 비활성화됨!"];
+    disableRandomHeroNotifStr = [
+        "Random Hero Disabled!", 
+        "ランダム・ヒーローを無効！",
+        "무작위 영웅 비활성화됨!"];
+
+
+    Q8yAcsyBZcyCYcyDdMyEZcyFZMyRIGLMhnnMhzogc8yIY8yJb8yJcsyKdMyP = ["?", "!", "「", "」", "(", ")"];
+
+    Wait(0.2);
+
+    //////////////////////
+    // hero stats start //
+    //////////////////////
+
+    sleepDartAccStr = [
+        "Sleep Dart Acc: ", 
+        "スリープ・ダーツ命中率：",
+        "수면총 명중률: "];
+    sleepDartsHitStr = [
+        "Sleep Darts Hit: ", 
+        "スリープ・ダーツ命中：",
+        "수면총 명중: "];
+    coachGunKillsStr = [
+        "Coach Gun Kills: ", 
+        "コーチ・ガンキル：",
+        "충격 샷건으로 처치: "];
+    dynamiteKillsStr = [
+        "Dynamite Kills: ", 
+        "ダイナマイトキル：",
+        "다이너마이 처치: "];
+    grenadesStuckStr = [
+        "Grenades Stuck: ", 
+        "グレネード直撃："];
+    grenadeStickAccStr = [
+        "Grenade Stick Acc: ", 
+        "グレネード直撃命中率："];
+    grenadeKillsStr = [
+        "Grenade Kills: ", 
+        "グレネードキル："];
+    damageDeflectedStr = [
+        "DMG Deflected: ",
+        "反射ダメージ："];
+    healUsageStr = [
+        "Heal Usage: ", 
+        "ヒーリング使用："];
+    speedUsageStr = [
+        "Speed Usage: ", 
+        "スピード使用："];
+    avgTimeOnWallStr = [
+        "Avg Time On Wall: ", 
+        "平均壁の上時間："];
+    directHitAccStr = [
+        "Dir Hit Acc: ", 
+        "直撃命中率："];
+    concBlastKillsStr = [
+        "Conc Blast Kills: ", 
+        "コンカッシブキル："];
+    airTimeEfficacyStr = [
+        "Air Time Efficacy: ", 
+        "滞空時間能率："];
+    avgTimeInAirStr = [
+        "Avg Time In Air: ", 
+        "平均滞空時間："];
+    railgunKillsStr = [
+        "Railgun Kills: ", 
+        "レールガンキル："];
+    railgunAccStr = [
+        "Railgun Acc: ", 
+        "レールガン命中率："];
+    avgChargeStr = [
+        "Avg Charge: ", 
+        "平均チャージ："];
+    distanceTeleportedStr = [
+        "Dist Teleported: ", 
+        "テレポート距離："];
+    virusHitsStr = [
+        "Virus Hits: ", 
+        "ウイルス命中："];
+    virusAccStr = [
+        "Virus Acc: ", 
+        "ウイルス命中率："];
+    virusKillsStr = [
+        "Virus Kills: ", 
+        "ウイルスキル："];
+    hammerKillsStr = [
+        "Hammer Kills: ", 
+        "ハンマーキル："];
+    overloadEfficacyStr = [
+        "Overload Efficacy: ", 
+        "オーバーロード能率："];
+    bombsStuckStr = [
+        "Bombs Stuck: ", 
+        "ボム付着："];
+    bombsStickAccStr = [
+        "Bomb Stick Acc: ", 
+        "ボム付着命中率："];
+    bombKillsStr = [
+        "Bomb Kills: ", 
+        "ボムキル："];
+    healthRecalledStr = [
+        "HP Recalled: ", 
+        "リコール回復："];
+    airShotAccStr = [
+        "Air Shot Acc: ", 
+        "空中攻撃命中率："];
+    airKillsStr = [
+        "Air Kills: ", 
+        "空中キル："];
+    fortifyEfficacyStr = [
+        "Fortify Efficacy: ", 
+        "フォーティファイ能率："];
+    javelinsHitStr = [
+        "Javelins Hit: ", 
+        "槍投げ命中："];
+    javelinAccStr = [
+        "Javelin Acc: ", 
+        "槍投げ命中率："];
+    javelinKillsStr = [
+        "Javelin Kills: ", 
+        "槍投げキル："];
+    shoutEfficacyStr = [
+        "Shout Efficacy: ", 
+        "コマンディング・シャウト能率："];
+    healedFromAbilitiesStr = [
+        "HP from abilities: ", 
+        "アビリティ回復："];
+    knivesHitStr = [
+        "Knives Hit: ", 
+        "ナイフ命中："];
+    knifeAccStr = [
+        "Knife Acc: ", 
+        "ナイフ命中率："];
+    knifeKillsStr = [
+        "Knife Kills: ", 
+        "ナイフキル："];
+    rocksHitStr = [
+        "Rocks Hit: ", 
+        "アクリーション命中："];
+    rockAccStr = [
+        "Rock Acc: ", 
+        "アクリーション命中率："];
+    focusingBeamAccStr = [
+        "Beam Acc: ", 
+        "ビーム命中率："];
+    focusingBeamKillsStr = [
+        "Beam Kills: ", 
+        "ビームキル："];
+    focusingBeamEfficacyStr = [
+        "Beam Efficacy: ", 
+        "ビーム能率："];
+    hooksHitStr = [
+        "Hooks Hit: ", 
+        "フック命中："];
+    hookAccStr = [
+        "Hook Acc: ", 
+        "フック命中率："];
+    firestrikesHitStr = [
+        "Firestrikes Hit: ", 
+        "ファイア・ストライク命中："];
+    firestrikeAccStr = [
+        "Firestrike Acc: ", 
+        "ファイア・ストライク命中率："];
+    firestrikeKillsStr = [
+        "Firestrike Kills: ", 
+        "ファイア・ストライクキル："];
+    whipshotsHitStr = [
+        "Whipshots Hit: ", 
+        "ウィップ・ショット命中："];
+    whipshotAccStr = [
+        "Whipshot Acc: ", 
+        "ウィップ・ショット命中率："];
+    whipshotKillsStr = [
+        "Whipshot Kills: ", 
+        "ウィップ・ショットキル："];
+    nemesisEfficacyStr = [
+        "Nemesis Efficacy: ", 
+        "ネメシス・フォーム能率："];
+
+    ////////////////////
+    // hero stats end //
+    ////////////////////
+}
+
+void SetHeroStats() playervar "Set Hero Stat"
+{
+    WaitUntil(HasSpawned() && IsAlive(), 99999);
+
+    heroStatPStr = [];
+    statMetric = [];
+
+    switch (HeroOf())
+    {
+        case Hero.Ana:
+            heroStatPStr[0] = sleepDartsHitStr[LangID];
+            heroStatPStr[1] = sleepDartAccStr[LangID];
+
+            statMetric[1] = "%";
+            break;
+        case Hero.Ashe:
+            heroStatPStr[0] = coachGunKillsStr[LangID];
+            heroStatPStr[1] = dynamiteKillsStr[LangID];
+
+            break;
+        case Hero.Bastion:
+            heroStatPStr[0] = grenadeKillsStr[LangID];
+            heroStatPStr[1] = grenadesStuckStr[LangID];
+            heroStatPStr[2] = grenadeStickAccStr[LangID];
+
+            statMetric[2] = "%";
+            break;
+        case Hero.Brigitte:
+            heroStatPStr[0] = whipshotKillsStr[LangID];
+            heroStatPStr[1] = whipshotsHitStr[LangID];
+            heroStatPStr[2] = whipshotAccStr[LangID];
+
+            statMetric[2] = "%";
+            break;
+        case Hero.Echo:
+            heroStatPStr[0] = bombKillsStr[LangID];
+            heroStatPStr[1] = bombsStuckStr[LangID];
+            heroStatPStr[2] = bombsStickAccStr[LangID];
+            heroStatPStr[3] = focusingBeamAccStr[LangID];
+            heroStatPStr[4] = focusingBeamKillsStr[LangID];
+            heroStatPStr[5] = focusingBeamEfficacyStr[LangID];
+            heroStatPStr[6] = avgTimeInAirStr[LangID];
+
+            statMetric[2] = "%";
+            statMetric[3] = "%";
+            statMetric[5] = "%";
+            statMetric[6] = amountOfSecondsShortStr[LangID];
+            break;
+        case Hero.Genji:
+            heroStatPStr[0] = damageDeflectedStr[LangID];
+
+            break;
+        case Hero.JunkerQueen:
+            heroStatPStr[0] = knifeKillsStr[LangID];
+            heroStatPStr[1] = knivesHitStr[LangID];
+            heroStatPStr[2] = knifeAccStr[LangID];
+            heroStatPStr[3] = shoutEfficacyStr[LangID];
+            heroStatPStr[4] = healedFromAbilitiesStr[LangID];
+ 
+            statMetric[2] = "%";
+            statMetric[3] = "%";
+            break;
+        case Hero.Lucio:
+            heroStatPStr[0] = healUsageStr[LangID];
+            heroStatPStr[1] = speedUsageStr[LangID];
+            heroStatPStr[2] = avgTimeOnWallStr[LangID];
+ 
+            statMetric[0] = "%";
+            statMetric[1] = "%";
+            statMetric[2] = amountOfSecondsShortStr[LangID];
+            break;
+        case Hero.Orisa:
+            heroStatPStr[0] = javelinKillsStr[LangID];
+            heroStatPStr[1] = javelinsHitStr[LangID];
+            heroStatPStr[2] = javelinAccStr[LangID];
+            heroStatPStr[3] = fortifyEfficacyStr[LangID];
+ 
+            statMetric[2] = "%";
+            statMetric[3] = "%";
+            break;
+        case Hero.Pharah:
+            heroStatPStr[0] = directHitAccStr[LangID];
+            heroStatPStr[1] = concBlastKillsStr[LangID];
+            heroStatPStr[2] = avgTimeInAirStr[LangID];
+            heroStatPStr[3] = airTimeEfficacyStr[LangID];
+
+            statMetric[0] = "%";
+            statMetric[2] = amountOfSecondsShortStr[LangID];
+            statMetric[3] = "%";
+            break;
+        case Hero.Ramattra:
+            heroStatPStr[0] = nemesisEfficacyStr[LangID];
+
+            statMetric[0] = "%";
+            break;
+        case Hero.Reinhardt:
+            heroStatPStr[0] = firestrikeKillsStr[LangID];
+            heroStatPStr[1] = firestrikesHitStr[LangID];
+            heroStatPStr[2] = firestrikeAccStr[LangID];
+
+            statMetric[2] = "%";
+            break;
+        case Hero.Roadhog:
+            heroStatPStr[0] = hooksHitStr[LangID];
+            heroStatPStr[1] = hookAccStr[LangID];
+            heroStatPStr[2] = healedFromAbilitiesStr[LangID];
+            break;
+        case Hero.Sigma:
+            heroStatPStr[0] = rocksHitStr[LangID];
+            heroStatPStr[1] = rockAccStr[LangID];
+            heroStatPStr[2] = healedFromAbilitiesStr[LangID];
+
+            break;
+        case Hero.Sojourn:
+            heroStatPStr[0] = railgunKillsStr[LangID];
+            heroStatPStr[1] = railgunAccStr[LangID];
+            heroStatPStr[2] = avgChargeStr[LangID];
+
+            statMetric[1] = "%";
+            statMetric[2] = "%";
+            break;
+        case Hero.Sombra:
+            heroStatPStr[0] = distanceTeleportedStr[LangID];
+            heroStatPStr[1] = virusKillsStr[LangID];
+            heroStatPStr[2] = virusHitsStr[LangID];
+            heroStatPStr[3] = virusAccStr[LangID];
+
+            statMetric[0] = metersStr[LangID];
+            statMetric[3] = "%";
+            break;
+        case Hero.Torbjorn:
+            heroStatPStr[0] = hammerKillsStr[LangID];
+            heroStatPStr[1] = overloadEfficacyStr[LangID];
+
+            statMetric[1] = "%";
+            break;
+        case Hero.Tracer:
+            heroStatPStr[0] = bombKillsStr[LangID];
+            heroStatPStr[1] = bombsStuckStr[LangID];
+            heroStatPStr[2] = bombsStickAccStr[LangID];
+            heroStatPStr[3] = healthRecalledStr[LangID];
+
+            statMetric[2] = "%";
+            break;
+        case Hero.Venture:
+            heroStatPStr[0] = directHitAccStr[LangID];
+            heroStatPStr[1] = airShotAccStr[LangID];
+
+            statMetric[0] = "%";
+            statMetric[1] = "%";
+            break;
+        case Hero.Widowmaker:
+            heroStatPStr[0] = airKillsStr[LangID];
+            break;
+        default: 
+            heroStatPStr = [];
+            statMetric = [];
+            break;
+    }
+}
