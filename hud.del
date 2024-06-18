@@ -8,17 +8,17 @@ globalvar Number | String bestStreakServerHero;
 playervar Number | String bestStreakHero;
 playervar Boolean streak;
 
-Color Rainbow(): CustomColor(128 + 127 * CosineFromDegrees(Time() * 150),
-                             128 + 127 * CosineFromDegrees((Time() * 150) + 120),
-                             128 + 127 * CosineFromDegrees((Time() * 150) + 240), 
+Color Rainbow(): CustomColor(128 + 127 * CosDeg(Time() * 150),
+                             128 + 127 * CosDeg((Time() * 150) + 120),
+                             128 + 127 * CosDeg((Time() * 150) + 240), 
                              250);
 
-Color HealthColor(): CustomColor(r, g, 0, 255);
+// Number percentage: (NormalizedHealth() * 100);
+// Number hpR: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
+// Number hpG: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
+// Color HealthColor(): CustomColor(hpR, hpG, 0, 255);
 Color AFKPulse(): CustomColor(Oscillate(750, 0, 255), Oscillate(750, 153, 255), 255, 255);
 Color KickWarningPulse(): CustomColor(255, PingPong(1000, 255), 0, 255);
-Number percentage: (NormalizedHealth() * 100);
-Number r: (percentage <= 50) ? 255 : Floor(256 - (percentage - 50) * 5.12);
-Number g: (percentage >= 50) ? 255 : Floor(percentage * 5.12);
 
 // String PrettyNumber(String number): 
 //         StringLength(number) <= 3
@@ -65,7 +65,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
     # warning
     CreateHudText(
         VisibleTo:      local, 
-        Subheader:      <"<1> <0> <1>", local.warningStr, IconString(Icon.Warning)>,
+        Subheader:      <"<1> <0> <1>", warningStr[local.LangID], IconString(Icon.Warning)>,
         Location:       Location.Top, 
         SortOrder:      1, 
         SubheaderColor: Color.Yellow, 
@@ -88,17 +88,17 @@ rule: "HUD : Global HUD : Welcome to Hell"
         # afk kick warning
         CreateInWorldText(
             VisibleTo:      local.afk ? local : null, 
-            Header:         DuoStringReplace(local.playerAFKKickTimerStr, "{minutes}", "{seconds}",
+            Header:         DuoStringReplace(playerAFKKickTimerStr[local.LangID], "{minutes}", "{seconds}",
                                 Floor(local.afkTime % 3600 / 60) != 0 // if minute is not 0
                                     ? <"<0><1>", Floor(local.afkTime % 3600 / 60),
                                     Floor(local.afkTime % 3600 / 60) != 1 // if minute is not 1
-                                        ? local.amountOfMinutesStr
-                                        : local.oneMinuteStr>
+                                        ? amountOfMinutesStr[local.LangID]
+                                        : oneMinuteStr[local.LangID]>
                                     : "", // if minute is 0
                                 <"<0><1>", Floor(local.afkTime % 60), 
                                     Floor(local.afkTime % 60) != 1 // if seconds arent 1
-                                        ? local.amountOfSecondsStr
-                                        : local.oneSecondStr>),
+                                        ? amountOfSecondsStr[local.LangID]
+                                        : oneSecondStr[local.LangID]>),
             Position:       RenderPosOf(0, -0.2), 
             Scale:          2,
             TextColor:      local.afkTime > S_AFK_KICK_TIME / 4 
@@ -113,16 +113,20 @@ rule: "HUD : Global HUD : Welcome to Hell"
     {
         # hide/show menu
         CreateHudText(
-            VisibleTo:  !local.afk && !local.langSwap ? local : null, 
-            Subheader:  StringReplace(!local.menu ? local.holdToOpenMenuStr : local.releaseToHideMenuStr, "{interact}", BindString(Button.Interact)),
-            Location:   Location.Right, 
-            SortOrder:  0.2, 
-            Spectators: Spectators.VisibleNever);
+            VisibleTo:      !local.afk ? local : null, 
+            Subheader:      StringReplace(!local.menu ? holdToOpenMenuStr[local.LangID] : releaseToHideMenuStr[local.LangID], "{interact}", BindString(Button.Interact)),
+            Location:       Location.Right, 
+            SortOrder:      0.2, 
+            SubheaderColor: local.userJoinTime - Time() > 3 || local.hasOpenedMenu
+                                    ? Color.White
+                                    : CustomColor(Oscillate(500, 0, 255), Oscillate(500, 153, 255), 255, 255),
+            Reevaluation:   HudTextRev.VisibleToStringAndColor,
+            Spectators:     Spectators.VisibleNever);
 
-        # double tap for fav_item
+        # double tap for favItem
         CreateHudText(
             VisibleTo:  !local.afk && local.favItem != Item.Invalid ? local : null, 
-            Subheader:  StringReplace(local.doubleTapToToggleFavStr, "{interact}", BindString(Button.Interact)) + local.quote1Str + local.favItemStr + local.quote2Str, 
+            Subheader:  local.favStatusIcon + "  " + DuoStringReplace(doubleTapToToggleFavStr[local.LangID], "{interact}", "{fav}", BindString(Button.Interact), local.favItemPStr), 
             Location:   Location.Right, 
             SortOrder:  0.3,
             Spectators: Spectators.VisibleNever);
@@ -140,7 +144,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
         # respawn hud
         CreateHudText(
             VisibleTo:      local.IsDead() ? local : null, 
-            Subheader:      StringReplace(local.pressToRespawnInstantlyStr, "{interact}", BindString(Button.Interact)), 
+            Subheader:      StringReplace(pressToRespawnInstantlyStr[local.LangID], "{interact}", BindString(Button.Interact)), 
             Location:       Location.Top, 
             SortOrder:      101,
             SubheaderColor: Color.Yellow, 
@@ -148,7 +152,7 @@ rule: "HUD : Global HUD : Welcome to Hell"
 
         CreateHudText(
             VisibleTo:      local.IsDead() ? local : null, 
-            Subheader:      <"<0>\n", local.useNormalHeroSelectStr>, 
+            Subheader:      <"<0>\n", useNormalHeroSelectStr[local.LangID]>, 
             Location:       Location.Top, 
             SortOrder:      102,
             SubheaderColor: Color.Yellow, 
@@ -164,64 +168,64 @@ rule: "HUD : Global HUD : Welcome to Hell"
             Subheader: <" \n\n\n<0><1><2><3><4><5><6><7><8><9><10><11><12><13><14><15><16><17>", 
 
             // 0
-            <"<0><1>\n", local.kdrStatStr, 
+            <"<0><1>\n", kdrStatStr[local.LangID], 
                 Kills(local) > 0 && Deaths(local) == 0 
                     ? "∞" 
                     : (Kills(local) / Deaths(local)) + 0.0001>,
 
             // 1
-            <"<0><1>\n", local.dmgRatioStatStr, 
+            <"<0><1>\n", dmgRatioStatStr[local.LangID], 
                 DamageDealt(local) > 0 && DamageTaken(local) == 0
                     ? "∞" 
                     : (DamageDealt(local) / DamageTaken(local)) + 0.0001>,
 
-            <"<0><1>\n", local.dmgOutStatStr, PrettyNumber(<"<0>", DamageDealt(local)>)>, // 2
-            <"<0><1>\n", local.dmgInStatStr, PrettyNumber(<"<0>", DamageTaken(local)>)>, // 3
-            <"<0><1>%\n", local.accuracyStatStr, Accuracy(local)>, // 4
+            <"<0><1>\n", dmgOutStatStr[local.LangID], PrettyNumber(<"<0>", DamageDealt(local)>)>, // 2
+            <"<0><1>\n", dmgInStatStr[local.LangID], PrettyNumber(<"<0>", DamageTaken(local)>)>, // 3
+            <"<0><1>%\n", accuracyStatStr[local.LangID], Accuracy(local)>, // 4
 
             !critExcArr.Contains(HeroOf(local)) // 5
-                ? <"<0><1>%\n", local.critAccuracyStatStr, CritAccuracy(local)> : "",
+                ? <"<0><1>%\n", critAccuracyStatStr[local.LangID], CritAccuracy(local)> : "",
 
             scopeArr.Contains(HeroOf(local)) // 6
-                ? <"<0><1>%\n", local.scopeAccuracyStatStr, ScopedAccuracy(local)> : "", 
+                ? <"<0><1>%\n", scopeAccuracyStatStr[local.LangID], ScopedAccuracy(local)> : "", 
 
             scopeCritArr.Contains(HeroOf(local)) // 7
-                ? <"<0><1>%\n", local.scopeCritAccuracyStatStr, ScopedCritAccuracy(local)> : "",
+                ? <"<0><1>%\n", scopeCritAccuracyStatStr[local.LangID], ScopedCritAccuracy(local)> : "",
 
             EnvironmentalKills(local) != 0 // 8
-                ? <"<0><1>\n", local.environmentKillsStatStr, EnvironmentalKills(local)> : "",
+                ? <"<0><1>\n", environmentKillsStatStr[local.LangID], EnvironmentalKills(local)> : "",
 
-            <"<0><1>\n", local.healingStatStr, PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
+            <"<0><1>\n", healingStatStr[local.LangID], PrettyNumber(<"<0>", Ceil(HealingTaken(local))>)>, // 9
 
-            local.heroStatStr.Length >= 1 && local.heroStatVal[0] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[0], PrettyNumber(<"<0>", local.heroStatVal[0]>), local.statMetric[0] != null ? local.statMetric[0] : ""> : "", // 10
+            local.heroStatPStr.Length >= 1 && local.heroStatVal[0] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[0], PrettyNumber(<"<0>", local.heroStatVal[0]>), local.statMetric[0] != null ? local.statMetric[0] : ""> : "", // 10
 
-            local.heroStatStr.Length >= 2 && local.heroStatVal[1] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[1], PrettyNumber(<"<0>", local.heroStatVal[1]>), local.statMetric[1] != null ? local.statMetric[1] : ""> : "", // 11
+            local.heroStatPStr.Length >= 2 && local.heroStatVal[1] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[1], PrettyNumber(<"<0>", local.heroStatVal[1]>), local.statMetric[1] != null ? local.statMetric[1] : ""> : "", // 11
 
-            local.heroStatStr.Length >= 3 && local.heroStatVal[2] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[2], PrettyNumber(<"<0>", local.heroStatVal[2]>), local.statMetric[2] != null ? local.statMetric[2] : ""> : "", // 12
+            local.heroStatPStr.Length >= 3 && local.heroStatVal[2] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[2], PrettyNumber(<"<0>", local.heroStatVal[2]>), local.statMetric[2] != null ? local.statMetric[2] : ""> : "", // 12
 
-            local.heroStatStr.Length >= 4 && local.heroStatVal[3] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[3], PrettyNumber(<"<0>", local.heroStatVal[3]>), local.statMetric[3] != null ? local.statMetric[3] : ""> : "", // 13
+            local.heroStatPStr.Length >= 4 && local.heroStatVal[3] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[3], PrettyNumber(<"<0>", local.heroStatVal[3]>), local.statMetric[3] != null ? local.statMetric[3] : ""> : "", // 13
 
-            local.heroStatStr.Length >= 5 && local.heroStatVal[4] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[4], PrettyNumber(<"<0>", local.heroStatVal[4]>), local.statMetric[4] != null ? local.statMetric[4] : ""> : "", // 14
+            local.heroStatPStr.Length >= 5 && local.heroStatVal[4] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[4], PrettyNumber(<"<0>", local.heroStatVal[4]>), local.statMetric[4] != null ? local.statMetric[4] : ""> : "", // 14
             
-            local.heroStatStr.Length >= 6 && local.heroStatVal[5] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[5], PrettyNumber(<"<0>", local.heroStatVal[5]>), local.statMetric[5] != null ? local.statMetric[5] : ""> : "", // 15
+            local.heroStatPStr.Length >= 6 && local.heroStatVal[5] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[5], PrettyNumber(<"<0>", local.heroStatVal[5]>), local.statMetric[5] != null ? local.statMetric[5] : ""> : "", // 15
 
-            local.heroStatStr.Length >= 7 && local.heroStatVal[6] != 0
-                ? <"<0><1><2>\n", local.heroStatStr[6], PrettyNumber(<"<0>", local.heroStatVal[6]>), local.statMetric[6] != null ? local.statMetric[6] : ""> : "", // 16
+            local.heroStatPStr.Length >= 7 && local.heroStatVal[6] != 0
+                ? <"<0><1><2>\n", local.heroStatPStr[6], PrettyNumber(<"<0>", local.heroStatVal[6]>), local.statMetric[6] != null ? local.statMetric[6] : ""> : "", // 16
 
             local.bestStreak != 0 // 17
-                ? <" \n<0>\n", StringReplace(local.bestKillStreakStatStr, "{number}", local.bestStreak)> : "">,
+                ? <" \n<0>\n", StringReplace(bestKillStreakStatStr[local.LangID], "{number}", local.bestStreak)> : "">,
 
             Location: Location.Left, 
             SortOrder: 0.1, 
             SubheaderColor: Color.White, 
             Reevaluation: HudTextRev.VisibleToSortOrderAndString, 
-            Spectators: Spectators.DefaultVisibility);
+            Spectators: Spectators.VisibleNever);
     }
 }
 
@@ -234,10 +238,10 @@ if (S_MODIFY_HUD || S_DEF_HUD)
     CreateHudText(
         VisibleTo:      !afk && streak && showStreakEnabled ? player : null,
 
-        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, local.youStr>, 
+        Subheader:      <"<0>  <1><2>", HeroIconString(HeroOf()), player, youStr[local.LangID]>, 
         Text:           bestStreak != 0 
-                            ? <"<0><1>/<2>", local.currentKillStreakStr, killStreak, bestStreak> 
-                            : <"<0><1>", local.currentKillStreakStr, killStreak>, 
+                            ? <"<0><1>/<2>", currentKillStreakStr[local.LangID], killStreak, bestStreak> 
+                            : <"<0><1>", currentKillStreakStr[local.LangID], killStreak>, 
         Location:       Location.Left, 
         SortOrder:      1, 
         SubheaderColor: Rainbow(), 
@@ -251,12 +255,12 @@ if (S_MODIFY_HUD || S_DEF_HUD)
 
         Subheader:      <"<0>  <1>", HeroIconString(HeroOf()), player>, 
         Text:           bestStreak != 0 
-                            ? <"<0><1>/<2>", local.currentKillStreakStr, killStreak, bestStreak> 
-                            : <"<0><1>", local.currentKillStreakStr, killStreak>, 
+                            ? <"<0><1>/<2>", currentKillStreakStr[local.LangID], killStreak, bestStreak> 
+                            : <"<0><1>", currentKillStreakStr[local.LangID], killStreak>, 
         Location:       Location.Left, 
         SortOrder:      SlotOf() + 1, 
-        SubheaderColor: HealthColor(), 
+        SubheaderColor: Color.Team2, 
         TextColor:      Color.White, 
         Reevaluation:   HudTextRev.VisibleToSortOrderStringAndColor, 
-        Spectators:     Spectators.DefaultVisibility);
+        Spectators:     Spectators.VisibleNever);
 }

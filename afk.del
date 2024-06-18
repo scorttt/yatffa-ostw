@@ -81,7 +81,7 @@ Event.OngoingPlayer
 if (afk)
 if (afkTime <= 0)
 {
-    SmallMessage(All(), "   " + StringReplace(local.playerWasAFKKickedStr, "{player}", <"<0>", player>)); // ???
+    SmallMessage(All(), "   " + DuoStringReplace(playerWasAFKKickedStr[LangID], "{player}", "{minutes}", <"<0>", player>, <"<0>", Near((S_AFK_KICK_TIME + S_AFK_TIME) / 60)>)); // ???
     Wait(2);
     RemovePlayer(player);
 }
