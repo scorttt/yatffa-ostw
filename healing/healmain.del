@@ -8,7 +8,6 @@ enum HealType
 {
     HOK,
     Pickup,
-    HOKPickup,
     None
 }
 
@@ -44,7 +43,7 @@ if (Health() == MaxHealth())
 
 rule: "Healing : Heal Reward Active"
 Event.OngoingPlayer
-if (S_DISABLE_HEALSTACK)
+if (S_DISABLE_HEAL_STACK)
 if (healing)
 {
     SetHealingDealt(player, 0);
@@ -52,7 +51,7 @@ if (healing)
 
 rule: "Healing : Heal Reward Not Active"
 Event.OngoingPlayer
-if (S_DISABLE_HEALSTACK)
+if (S_DISABLE_HEAL_STACK)
 if (!healing)
 {
     SetHealingDealt(player, 100);

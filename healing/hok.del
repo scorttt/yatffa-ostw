@@ -2,7 +2,7 @@ import "../main.del";
 
 rule: "Healing : Heal On KIll : Player Got Kill"
 Event.OnFinalBlow
-if (S_HEAL_TYPE == HealType.HOK || S_HEAL_TYPE == HealType.HOKPickup)
+if (S_HEAL_TYPE == HealType.HOK)
 if (healEnabled)
 if (!IsDuplicating()) 
 if (Health() < MaxHealth())
