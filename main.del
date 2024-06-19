@@ -591,6 +591,7 @@ Event.OngoingPlayer
 if (S_STOP_OW_AUTOHEAL)
 if (IsAlive())
 if (HasSpawned())
+if (!playerCCed)
 if (!AllSupportHeroes().Contains(HeroOf()))
 if (NormalizedHealth() != 1)
 {
@@ -605,6 +606,7 @@ Event.OngoingPlayer
 if (S_STOP_OW_AUTOHEAL)
 if (IsAlive())
 if (HasSpawned())
+if (!playerCCed)
 if (AllSupportHeroes().Contains(HeroOf()))
 if (NormalizedHealth() != 1)
 {
