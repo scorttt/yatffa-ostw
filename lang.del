@@ -261,7 +261,7 @@ rule: "Init Strings"
         "주는 피해: "];
     dmgInStatStr = [
         "DMG In: ", 
-        "受けたダメージ：", 
+        "被ダメージ：", 
         "받는 피해: "];
     accuracyStatStr = [
         "Acc: ", 
@@ -302,7 +302,7 @@ rule: "Init Strings"
         "いいえ", 
         "아니요"];
     selectAKickTargetStr = [
-        "Select the player to vote kick",
+        "Select a player to vote kick",
         "投票キックするプレイヤーを選んで",
         "투표 킥할 플레이어 골라"
     ];
