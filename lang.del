@@ -642,7 +642,7 @@ rule: "Init Strings"
         "槍投げキル："];
     shoutEfficacyStr = [
         "Shout Efficacy: ", 
-        "コマンディング・シャウト能率："];
+        "シャウト能率："];
     healedFromAbilitiesStr = [
         "HP from abilities: ", 
         "アビリティ回復："];
@@ -678,13 +678,13 @@ rule: "Init Strings"
         "フック命中率："];
     firestrikesHitStr = [
         "Firestrikes Hit: ", 
-        "ファイア・ストライク命中："];
+        "ファイア命中："];
     firestrikeAccStr = [
         "Firestrike Acc: ", 
-        "ファイア・ストライク命中率："];
+        "ファイア命中率："];
     firestrikeKillsStr = [
         "Firestrike Kills: ", 
-        "ファイア・ストライクキル："];
+        "ファイアキル："];
     whipshotsHitStr = [
         "Whipshots Hit: ", 
         "ウィップ・ショット命中："];
@@ -696,7 +696,7 @@ rule: "Init Strings"
         "ウィップ・ショットキル："];
     nemesisEfficacyStr = [
         "Nemesis Efficacy: ", 
-        "ネメシス・フォーム能率："];
+        "ネメシス能率："];
 
     ////////////////////
     // hero stats end //
