@@ -31,9 +31,9 @@ playervar Vector facing;
 
 enum RandomizerType
 {
-    TrueRandom,
-    Queue, 
-    Performance
+    Queue,
+    Performance,
+    TrueRandom
 }
 
 enum Item

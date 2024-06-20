@@ -577,7 +577,7 @@ void RandomizeHeroPool() playervar "Randomize Hero Pool"
     randomHeroPool = [];
     Hero[] allowedHeroes = AllowedHeroes() - HeroOf();
     Hero heroToAddToPool;
-    for (Number i = 0; i < allowedHeroes.Length; i++)
+    for (Number i = allowedHeroes.Length - 1; i >= 1; i--)
     {
         heroToAddToPool = RandomValueInArray(allowedHeroes);
         randomHeroPool += heroToAddToPool;
