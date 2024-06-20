@@ -150,7 +150,7 @@ globalvar String[] healthRecalledStr!;
 
 globalvar String[] airShotAccStr!;
 
-globalvar String[] airKillsStr!;
+globalvar String[] killsWhileMidAirStr!;
 
 globalvar String[] javelinsHitStr!;
 globalvar String[] javelinKillsStr!;
@@ -552,151 +552,200 @@ rule: "Init Strings"
         "다이너마이 처치: "];
     grenadesStuckStr = [
         "Grenades Stuck: ", 
-        "グレネード直撃："];
+        "グレネード直撃：",
+        "수류탄 명중: "];
     grenadeStickAccStr = [
         "Grenade Stick Acc: ", 
-        "グレネード直撃命中率："];
+        "グレネード直撃命中率：",
+        "수류탄 명중 명중률: "];
     grenadeKillsStr = [
         "Grenade Kills: ", 
-        "グレネードキル："];
+        "グレネードキル：",
+        "수류탄 처치: "];
     damageDeflectedStr = [
         "DMG Deflected: ",
-        "反射ダメージ："];
+        "反射ダメージ：",
+        "튕겨낸 피해: "];
     healUsageStr = [
         "Heal Usage: ", 
-        "ヒーリング使用："];
+        "ヒーリング使用：",
+        "치유 사용량: "];
     speedUsageStr = [
         "Speed Usage: ", 
-        "スピード使用："];
+        "スピード使用：",
+        "가속 사용량: "];
     avgTimeOnWallStr = [
         "Avg Time On Wall: ", 
-        "平均壁の上時間："];
+        "平均壁の上時間：",
+        "평균 벽 위 시간: "];
     directHitAccStr = [
         "Dir Hit Acc: ", 
-        "直撃命中率："];
+        "直撃命中率：",
+        "명중률: "];
     concBlastKillsStr = [
         "Conc Blast Kills: ", 
-        "コンカッシブキル："];
+        "コンカッシブキル：",
+        "충격탄 처치: "];
     airTimeEfficacyStr = [
         "Air Time Efficacy: ", 
-        "滞空時間能率："];
+        "滞空時間能率：",
+        "공중 시간 효율성: "];
     avgTimeInAirStr = [
         "Avg Time In Air: ", 
-        "平均滞空時間："];
+        "平均滞空時間：",
+        "평균 공중 시간"];
     railgunKillsStr = [
         "Railgun Kills: ", 
-        "レールガンキル："];
+        "レールガンキル：",
+        "레일건 처치: "];
     railgunAccStr = [
         "Railgun Acc: ", 
-        "レールガン命中率："];
+        "レールガン命中率：",
+        "레일건 명중률"];
     avgChargeStr = [
         "Avg Charge: ", 
-        "平均チャージ："];
+        "平均チャージ：",
+        "평균 충전: "];
     distanceTeleportedStr = [
         "Dist Teleported: ", 
-        "テレポート距離："];
+        "テレポート距離：",
+        "순간이동 거리: "];
     virusHitsStr = [
         "Virus Hits: ", 
-        "ウイルス命中："];
+        "ウイルス命中：",
+        "바이러스로 명중: "];
     virusAccStr = [
         "Virus Acc: ", 
-        "ウイルス命中率："];
+        "ウイルス命中率：",
+        "바이러스로 명중률: "];
     virusKillsStr = [
         "Virus Kills: ", 
-        "ウイルスキル："];
+        "ウイルスキル：",
+        "바이러스로 처치: "];
     hammerKillsStr = [
         "Hammer Kills: ", 
-        "ハンマーキル："];
+        "ハンマーキル：",
+        "망치 처치: "];
     overloadEfficacyStr = [
         "Overload Efficacy: ", 
-        "オーバーロード能率："];
+        "オーバーロード能率：",
+        "과부하로 효율성: "];
     bombsStuckStr = [
         "Bombs Stuck: ", 
-        "ボム付着："];
+        "ボム付着：",
+        "폭탄 명중: "];
     bombsStickAccStr = [
         "Bomb Stick Acc: ", 
-        "ボム付着命中率："];
+        "ボム付着命中率：",
+        "폭탄 부착률: "];
     bombKillsStr = [
         "Bomb Kills: ", 
-        "ボムキル："];
+        "ボムキル：",
+        "폭탄 처치: "];
     healthRecalledStr = [
         "HP Recalled: ", 
-        "リコール回復："];
+        "リコール回復：",
+        "생명력 되돌림"];
     airShotAccStr = [
         "Air Shot Acc: ", 
-        "空中攻撃命中率："];
-    airKillsStr = [
-        "Air Kills: ", 
-        "空中キル："];
+        "空中攻撃命中率：",
+        "공중 공격 명중률: "];
+    killsWhileMidAirStr = [
+        "Mid-air Kills: ", 
+        "空中キル：",
+        "공중에서 처치: "];
     fortifyEfficacyStr = [
         "Fortify Efficacy: ", 
-        "フォーティファイ能率："];
+        "フォーティファイ能率：",
+        "방어 강화 효율성: "];
     javelinsHitStr = [
         "Javelins Hit: ", 
-        "槍投げ命中："];
+        "槍投げ命中：",
+        "투창 명중: "];
     javelinAccStr = [
         "Javelin Acc: ", 
-        "槍投げ命中率："];
+        "槍投げ命中率：",
+        "투창 명중률: "];
     javelinKillsStr = [
         "Javelin Kills: ", 
-        "槍投げキル："];
+        "槍投げキル：",
+        "투창 처치: "];
     shoutEfficacyStr = [
         "Shout Efficacy: ", 
-        "シャウト能率："];
+        "シャウト能率：",
+        "외침 효율성: "];
     healedFromAbilitiesStr = [
         "HP from abilities: ", 
-        "アビリティ回復："];
+        "アビリティ回復：",
+        "스킬 회복 생명력: "];
     knivesHitStr = [
         "Knives Hit: ", 
-        "ナイフ命中："];
+        "ナイフ命中：",
+        "나이프 명중: "];
     knifeAccStr = [
         "Knife Acc: ", 
-        "ナイフ命中率："];
+        "ナイフ命中率：",
+        "나이프 명중률: "];
     knifeKillsStr = [
         "Knife Kills: ", 
-        "ナイフキル："];
+        "ナイフキル：",
+        "나이프 처치: "];
     rocksHitStr = [
         "Rocks Hit: ", 
-        "アクリーション命中："];
+        "アクリーション命中：",
+        "강착 명중: "];
     rockAccStr = [
         "Rock Acc: ", 
-        "アクリーション命中率："];
+        "アクリーション命中率：",
+        "강착 명중률: "];
     focusingBeamAccStr = [
         "Beam Acc: ", 
-        "ビーム命中率："];
+        "ビーム命中率：",
+        "광선 명중률: "];
     focusingBeamKillsStr = [
         "Beam Kills: ", 
-        "ビームキル："];
+        "ビームキル：",
+        "광선 처치: "];
     focusingBeamEfficacyStr = [
         "Beam Efficacy: ", 
-        "ビーム能率："];
+        "ビーム能率：",
+        "광선 효율성:"];
     hooksHitStr = [
         "Hooks Hit: ", 
-        "フック命中："];
+        "フック命中：",
+        "갈고리 명중: "];
     hookAccStr = [
         "Hook Acc: ", 
-        "フック命中率："];
+        "フック命中率：",
+        "갈고리 명중률: "];
     firestrikesHitStr = [
         "Firestrikes Hit: ", 
-        "ファイア命中："];
+        "ファイア命中：",
+        "화염 강타 명중: "];
     firestrikeAccStr = [
         "Firestrike Acc: ", 
-        "ファイア命中率："];
+        "ファイア命中率：",
+        "화염 강타 명중률: "];
     firestrikeKillsStr = [
         "Firestrike Kills: ", 
-        "ファイアキル："];
+        "ファイアキル：",
+        "화염 강타 처치: "];
     whipshotsHitStr = [
         "Whipshots Hit: ", 
-        "ウィップ・ショット命中："];
+        "ウィップ・ショット命中：",
+        "도리깨 투척 명중: "];
     whipshotAccStr = [
         "Whipshot Acc: ", 
-        "ウィップ・ショット命中率："];
+        "ウィップ・ショット命中率：",
+        "도리깨 투척 명중률: "];
     whipshotKillsStr = [
         "Whipshot Kills: ", 
-        "ウィップ・ショットキル："];
+        "ウィップ・ショットキル：",
+        "도리깨 투척 처치: "];
     nemesisEfficacyStr = [
         "Nemesis Efficacy: ", 
-        "ネメシス能率："];
+        "ネメシス能率：",
+        "네메시스 효율성: "];
 
     ////////////////////
     // hero stats end //
@@ -855,7 +904,7 @@ void SetHeroStats() playervar "Set Hero Stat"
             statMetric[1] = "%";
             break;
         case Hero.Widowmaker:
-            heroStatPStr[0] = airKillsStr[LangID];
+            heroStatPStr[0] = killsWhileMidAirStr[LangID];
             break;
         default: 
             heroStatPStr = [];
