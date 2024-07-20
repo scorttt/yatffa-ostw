@@ -214,7 +214,6 @@ rule: "Initial Player Join"
 Event.OnPlayerJoin
 if (!IsDummyBot())
 {
-    userJoinTime = Time();
     if (!S_USE_OW_SCOREBORD)
         DisableGameModeHud();
 
@@ -275,6 +274,9 @@ if (!IsDummyBot())
 
         menuInit = true;
     }
+
+    WaitUntil(HasSpawned(), S_AFK_KICK_TIME);
+    userJoinTime = Time();
 }
 
 rule: "Match : Match Started"
