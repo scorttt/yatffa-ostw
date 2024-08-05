@@ -55,4 +55,6 @@ After opening `main.del`, press `Ctrl + Alt + C` to copy the compiled workshop c
 #### Linux
 If you are on Linux, you are likey using a VSCode fork such as VSCodium or Code OSS -- OSTW needs the VSIX to be manually installed as it's not available on the open VSX registry: https://marketplace.visualstudio.com/items?itemName=Deltin.overwatch-script-to-workshop
 
-Deltinteger permissions needs to be set to 777 and the Deltinteger path needs to be wrapped in quotes within the extension settings (for example: `"/home/user/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v3.1.1-linux-x64/Deltinteger"`)
+Deltinteger permissions needs to be set to 777 and the Deltinteger path needs to be wrapped in quotes within the extension settings 
+
+(for example: `"/home/user/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v3.1.1-linux-x64/Deltinteger"`) 
