@@ -1,4 +1,4 @@
-// Created by scort: https://github.com/scorttt/yatffa-ostw 
+// Created by scort: https://github.com/scorttt/yatffa-ostw
 // workshop.codes listing: https://workshop.codes/BKRXY
 
 // import "settings/settings.del";
@@ -19,12 +19,11 @@ import "menu.del";
 import "lang.del";
 
 import "hero specific/ana.del";
+import "hero specific/ashe.del";
+import "hero specific/bastion.del";
 import "hero specific/venture.del";
 
 globalvar Any aaaaaCreatedByScort;
-globalvar Hero[] critExcArr;
-globalvar Hero[] scopeArr;
-globalvar Hero[] scopeCritArr;
 globalvar Hero[] boundingBoxArr;
 globalvar Boolean S_LITE_MODE;
 
@@ -68,7 +67,7 @@ globalvar Number S_HERO_HEALTH_CAP_AMT;
 globalvar Boolean S_STOP_OW_AUTOHEAL;
 globalvar Boolean flatHeal;
 globalvar Number S_HEAL_PERCENT;
-globalvar Number finalHeal; 
+globalvar Number finalHeal;
 globalvar Number healIncrement;
 globalvar Number S_DEF_LANG;
 globalvar Number S_DEF_RANDOMIZER_TYPE;
@@ -85,7 +84,7 @@ playervar Number userJoinTime;
 
 
 Boolean PlayerSwappedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
-rule: "v3.0.0 | Created by scort#12211" 
+rule: "v3.0.0 | Created by scort#12211"
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
     aaaaaCreatedByScort = "3.0.0.24???? - scort";
@@ -96,9 +95,6 @@ rule: "Initial Global"
 {
     dbgUsrs = ["scort", "gigaballs"];
 
-    critExcArr = [Hero.Ana, Hero.Pharah, Hero.Zarya, Hero.Reinhardt, Hero.Sigma, Hero.Winston, Hero.Junkrat, Hero.Symmetra, Hero.Brigitte, Hero.Moira, Hero.Venture]; // array of heroes that do NOT crit
-    scopeArr = [Hero.Widowmaker, Hero.Ashe, Hero.Ana];
-    scopeCritArr = [Hero.Widowmaker, Hero.Ashe];
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
 
     S_LITE_MODE = WorkshopSettingToggle("!. YATFFA Lite", "Enable Lite Mode (Disables everything except for Healing, destroying railings, and instant respawns)", false, 0);
@@ -118,29 +114,29 @@ rule: "Initial Global"
     S_AFK_TIME = WorkshopSettingReal("C. AFK", "Time to put players in AFK (Seconds)", 35, 5, 600, 1);
     S_AFK_KICK_TIME = WorkshopSettingReal("C. AFK", "Time to Kick AFK Players (Seconds)", 180, 10, 600, 2) - S_AFK_TIME;
 
-    S_MENU = WorkshopSettingToggle("D. Menu", "Use Menu", true, 0);
-    S_USE_MENU_ANIM = WorkshopSettingToggle("D. Menu", "Menu Animations", true, 1);
+    S_MENU = WorkshopSettingToggle("D. Menu", "Enable Menu", true, 0);
+    S_USE_MENU_ANIM = WorkshopSettingToggle("D. Menu", "Enable Menu Animations", true, 1);
+    S_MODIFY_HUD = WorkshopSettingToggle("D. Menu", "Allow Modifying Workshop HUD menu toggles", true, 2);
+    S_DEF_HUD = WorkshopSettingToggle("D. Menu", "\"Show Workshop HUD\" default menu toggle", true, 3);
+    S_DEF_STREAK = WorkshopSettingToggle("D. Menu", "\"Show Kill Streaks\" default menu toggle", true, 4);
+    S_DEF_STATS = WorkshopSettingToggle("D. Menu", "\"Show Player Stats\" default menu toggle", true, 5);
 
     S_STREAKS_ENABLED = WorkshopSettingToggle("E. HUD", "Enable Player Kill Streaks", true, 0);
-    S_MODIFY_HUD = WorkshopSettingToggle("E. HUD", "Allow Modifying Workshop HUD menu toggles", true, 1);
-    S_DEF_HUD = WorkshopSettingToggle("E. HUD", "\"Show Workshop HUD\" default menu toggle", true, 2);
-    S_DEF_STREAK = WorkshopSettingToggle("E. HUD", "\"Show Kill Streaks\" default menu toggle", true, 3);
-    S_DEF_STATS = WorkshopSettingToggle("E. HUD", "\"Show Player Stats\" default menu toggle", true, 4);
 
     S_MODIFY_RANDOMHERO = WorkshopSettingToggle("F. Random Hero", "Allow Modifying \"Random Hero\" menu toggle", true, 0);
     S_DEF_RANDOMHERO = WorkshopSettingToggle("F. Random Hero", "\"Random Hero\" default menu toggle", false, 1);
-    S_DEF_RANDOMIZER_TYPE  = WorkshopSettingCombo("F. Random Hero", "Default Randomizer Type", 0, ["Randomized Queue", "Performance Focused", "True Random"], 2);
+    S_DEF_RANDOMIZER_TYPE  = WorkshopSettingCombo("F. Random Hero", "Default Randomizer Type", 0, ["Randomized Queue", "True Random"], 2);
 
     S_HEAL_TYPE = WorkshopSettingCombo("G. Healing", "Healing Type", 0, ["Heal On Kill", "Health Pickups", "None"], 0);
     S_MODIFY_HEAL = WorkshopSettingToggle("G. Healing", "Allow Modifying Healing menu settings", true, 1);
     S_DEF_HEAL = WorkshopSettingToggle("G. Healing", "\"Healing\" default menu toggle", true, 2);
-    S_HEAL_PERCENT = WorkshopSettingCombo("G. Healing", "Heal Reward", 10, 
+    S_HEAL_PERCENT = WorkshopSettingCombo("G. Healing", "Heal Reward", 10,
         ["5% of Victims Max HP", "10% of Victims Max HP", "15% of Victims Max HP",
-         "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP", 
-         "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP", 
-         "50% of Victims Max HP", "55% of Victims Max HP", "60% of Victims Max HP", 
-         "65% of Victims Max HP", "70% of Victims Max HP", "75% of Victims Max HP", 
-         "80% of Victims Max HP", "85% of Victims Max HP", "90% of Victims Max HP", 
+         "20% of Victims Max HP", "25% of Victims Max HP", "30% of Victims Max HP",
+         "35% of Victims Max HP", "40% of Victims Max HP", "45% of Victims Max HP",
+         "50% of Victims Max HP", "55% of Victims Max HP", "60% of Victims Max HP",
+         "65% of Victims Max HP", "70% of Victims Max HP", "75% of Victims Max HP",
+         "80% of Victims Max HP", "85% of Victims Max HP", "90% of Victims Max HP",
          "95% of Victims Max HP", "100% of Victims Max HP", "Use Flat Heal Rewards"], 3);
 
     S_FLAT_HEAL_AMT = WorkshopSettingInteger("G. Healing", "Flat Heal Amount (Only applicable if \"Use Flat Heal Rewards\" is set in Heal Reward)", 120, 1, 700, 4);
@@ -164,7 +160,7 @@ rule: "Initial Global"
         finalHeal = (S_HEAL_PERCENT + 1) * 0.05;
         healIncrement = 0.025;
     }
-    else 
+    else
     {
         flatHeal = true;
         finalHeal = Near(S_FLAT_HEAL_AMT / 5) * 5;
@@ -256,7 +252,7 @@ if (!IsDummyBot())
     # set menu animation initial value
     if (S_USE_MENU_ANIM)
     {
-        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ANIM_ITEM_Y_POS.Length; i++)
         {
             itemYPos[i] = 2.15;
             Wait(0.048);
@@ -264,11 +260,11 @@ if (!IsDummyBot())
 
         menuInit = true;
     }
-    else 
+    else
     {
-        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ANIM_ITEM_Y_POS.Length; i++)
         {
-            itemYPos[i] = ITEM_Y_POS[i];
+            itemYPos[i] = ANIM_ITEM_Y_POS[i];
             Wait(0.048);
         }
 
@@ -344,11 +340,7 @@ if (HasSpawned())
                     // "Spawning : Previous Hero" OnDeath rule checks if the randomHeroPool is empty then randomizes it again
                 }
             }
-            else if (randomizerType == RandomizerType.Performance)
-            {
-                // todo
-            }
-            else if (randomizerType == RandomizerType.TrueRandom)
+            else
             {
                 // remove the previous hero from the hero array to re add later to prevent getting the same hero multiple times in a row
                 Hero[] heroArr! = AllowedHeroes() - heroOnLastDeath;
@@ -360,7 +352,7 @@ if (HasSpawned())
                 heroArr = AllowedHeroes() + heroOnLastDeath;
             }
         }
-        else 
+        else
         {
             StopForcingHero();
             randomHeroEnabled = false;
@@ -453,7 +445,7 @@ if (IsDead())
 rule: "Streak : Update Killstreak"
 Event.OnFinalBlow
 if (S_STREAKS_ENABLED)
-if (IsAlive(Attacker())) 
+if (IsAlive(Attacker()))
 if (Attacker() != Victim())
 {
     killStreak++;
@@ -482,10 +474,10 @@ if (killStreak > 0)
             bestStreakServerHero = bestStreakHero;
             SmallMessage(showStreakEnabled ? player : null, "   " + StringReplace(killStreakServerBestStr[local.LangID], "{number}", killStreak));
             Wait(0.1);
-            SmallMessage(FilteredArray(All().Remove(player), Curr().showStreakEnabled), 
+            SmallMessage(FilteredArray(All().Remove(player), Curr().showStreakEnabled),
                 <"   <0> <1>", bestStreakServerHero, DuoStringReplace(playerGotServerBestKillStreakStr[local.LangID], "{player}", "{number}", bestStreakServerUser, killStreak)>);
         }
-        else 
+        else
         {
             SmallMessage(showStreakEnabled ? player : null, <"   <0> <1>", bestStreakHero, StringReplace(killStreakPersonalBestStr[local.LangID], "{number}", killStreak)>);
         }
@@ -510,21 +502,21 @@ if (mapIsChateau)
     for (Number i = 0; i < projLoc.Length; i++)
     {
         CreateProjectile(
-            ProjectileType: ProjectileType.OrbProjectile, 
-            Player: null, 
-            StartPosition: projLoc[i], 
-            Direction: Down(), 
-            Relative: Relative.ToWorld, 
-            ModifyHealthType: ModifyHealthType.Damage, 
-            AffectedTeam: Team.All, 
-            Amount: 0, 
-            AmountScalar: 99999, 
+            ProjectileType: ProjectileType.OrbProjectile,
+            Player: null,
+            StartPosition: projLoc[i],
+            Direction: Down(),
+            Relative: Relative.ToWorld,
+            ModifyHealthType: ModifyHealthType.Damage,
+            AffectedTeam: Team.All,
+            Amount: 0,
+            AmountScalar: 99999,
             ExplosionRadius: 30, // explosion radius is capped to some internal arbitrary number (around 30?)
-            ExplosionEffect: PlayEffect.BadExplosion, 
-            ExplosionSoundEffect: PlayEffect.ExplosionSound, 
-            Oversize: 0, 
-            Speed: 100, 
-            Lifetime: 2, 
+            ExplosionEffect: PlayEffect.BadExplosion,
+            ExplosionSoundEffect: PlayEffect.ExplosionSound,
+            Oversize: 0,
+            Speed: 100,
+            Lifetime: 2,
             Impulse: 0,
             RicochetCount: 0,
             Gravity: 0
@@ -553,19 +545,19 @@ if (IsInRange(PosOf().X, 186.50, 199.50))
 playervar Boolean playerCCed;
 rule: "Player cced" // this is so fucking ugly
 Event.OngoingPlayer
-if (HasStatus(player, Status.Asleep) || 
-    HasStatus(player, Status.Frozen) || 
-    HasStatus(player, Status.KnockedDown) || 
-    HasStatus(player, Status.Rooted) || 
+if (HasStatus(player, Status.Asleep) ||
+    HasStatus(player, Status.Frozen) ||
+    HasStatus(player, Status.KnockedDown) ||
+    HasStatus(player, Status.Rooted) ||
     HasStatus(player, Status.Stunned))
 {
     playerCCed = true;
 
-    WaitUntil(!HasStatus(player, Status.Asleep) && 
-              !HasStatus(player, Status.Frozen) && 
-              !HasStatus(player, Status.KnockedDown) && 
-              !HasStatus(player, Status.Rooted) && 
-              !HasStatus(player, Status.Stunned), 
+    WaitUntil(!HasStatus(player, Status.Asleep) &&
+              !HasStatus(player, Status.Frozen) &&
+              !HasStatus(player, Status.KnockedDown) &&
+              !HasStatus(player, Status.Rooted) &&
+              !HasStatus(player, Status.Stunned),
     5);
 
     playerCCed = false;
@@ -586,6 +578,8 @@ void RandomizeHeroPool() playervar "Randomize Hero Pool"
         allowedHeroes = allowedHeroes - heroToAddToPool;
         MinWait();
     }
+
+    SmallMessage(player, randomHeroPool.Length);
 }
 
 rule: "Stop OW Auto Heal DPS/Tank"

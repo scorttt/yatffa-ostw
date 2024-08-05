@@ -1,0 +1,44 @@
+import "../main.del";
+
+playervar Boolean bastionNadeInAir;
+playervar Number bastionNadeHit;
+playervar Number bastionNadeFired;
+rule: "Bastion : Grenade Kill"
+Event.OnFinalBlow
+Player.Bastion
+if (EventAbility() == Button.SecondaryFire)
+{
+    heroStatVal[0]++;
+}
+
+rule: "Bastion : Grenades Stuck"
+Event.OnDamageDealt
+Player.Bastion
+if (EventAbility() == Button.SecondaryFire)
+if (EventDamage() <= 15)
+{
+    heroStatVal[1]++;
+    bastionNadeHit = heroStatVal[1];
+    BastionUpdateAcc();
+}
+
+rule: "Bastion : Fired Grenade"
+Player.Bastion
+if (IsSecondaryHeld())
+if (AbilityCooldown(player, Button.SecondaryFire) == 0)
+if (IsFiringSecondary())
+{
+    Number prevHitAmnt! = bastionNadeHit;
+    bastionNadeInAir = true;
+    bastionNadeFired++;
+
+    WaitUntil(!bastionNadeInAir || prevHitAmnt < bastionNadeHit, 2);
+    bastionNadeInAir = false;
+
+    BastionUpdateAcc();
+}
+
+void BastionUpdateAcc() playervar "Bastion : Update Stick Accuracy"
+{
+    heroStatVal[2] = Near((bastionNadeHit / bastionNadeFired) * 100);
+}

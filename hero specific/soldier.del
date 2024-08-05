@@ -1,0 +1,54 @@
+import "../main.del";
+
+playervar Number s76RocketsFired!;
+playervar Number s76RocketsHit!;
+playervar Boolean s76AccUpdated!;
+playervar Boolean s76RocketInAir!;
+
+// this code does not count correctly if a direct hit kills a player with less than 40 hp, splash is 40 damage and direct is 80 for a total of 120hp
+// damage check is *required* to exclude splash damage kills
+
+void SoldierUpdateAcc() playervar "Soldier : Update Accuracy"
+{
+    if (!s76AccUpdated)
+    {
+        heroStatVal[1] = Near((s76RocketsHit / s76RocketsFired) * 100);
+        s76AccUpdated = true;
+    }
+}
+
+rule: "Soldier : Rocket Fired"
+Event.OngoingPlayer
+Player.Soldier76
+if (IsSecondaryHeld())
+if (AbilityCooldown(player, Button.SecondaryFire) == 0)
+if (IsFiringSecondary())
+if (!playerCCed)
+{
+    Number prevHit! = s76RocketsHit;
+    s76RocketInAir = true;
+    s76RocketsFired++;
+
+    WaitUntil(!s76RocketInAir || prevHit < s76RocketsHit, 2);
+    s76RocketInAir = false;
+
+    SoldierUpdateAcc();
+
+    s76AccUpdated = false;
+}
+
+rule: "Soldier : Direct Hits"
+Event.OnDamageDealt
+Player.Soldier76
+if (EventAbility() == Button.SecondaryFire)
+if (EventDamage() > 40)
+{
+    s76RocketsHit++;
+    s76RocketInAir = false;
+
+    heroStatVal[0] = s76RocketsHit;
+
+    SoldierUpdateAcc();
+
+    s76AccUpdated = false;
+}

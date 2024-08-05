@@ -1,0 +1,17 @@
+import "../main.del";
+
+rule: "Ashe : Coach Gun Kill"
+Event.OnFinalBlow
+Player.Ashe
+if (EventAbility() == Button.Ability1)
+{
+    heroStatVal[0]++;
+}
+
+rule: "Ashe : Dynamite Kill"
+Event.OnFinalBlow
+Player.Ashe
+if (EventAbility() == Button.Ability2)
+{
+    heroStatVal[1]++;
+}
