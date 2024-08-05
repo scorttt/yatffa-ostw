@@ -17,11 +17,12 @@ playervar Hero[] randomHeroPool;
 playervar Number LangID;
 
 
-globalvar Number[] ITEM_Y_POS;
+globalvar Number[] ANIM_ITEM_Y_POS;
 playervar Number[] itemYPos;
 playervar Boolean menuInit;
 
 globalvar Number[] exclFav;
+globalvar Number[] modifierItems;
 playervar Number selItem;
 playervar Number favItem;
 playervar String favItemPStr;
@@ -32,7 +33,6 @@ playervar Vector facing;
 enum RandomizerType
 {
     Queue,
-    Performance,
     TrueRandom
 }
 
@@ -49,25 +49,20 @@ enum Item
     HealDurMod = 5,
 
     Random = 6,
+    RandomType = 7,
 
-    Language = 7,
-    EN = 8,
-    JP = 9,
-    KR = 10,
+    Language = 8,
+    EN = 9,
+    JP = 10,
+    KR = 11,
 
-    VoteKick = 11,
-    VoteBan = 12,
-
-    Changelog = 13
+    VoteKick = 12
 }
 
-enum Page
+enum MenuPage
 {
     Main = -1, // main menu, no page
-    HUDOptions = 0,
-    RandomBlacklist = 1,
-    VoteKick = 2,
-    Changelog = 3
+    VoteKick = 0
 }
 
 Color HoverPulse(): 
@@ -80,6 +75,8 @@ Number CursorY(Player p = local): AngleDifference(VerticalAngleFromDirection(Fac
 Vector MenuYFromMenuZ(Vector z): DirectionFromAngles(HorizontalAngleFromDirection(z), VerticalAngleFromDirection(z) - 90);
 Any RenderPosOf(Number x = 0, Number y = 0): 
     Update(EyePos(local) + 100 * (x * Cross(Facing(local), MenuYFromMenuZ(Facing(local))) + y * MenuYFromMenuZ(Facing(local)) + 3 * Facing(local)));
+Any SlowRenderPosOf(Number x = 0, Number y = 0): 
+    EyePos(local) + 100 * (x * Cross(Facing(local), MenuYFromMenuZ(Facing(local))) + y * MenuYFromMenuZ(Facing(local)) + 3 * Facing(local));
 
 Number SCREEN_WIDTH:   3.65;
 Number SCREEN_HEIGHT:  2.125;
@@ -90,28 +87,27 @@ rule: "Menu : Create Menu Options : Welcome to Hell 2"
 if (S_MENU)
 {
     # excluded options from favoriting
-    exclFav = [Item.Invalid, Item.HealMod, Item.HealDurMod, Item.Language, Item.EN, Item.JP];
+    exclFav = [Item.Invalid, Item.HealMod, Item.HealDurMod, Item.Language, Item.EN, Item.JP, Item.KR, Item.VoteKick];
+    modifierItems = [Item.HealMod, Item.HealDurMod];
 
-    ITEM_Y_POS = [1.675, // 0 (frame top)
-                  1.60, // 1 (frame bottom)
+    ANIM_ITEM_Y_POS = [1.675, // 0 (frame top)
+                       1.60, // 1 (frame bottom)
 
-                  1.50, // 2 hud toggle
-                  1.40, // 3 stat toggle
-                  1.30, // 4 kill streak toggle
+                       1.50, // 2 hud toggle
+                       1.40, // 3 stat toggle
+                       1.30, // 4 kill streak toggle
 
-                  1.150, // 5 heal toggle
-                  1.050, // 6 heal amount
-                  0.950, // 7 heal duration
+                       1.150, // 5 heal toggle
+                       1.050, // 6 heal amount modifier
+                       0.950, // 7 heal duration modifier
 
-                  0.800, // 8 random hero
+                       0.800, // 8 random hero
 
-                  0.650, // 9 language header
-                  0.550, // 10 english/jp
-                  0.450, // 11 korean
+                       0.650, // 9 language header
+                       0.550, // 10 english/jp
+                       0.450, // 11 korean
 
-                  0.200, // 12 start vote kick
-
-                  0.075  // 13 changelog
+                       0.200 // 12 start vote kick
                 ];
 
     # instructions top row, left
@@ -177,7 +173,7 @@ if (S_MENU)
     # instructions bottom row, right
     CreateInWorldText(
         VisibleTo:    localPlayerHasMenuOpen ? local : null,
-        Header:       AltFont(<"<0>", 
+        Header:       AltFont(<"[<0>]", 
                       BindString(Button.Reload)>), 
         Position:     RenderPosOf(0.5, local.itemYPos[1]), 
         Scale:        1,
@@ -186,7 +182,7 @@ if (S_MENU)
         Spectators:   Spectators.VisibleNever
     );
 
-    // contents
+    // menu contents
     # all hud toggle
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
@@ -199,7 +195,7 @@ if (S_MENU)
                                             local.favItem == Item.AllHUD 
                                                 ? "  " + IconString(Icon.Heart) 
                                                 : "">,
-        Position:       RenderPosOf(0, local.itemYPos[2]), 
+        Position:       RenderPosOf(0, local.itemYPos[2]),
         Scale:          1.25,
         TextColor:      local.selItem == Item.AllHUD 
                             ? HoverPulse() 
@@ -276,7 +272,6 @@ if (S_MENU)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
-    // todo: replace heal amount and heal duration with sliding progress bars: see "swiss" project
     # heal amount
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
@@ -296,18 +291,6 @@ if (S_MENU)
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
-    # heal amount instructions
-    CreateInWorldText(
-        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         local.selItem == Item.HealMod
-                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
-                            : "",
-        Position:       RenderPosOf(0.01, local.itemYPos[6] - 0.005), 
-        Scale:          1.8,
-        TextColor:      HoverPulse(),
-        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
-        Clipping:       Clipping.DoNotClip,
-        Spectators:     Spectators.VisibleNever);
 
     # heal duration
     CreateInWorldText(
@@ -324,18 +307,6 @@ if (S_MENU)
                             : local.healEnabled && S_MODIFY_HEAL
                                 ? Color.White 
                                 : Color.Gray,
-        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
-        Clipping:       Clipping.DoNotClip,
-        Spectators:     Spectators.VisibleNever);
-    # heal duration instructions
-    CreateInWorldText(
-        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         local.selItem == Item.HealDurMod
-                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
-                            : "",
-        Position:       RenderPosOf(0.01, local.itemYPos[7] - 0.005), 
-        Scale:          1.8,
-        TextColor:      HoverPulse(),
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -414,25 +385,26 @@ if (S_MENU)
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
 
-    # changelog
-    CreateInWorldText(
-        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         changelogItemStr[local.LangID],
-        Position:       RenderPosOf(0, local.itemYPos[13]),
-        Scale:          1.25,
-        TextColor:      local.selItem == Item.Changelog 
-                            ? HoverPulse() 
-                            : Color.White,
-        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
-        Clipping:       Clipping.DoNotClip,
-        Spectators:     Spectators.VisibleNever);
     # version info
     CreateInWorldText(
         VisibleTo:      local.menu ? local : null, 
         Header:         aaaaaCreatedByScort,
-        Position:       RenderPosOf(0, -2.10),
+        Position:       SlowRenderPosOf(0, -2.10),
         Scale:          1.25,
         TextColor:      Color.White,
+        Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
+        Clipping:       Clipping.DoNotClip,
+        Spectators:     Spectators.VisibleNever);
+
+    # item mod instructions
+    CreateInWorldText(
+        VisibleTo:      localPlayerHasMenuOpen ? local : null, 
+        Header:         modifierItems.Contains(local.selItem)
+                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            : "",
+        Position:       SlowRenderPosOf(0.01, local.itemYPos[local.selItem + 2] - 0.005), 
+        Scale:          1.8,
+        TextColor:      HoverPulse(),
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor,
         Clipping:       Clipping.DoNotClip,
         Spectators:     Spectators.VisibleNever);
@@ -506,10 +478,10 @@ if (!closeAnim)
 
     while (menu && anim)
     {
-        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
-            itemYPos[i] += (ITEM_Y_POS[i] - itemYPos[i]) * anim_speed;
+        for (Number i = 0; i < ANIM_ITEM_Y_POS.Length; i++)
+            itemYPos[i] += (ANIM_ITEM_Y_POS[i] - itemYPos[i]) * anim_speed;
 
-        if (itemYPos.Last <= ITEM_Y_POS.Last + 0.01)
+        if (itemYPos.Last <= ANIM_ITEM_Y_POS.Last + 0.01)
         {
             anim = false;
             break;
@@ -533,7 +505,7 @@ if (!menu)
 
     while (anim && closeAnim)
     {
-        for (Number i = 0; i < ITEM_Y_POS.Length; i++)
+        for (Number i = 0; i < ANIM_ITEM_Y_POS.Length; i++)
             itemYPos[i] += (anim_start - itemYPos[i]) * anim_speed;
 
         if (itemYPos.Last >= anim_end)
@@ -806,6 +778,7 @@ if (IsPrimaryHeld() || IsSecondaryHeld())
     Number sel! = selItem;
     if ((sel != Item.HealMod) && (sel != Item.HealDurMod))
     {
+        # act on release
         WaitUntil(!IsPrimaryHeld() && !IsSecondaryHeld(), 99999);
 
         async! SelectionHandler(sel);
