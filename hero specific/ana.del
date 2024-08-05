@@ -15,7 +15,7 @@ if (AbilityCooldown(player, Button.Ability1) == 0)
 if (IsUsingAbility1())
 if (!playerCCed)
 {
-    WaitIfTrue(0.304); // time for projectile to spawn
+    Wait(0.304); // time for projectile to spawn
 
     Number prevHitAmnt! = anaSleepsHit;
     anaSleepInAir = true;
