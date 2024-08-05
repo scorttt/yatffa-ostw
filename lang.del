@@ -280,8 +280,8 @@ rule: "Init Strings"
         "スコープCRIT命中率：", 
         "저격 치명타 명중률: "];
     environmentKillsStatStr = [
-        "Environment Kills: ", 
-        "環境キル：", 
+        "Env Kills: ", 
+        "環境キル：",  
         "환경 요소로 처치: "];
     healingStatStr = [
         "Heal: ", 
