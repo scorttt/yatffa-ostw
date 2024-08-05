@@ -17,6 +17,8 @@ if (!playerCCed)
 {
     Wait(0.304); // time for projectile to spawn
 
+    AbortIf(playerCCed);
+
     Number prevHitAmnt! = anaSleepsHit;
     anaSleepInAir = true;
     anaSleepsFired++;
