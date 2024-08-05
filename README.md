@@ -40,7 +40,7 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
 - [OSTW](https://github.com/ItsDeltin/Overwatch-Script-To-Workshop/wiki/Getting-Started) must be set up
 - My [`macros`](https://github.com/scorttt/macros-ostw) repository must be placed in a folder named `macros-ostw` next to YATFFA's parent directory
 
-The folder structure should appear as follows: 
+The folder structure should appear as follows:
 ```
 macros-ostw
     ├ main.del
@@ -52,4 +52,6 @@ yatffa-ostw
 ```
 After opening `main.del`, press `Ctrl + Alt + C` to copy the compiled workshop code into your clipboard that can then be pasted into Overwatch, VSCode output is not needed.
 
-If compiling on Linux, make sure you are not using VSCode forks such as VSCodium or Code OSS, from my limited testing only the official Microsoft version of VSCode plays nicely with OSTW
+#### Linux
+If you are on Linux, you are likey using a VSCode fork such as VSCodium or Code OSS -- OSTW needs the VSIX to be manually installed as it's not available on the open VSX registry. https://marketplace.visualstudio.com/items?itemName=Deltin.overwatch-script-to-workshop
+Deltinteger permissions needs to be set to 777 and the Deltinteger path needs to be wrapped in quotes within the extension settings (for example: `"/home/user/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v3.1.1-linux-x64/Deltinteger"`)
