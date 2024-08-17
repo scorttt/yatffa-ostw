@@ -22,7 +22,7 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
 - **Custom Language Localization:** Choice between English, Japanese, and Korean
 - **Kill Streaks:** See who's doing well in your lobby
 - **Dynamic, Custom Stats:** Get insights into your performance with detailed in-game statistics, including hero-specific stats and a letter grade to compare yourself to others.
-- **Railings Destroyed on Round Start:** Games start with railings destroyed, stopping bullets from interrupting shots
+- **Railings Destroyed on Round Start:** Games start with railings destroyed, preventing shots from being interrupted by railings
 - **AFK:** Automatically tags inactive players, eventually kicking them if they remain AFK for too long
 - **Vote Kick:** Maintain lobby agency with player-driven moderation
 
