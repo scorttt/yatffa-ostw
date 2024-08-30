@@ -53,10 +53,17 @@ yatffa-ostw
 After opening `main.del`, press `Ctrl + Alt + C` to copy the compiled workshop code into your clipboard that can then be pasted into Overwatch, VSCode output is not needed.
 
 #### Linux
-If you are on Linux, you are likey using a VSCode fork such as VSCodium or Code OSS. OSTW needs the VSIX to be manually installed as OSTW is not available on the Open VSX registry. You can manually download the OSTW VSIX here: https://marketplace.visualstudio.com/items?itemName=Deltin.overwatch-script-to-workshop
+If you're using a VSCode fork like VSCodium or Code OSS, you'll need to manually install the OSTW extension, as it isn't available on the Open VSX registry. Download the OSTW VSIX from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Deltin.overwatch-script-to-workshop). 
 
-You may need to change permissions depending on your distro. cd to the extension (usually in `~/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v#.#.#-linux-x64/`) and chmod 755 Deltinteger. 
+You may need to adjust permissions based on your distro. Navigate to the extension directory (usually `~/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v#.#.#-linux-x64/`) and chmod Deltinteger:
 
-Wrap the Deltinteger path in quotes within the OSTW extension settings
+```bash
+chmod 755 Deltinteger
+```
 
-(for example: `"/home/user/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v#.#.#-linux-x64/Deltinteger"`) 
+In the OSTW extension settings, wrap the Deltinteger path in quotes, for example:
+
+```
+"/home/user/.config/Code - OSS/User/globalStorage/deltin.overwatch-script-to-workshop/Server/v#.#.#-linux-x64/Deltinteger"
+```
+
