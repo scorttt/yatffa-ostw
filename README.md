@@ -6,17 +6,15 @@
 Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims to recreate that experience with modern feature comforts.
 
 ## Features
-- **Extensive Workshop Settings for Lobby Hosts:** Customize a slew of options for your lobby
+- **Extensive Workshop Settings for Lobby Hosts:** Customize a slew of options for your lobby via Workshop Settings
 - **In-Game Animated Cursor Menu:** Access and modify settings anytime during gameplay:
     - HUD visibility options
     - Heal reward options
-    - Random hero options
+    - Random hero toggle
     - Language select
     - Vote kick
-    - Changelog
-- **Favorites:** Quickly toggle a frequently used option without opening the full menu
+- **Favorites:** Quickly toggle a frequently used option without opening the full menu. Press reload on a selected menu item and double tap interact to toggle
 - **Multiple Heal Reward Options:** Choose from no heal rewards, heal on kill, or healing pickups for your lobby
-- **Multiple Randomization Options:** Choose the randomization method used and blacklist unwanted heroes
 - **Healing Interrupted by Damage:** Taking damage pauses any ongoing healing effects
 - **Instant Respawn with Interact Button:** Respawn instantly by pressing interact while dead
 - **Custom Language Localization:** Choice between English, Japanese, and Korean
