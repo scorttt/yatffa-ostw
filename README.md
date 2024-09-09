@@ -27,7 +27,6 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
 ## Known issues
 - Some heroes may have inaccurate generic accuracy stats, this is an Overwatch bug
 - Opening the menu can cause framerate drops due to in-world text updates. This is a Workshop limitation and cannot be changed without sacrificing the flexibility of in-world texts that the menu utilizes
-- The in-game menu's positioning and button hitboxes may appear off-center on displays with aspect ratios other than 16:9 (standard monitors) or 16:10 (such as a Steam Deck)
 
 ## Import Codes
 - `BKRXY` (NA/EU)
