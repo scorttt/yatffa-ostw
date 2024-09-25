@@ -40,6 +40,7 @@ settings
                 Genji
                 Hanzo
                 Junker Queen
+                Juno
                 Orisa
                 Illari
                 Lúcio
@@ -54,7 +55,7 @@ settings
                 Sojourn
                 Tracer
                 Torbjörn
-                Venture
+                // Venture
                 Widowmaker
                 Zarya
                 Zenyatta
@@ -67,7 +68,7 @@ settings
             Cassidy
             {
                 Secondary Fire: Off
-                Magnetic Grenade: Off
+                Flashbang: Off
                 Ultimate Ability Deadeye: Off
             }
             D.va
@@ -120,6 +121,11 @@ settings
                 Carnage: Off
                 Jagged Blade Cooldown Time: 75%
                 Ultimate Ability Rampage: Off
+            }
+            Juno
+            {
+               Ultimate Ability Orbital Ray: Off
+               Pulsar Torpedoes: Off 
             }
             Orisa
             {
@@ -183,12 +189,12 @@ settings
                 Ultimate Ability Kitsune Rush: Off
                 Protection Suzu: Off
             }
-            Venture 
-            {
-                Ultimate Ability Tectonic Shock: Off
-                Burrow: Off
-                Drill Dash: Off
-            }
+            // Venture 
+            // {
+            //     Ultimate Ability Tectonic Shock: Off
+            //     Burrow: Off
+            //     Drill Dash: Off
+            // }
             Widowmaker
             {
                 Ultimate Ability Infra-sight: Off
