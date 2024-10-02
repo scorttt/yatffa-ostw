@@ -359,7 +359,7 @@ if (S_MENU)
     # japanese
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         "日本語",
+        Header:         "にほんご",
         Position:       RenderPosOf(0.15, local.itemYPos[10]), 
         Scale:          1.25,
         TextColor:      local.selItem == Item.JP 
