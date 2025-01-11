@@ -16,6 +16,7 @@ settings
         {
             Game Mode Start: Immediately
             Hero Limit: Off
+            Tank Role Passive Health Bonus: Disabled
         }
         Deathmatch
         {
@@ -217,7 +218,7 @@ settings
     }
     main
     {
-        Mode Name: "腕試しFFA"
-        Description: "腕試しFFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n3.0.0｜2024年??月??日"
+        Mode Name: "Tryhard FFA (JP)"
+        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.0｜2025年01月11日"
     }
 }

@@ -61,8 +61,8 @@ enum Item
 
 enum MenuPage
 {
-    Main = -1, // main menu, no page
-    VoteKick = 0
+    Main, // main menu, no page
+    VoteKick
 }
 
 Color HoverPulse(): 
@@ -723,7 +723,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
 
                 statMetric = [];
 
-                SetHeroStats();
+                // SetHeroStats();
 
                 // wait a whole FUCKING SECOND so strings actually update thanks blizzard
                 Wait(1);
@@ -741,7 +741,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
 
                 statMetric = [];
 
-                SetHeroStats();
+                // SetHeroStats();
 
                 Wait(1);
                 async! SetFavoriteToggleIcon(favItem);
@@ -758,7 +758,7 @@ void SelectionHandler(Number | Item item) playervar "Menu Sub : Selection Handle
 
                 statMetric = [];
 
-                SetHeroStats();
+                // SetHeroStats();
 
                 Wait(1);
                 async! SetFavoriteToggleIcon(favItem);

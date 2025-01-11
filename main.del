@@ -1,9 +1,9 @@
 // Created by scort: https://github.com/scorttt/yatffa-ostw
 // workshop.codes listing: https://workshop.codes/BKRXY
 
-// import "settings/settings.del";
+import "settings/settings.del";
 // import "settings/jpsettings.del";
-import "settings/debug_settings.del";
+// import "settings/debug_settings.del";
 
 import "../macros-ostw/main.del";
 
@@ -18,10 +18,10 @@ import "menu.del";
 
 import "lang.del";
 
-import "hero specific/ana.del";
-import "hero specific/ashe.del";
-import "hero specific/bastion.del";
-import "hero specific/venture.del";
+// import "hero specific/ana.del";
+// import "hero specific/ashe.del";
+// import "hero specific/bastion.del";
+// import "hero specific/venture.del";
 
 globalvar Any aaaaaCreatedByScort;
 globalvar Hero[] boundingBoxArr;
@@ -84,10 +84,10 @@ playervar Number userJoinTime;
 
 
 Boolean PlayerSwappedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
-rule: "v3.0.0 | Created by scort#12211"
+rule: "v2.4.0 | Created by scort#12211"
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
-    aaaaaCreatedByScort = "3.0.0.24???? - scort";
+    aaaaaCreatedByScort = "2.4.0.250111 - scort";
     DisableInspectorRecording();
 }
 
@@ -361,7 +361,7 @@ if (HasSpawned())
 
     if (PlayerSwappedHero())
     {
-        SetHeroStats();
+        // SetHeroStats();
         SetMaxHealth(player, 100);
 
         Number currHeroIndex = IndexOfArrayValue(AllHeroes(), HeroOf());
