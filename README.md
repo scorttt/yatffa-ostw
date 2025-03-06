@@ -12,17 +12,15 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
     - Heal reward options
     - Random hero toggle
     - Language select
-    - Vote kick
 - **Favorites:** Quickly toggle a frequently used option without opening the full menu. Press reload on a selected menu item and double tap interact to toggle
 - **Multiple Heal Reward Options:** Choose from no heal rewards, heal on kill, or healing pickups for your lobby
 - **Healing Interrupted by Damage:** Taking damage pauses any ongoing healing effects
 - **Instant Respawn with Interact Button:** Respawn instantly by pressing interact while dead
 - **Custom Language Localization:** Choice between English, Japanese, and Korean
 - **Kill Streaks:** See who's doing well in your lobby
-- **Dynamic, Custom Stats:** Get insights into your performance with detailed in-game statistics, including hero-specific stats and a letter grade to compare yourself to others.
+- **Dynamic, Custom Stats:** Get insights into your performance with detailed in-game statistics
 - **Railings Destroyed on Round Start:** Games start with railings destroyed, preventing shots from being interrupted by railings
 - **AFK:** Automatically tags inactive players, eventually kicking them if they remain AFK for too long
-- **Vote Kick:** Maintain lobby agency with player-driven moderation
 
 ## Known issues
 - Some heroes may have inaccurate generic accuracy stats, this is an Overwatch bug
