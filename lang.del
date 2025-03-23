@@ -88,10 +88,10 @@ globalvar String[] disableHealNotifStr!;
 globalvar String[] disableRandomHeroNotifStr!;
 
 // hero stat values
-playervar String[] statMetric;
-playervar String[] heroStatPStr;
-playervar Number[] heroStatVal;
-playervar Number[][] heroStatStorage;
+// playervar String[] statMetric;
+// playervar String[] heroStatPStr;
+// playervar Number[] heroStatVal;
+// playervar Number[][] heroStatStorage;
 
 // hero stats strings
 // globalvar String[] sleepDartAccStr!;

@@ -364,17 +364,17 @@ if (HasSpawned())
         // SetHeroStats();
         SetMaxHealth(player, 100);
 
-        Number currHeroIndex = IndexOfArrayValue(AllHeroes(), HeroOf());
-        Number storageIndex = IndexOfArrayValue(AllHeroes(), heroOnLastDeath);
+        // Number currHeroIndex = IndexOfArrayValue(AllHeroes(), HeroOf());
+        // Number storageIndex = IndexOfArrayValue(AllHeroes(), heroOnLastDeath);
 
-        MinWait();
+        // MinWait();
 
-        for (Number i = 0; i < 6; i++)
-        {
-            heroStatStorage[i][storageIndex] = heroStatVal[i];
-            heroStatVal[i] = heroStatStorage[i][currHeroIndex];
-            MinWait();
-        }
+        // for (Number i = 0; i < 6; i++)
+        // {
+        //     heroStatStorage[i][storageIndex] = heroStatVal[i];
+        //     heroStatVal[i] = heroStatStorage[i][currHeroIndex];
+        //     MinWait();
+        // }
     }
 
     MinWait();
