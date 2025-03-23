@@ -92,7 +92,7 @@ rule: "v2.4.0 | Created by scort#12211"
 
 rule: "Initial Global"
 {
-    aaaaaCreatedByScort = "2.4.0.250111 - scort";
+    aaaaaCreatedByScort = "2.4.0.250323 - scort";
     dbgUsrs = ["scort", "gigaballs"];
 
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
@@ -579,7 +579,7 @@ void RandomizeHeroPool() playervar "Randomize Hero Pool"
         MinWait();
     }
 
-    SmallMessage(player, randomHeroPool.Length);
+    // SmallMessage(player, randomHeroPool.Length);
 }
 
 rule: "Stop OW Auto Heal DPS/Tank"

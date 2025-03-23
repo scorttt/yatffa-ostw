@@ -94,78 +94,78 @@ playervar Number[] heroStatVal;
 playervar Number[][] heroStatStorage;
 
 // hero stats strings
-globalvar String[] sleepDartAccStr!;
-globalvar String[] sleepDartsHitStr!;
+// globalvar String[] sleepDartAccStr!;
+// globalvar String[] sleepDartsHitStr!;
 
-globalvar String[] coachGunKillsStr!;
-globalvar String[] dynamiteKillsStr!;
+// globalvar String[] coachGunKillsStr!;
+// globalvar String[] dynamiteKillsStr!;
 
-globalvar String[] grenadesStuckStr!;
-globalvar String[] grenadeStickAccStr!;
-globalvar String[] grenadeKillsStr!;
+// globalvar String[] grenadesStuckStr!;
+// globalvar String[] grenadeStickAccStr!;
+// globalvar String[] grenadeKillsStr!;
 
-globalvar String[] damageDeflectedStr!;
+// globalvar String[] damageDeflectedStr!;
 
-globalvar String[] healUsageStr!;
-globalvar String[] speedUsageStr!;
-globalvar String[] avgTimeOnWallStr!;
+// globalvar String[] healUsageStr!;
+// globalvar String[] speedUsageStr!;
+// globalvar String[] avgTimeOnWallStr!;
 
-globalvar String[] directHitAccStr!;
-globalvar String[] concBlastKillsStr!;
-globalvar String[] airTimeEfficacyStr!; // time spent in air vs on ground
-globalvar String[] avgTimeInAirStr!;
+// globalvar String[] directHitAccStr!;
+// globalvar String[] concBlastKillsStr!;
+// globalvar String[] airTimeEfficacyStr!; // time spent in air vs on ground
+// globalvar String[] avgTimeInAirStr!;
 
-globalvar String[] railgunKillsStr!;
-globalvar String[] railgunAccStr!;
-globalvar String[] avgChargeStr!;
+// globalvar String[] railgunKillsStr!;
+// globalvar String[] railgunAccStr!;
+// globalvar String[] avgChargeStr!;
 
-globalvar String[] distanceTeleportedStr!;
-globalvar String[] virusHitsStr!;
-globalvar String[] virusKillsStr!;
-globalvar String[] virusAccStr!;
+// globalvar String[] distanceTeleportedStr!;
+// globalvar String[] virusHitsStr!;
+// globalvar String[] virusKillsStr!;
+// globalvar String[] virusAccStr!;
 
-globalvar String[] hammerKillsStr!;
-globalvar String[] overloadEfficacyStr!; // percentage of health that is absorbed by bonus hp
+// globalvar String[] hammerKillsStr!;
+// globalvar String[] overloadEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
-globalvar String[] bombsStuckStr!;
-globalvar String[] bombsStickAccStr!;
-globalvar String[] bombKillsStr!;
-globalvar String[] healthRecalledStr!;
+// globalvar String[] bombsStuckStr!;
+// globalvar String[] bombsStickAccStr!;
+// globalvar String[] bombKillsStr!;
+// globalvar String[] healthRecalledStr!;
 
-globalvar String[] airShotAccStr!;
+// globalvar String[] airShotAccStr!;
 
-globalvar String[] killsWhileMidAirStr!;
+// globalvar String[] killsWhileMidAirStr!;
 
-globalvar String[] javelinsHitStr!;
-globalvar String[] javelinKillsStr!;
-globalvar String[] javelinAccStr!;
-globalvar String[] fortifyEfficacyStr!; // percentage of health that is absorbed by bonus hp
+// globalvar String[] javelinsHitStr!;
+// globalvar String[] javelinKillsStr!;
+// globalvar String[] javelinAccStr!;
+// globalvar String[] fortifyEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
-globalvar String[] knivesHitStr!;
-globalvar String[] knifeKillsStr!;
-globalvar String[] knifeAccStr!;
-globalvar String[] shoutEfficacyStr!; // percentage of health that is absorbed by bonus hp
-globalvar String[] healedFromAbilitiesStr!;
+// globalvar String[] knivesHitStr!;
+// globalvar String[] knifeKillsStr!;
+// globalvar String[] knifeAccStr!;
+// globalvar String[] shoutEfficacyStr!; // percentage of health that is absorbed by bonus hp
+// globalvar String[] healedFromAbilitiesStr!;
 
-globalvar String[] rocksHitStr!;
-globalvar String[] rockAccStr!;
+// globalvar String[] rocksHitStr!;
+// globalvar String[] rockAccStr!;
 
-globalvar String[] focusingBeamAccStr!;
-globalvar String[] focusingBeamKillsStr!;
-globalvar String[] focusingBeamEfficacyStr!; // percentage of time focusing beam is dealing bonus damage on low health targets
+// globalvar String[] focusingBeamAccStr!;
+// globalvar String[] focusingBeamKillsStr!;
+// globalvar String[] focusingBeamEfficacyStr!; // percentage of time focusing beam is dealing bonus damage on low health targets
 
-globalvar String[] hooksHitStr!;
-globalvar String[] hookAccStr!;
+// globalvar String[] hooksHitStr!;
+// globalvar String[] hookAccStr!;
 
-globalvar String[] firestrikesHitStr!;
-globalvar String[] firestrikeKillsStr!;
-globalvar String[] firestrikeAccStr!;
+// globalvar String[] firestrikesHitStr!;
+// globalvar String[] firestrikeKillsStr!;
+// globalvar String[] firestrikeAccStr!;
 
-globalvar String[] whipshotsHitStr!;
-globalvar String[] whipshotKillsStr!;
-globalvar String[] whipshotAccStr!;
+// globalvar String[] whipshotsHitStr!;
+// globalvar String[] whipshotKillsStr!;
+// globalvar String[] whipshotAccStr!;
 
-globalvar String[] nemesisEfficacyStr!; // percentage of health that is absorbed by bonus hp
+// globalvar String[] nemesisEfficacyStr!; // percentage of health that is absorbed by bonus hp
 
 rule: "Init Strings"
 {
@@ -489,7 +489,7 @@ rule: "Init Strings"
 
 
 
-    Wait(0.2);
+    // Wait(0.2);
 
 
 
@@ -499,218 +499,218 @@ rule: "Init Strings"
     // hero stats start //
     //////////////////////
 
-    sleepDartAccStr = [
-        "Sleep Dart Acc: ", 
-        "スリープ・ダーツ命中率：",
-        "수면총 명중률: "];
-    sleepDartsHitStr = [
-        "Sleep Darts Hit: ", 
-        "スリープ・ダーツ命中：",
-        "수면총 명중: "];
-    coachGunKillsStr = [
-        "Coach Gun Kills: ", 
-        "コーチ・ガンキル：",
-        "충격 샷건으로 처치: "];
-    dynamiteKillsStr = [
-        "Dynamite Kills: ", 
-        "ダイナマイトキル：",
-        "다이너마이 처치: "];
-    grenadesStuckStr = [
-        "Grenades Stuck: ", 
-        "グレネード直撃：",
-        "수류탄 명중: "];
-    grenadeStickAccStr = [
-        "Grenade Stick Acc: ", 
-        "グレネード直撃命中率：",
-        "수류탄 명중 명중률: "];
-    grenadeKillsStr = [
-        "Grenade Kills: ", 
-        "グレネードキル：",
-        "수류탄 처치: "];
-    damageDeflectedStr = [
-        "DMG Deflected: ",
-        "反射ダメージ：",
-        "튕겨낸 피해: "];
-    healUsageStr = [
-        "Heal Usage: ", 
-        "ヒーリング使用：",
-        "치유 사용량: "];
-    speedUsageStr = [
-        "Speed Usage: ", 
-        "スピード使用：",
-        "가속 사용량: "];
-    avgTimeOnWallStr = [
-        "Avg Time On Wall: ", 
-        "平均壁の上時間：",
-        "평균 벽 위 시간: "];
-    directHitAccStr = [
-        "Dir Hit Acc: ", 
-        "直撃命中率：",
-        "명중률: "];
-    concBlastKillsStr = [
-        "Conc Blast Kills: ", 
-        "コンカッシブキル：",
-        "충격탄 처치: "];
-    airTimeEfficacyStr = [
-        "Air Time Efficacy: ", 
-        "滞空時間能率：",
-        "공중 시간 효율성: "];
-    avgTimeInAirStr = [
-        "Avg Time In Air: ", 
-        "平均滞空時間：",
-        "평균 공중 시간"];
-    railgunKillsStr = [
-        "Railgun Kills: ", 
-        "レールガンキル：",
-        "레일건 처치: "];
-    railgunAccStr = [
-        "Railgun Acc: ", 
-        "レールガン命中率：",
-        "레일건 명중률"];
-    avgChargeStr = [
-        "Avg Charge: ", 
-        "平均チャージ：",
-        "평균 충전: "];
-    distanceTeleportedStr = [
-        "Dist Teleported: ", 
-        "テレポート距離：",
-        "순간이동 거리: "];
-    virusHitsStr = [
-        "Virus Hits: ", 
-        "ウイルス命中：",
-        "바이러스로 명중: "];
-    virusAccStr = [
-        "Virus Acc: ", 
-        "ウイルス命中率：",
-        "바이러스로 명중률: "];
-    virusKillsStr = [
-        "Virus Kills: ", 
-        "ウイルスキル：",
-        "바이러스로 처치: "];
-    hammerKillsStr = [
-        "Hammer Kills: ", 
-        "ハンマーキル：",
-        "망치 처치: "];
-    overloadEfficacyStr = [
-        "Overload Efficacy: ", 
-        "オーバーロード能率：",
-        "과부하로 효율성: "];
-    bombsStuckStr = [
-        "Bombs Stuck: ", 
-        "ボム付着：",
-        "폭탄 명중: "];
-    bombsStickAccStr = [
-        "Bomb Stick Acc: ", 
-        "ボム付着命中率：",
-        "폭탄 부착률: "];
-    bombKillsStr = [
-        "Bomb Kills: ", 
-        "ボムキル：",
-        "폭탄 처치: "];
-    healthRecalledStr = [
-        "HP Recalled: ", 
-        "リコール回復：",
-        "생명력 되돌림"];
-    airShotAccStr = [
-        "Air Shot Acc: ", 
-        "空中攻撃命中率：",
-        "공중 공격 명중률: "];
-    killsWhileMidAirStr = [
-        "Mid-air Kills: ", 
-        "空中キル：",
-        "공중에서 처치: "];
-    fortifyEfficacyStr = [
-        "Fortify Efficacy: ", 
-        "フォーティファイ能率：",
-        "방어 강화 효율성: "];
-    javelinsHitStr = [
-        "Javelins Hit: ", 
-        "槍投げ命中：",
-        "투창 명중: "];
-    javelinAccStr = [
-        "Javelin Acc: ", 
-        "槍投げ命中率：",
-        "투창 명중률: "];
-    javelinKillsStr = [
-        "Javelin Kills: ", 
-        "槍投げキル：",
-        "투창 처치: "];
-    shoutEfficacyStr = [
-        "Shout Efficacy: ", 
-        "シャウト能率：",
-        "외침 효율성: "];
-    healedFromAbilitiesStr = [
-        "HP from abilities: ", 
-        "アビリティ回復：",
-        "스킬 회복 생명력: "];
-    knivesHitStr = [
-        "Knives Hit: ", 
-        "ナイフ命中：",
-        "나이프 명중: "];
-    knifeAccStr = [
-        "Knife Acc: ", 
-        "ナイフ命中率：",
-        "나이프 명중률: "];
-    knifeKillsStr = [
-        "Knife Kills: ", 
-        "ナイフキル：",
-        "나이프 처치: "];
-    rocksHitStr = [
-        "Rocks Hit: ", 
-        "アクリーション命中：",
-        "강착 명중: "];
-    rockAccStr = [
-        "Rock Acc: ", 
-        "アクリーション命中率：",
-        "강착 명중률: "];
-    focusingBeamAccStr = [
-        "Beam Acc: ", 
-        "ビーム命中率：",
-        "광선 명중률: "];
-    focusingBeamKillsStr = [
-        "Beam Kills: ", 
-        "ビームキル：",
-        "광선 처치: "];
-    focusingBeamEfficacyStr = [
-        "Beam Efficacy: ", 
-        "ビーム能率：",
-        "광선 효율성:"];
-    hooksHitStr = [
-        "Hooks Hit: ", 
-        "フック命中：",
-        "갈고리 명중: "];
-    hookAccStr = [
-        "Hook Acc: ", 
-        "フック命中率：",
-        "갈고리 명중률: "];
-    firestrikesHitStr = [
-        "Firestrikes Hit: ", 
-        "ファイア命中：",
-        "화염 강타 명중: "];
-    firestrikeAccStr = [
-        "Firestrike Acc: ", 
-        "ファイア命中率：",
-        "화염 강타 명중률: "];
-    firestrikeKillsStr = [
-        "Firestrike Kills: ", 
-        "ファイアキル：",
-        "화염 강타 처치: "];
-    whipshotsHitStr = [
-        "Whipshots Hit: ", 
-        "ウィップ・ショット命中：",
-        "도리깨 투척 명중: "];
-    whipshotAccStr = [
-        "Whipshot Acc: ", 
-        "ウィップ・ショット命中率：",
-        "도리깨 투척 명중률: "];
-    whipshotKillsStr = [
-        "Whipshot Kills: ", 
-        "ウィップ・ショットキル：",
-        "도리깨 투척 처치: "];
-    nemesisEfficacyStr = [
-        "Nemesis Efficacy: ", 
-        "ネメシス能率：",
-        "네메시스 효율성: "];
+    // sleepDartAccStr = [
+    //     "Sleep Dart Acc: ", 
+    //     "スリープ・ダーツ命中率：",
+    //     "수면총 명중률: "];
+    // sleepDartsHitStr = [
+    //     "Sleep Darts Hit: ", 
+    //     "スリープ・ダーツ命中：",
+    //     "수면총 명중: "];
+    // coachGunKillsStr = [
+    //     "Coach Gun Kills: ", 
+    //     "コーチ・ガンキル：",
+    //     "충격 샷건으로 처치: "];
+    // dynamiteKillsStr = [
+    //     "Dynamite Kills: ", 
+    //     "ダイナマイトキル：",
+    //     "다이너마이 처치: "];
+    // grenadesStuckStr = [
+    //     "Grenades Stuck: ", 
+    //     "グレネード直撃：",
+    //     "수류탄 명중: "];
+    // grenadeStickAccStr = [
+    //     "Grenade Stick Acc: ", 
+    //     "グレネード直撃命中率：",
+    //     "수류탄 명중 명중률: "];
+    // grenadeKillsStr = [
+    //     "Grenade Kills: ", 
+    //     "グレネードキル：",
+    //     "수류탄 처치: "];
+    // damageDeflectedStr = [
+    //     "DMG Deflected: ",
+    //     "反射ダメージ：",
+    //     "튕겨낸 피해: "];
+    // healUsageStr = [
+    //     "Heal Usage: ", 
+    //     "ヒーリング使用：",
+    //     "치유 사용량: "];
+    // speedUsageStr = [
+    //     "Speed Usage: ", 
+    //     "スピード使用：",
+    //     "가속 사용량: "];
+    // avgTimeOnWallStr = [
+    //     "Avg Time On Wall: ", 
+    //     "平均壁の上時間：",
+    //     "평균 벽 위 시간: "];
+    // directHitAccStr = [
+    //     "Dir Hit Acc: ", 
+    //     "直撃命中率：",
+    //     "명중률: "];
+    // concBlastKillsStr = [
+    //     "Conc Blast Kills: ", 
+    //     "コンカッシブキル：",
+    //     "충격탄 처치: "];
+    // airTimeEfficacyStr = [
+    //     "Air Time Efficacy: ", 
+    //     "滞空時間能率：",
+    //     "공중 시간 효율성: "];
+    // avgTimeInAirStr = [
+    //     "Avg Time In Air: ", 
+    //     "平均滞空時間：",
+    //     "평균 공중 시간"];
+    // railgunKillsStr = [
+    //     "Railgun Kills: ", 
+    //     "レールガンキル：",
+    //     "레일건 처치: "];
+    // railgunAccStr = [
+    //     "Railgun Acc: ", 
+    //     "レールガン命中率：",
+    //     "레일건 명중률"];
+    // avgChargeStr = [
+    //     "Avg Charge: ", 
+    //     "平均チャージ：",
+    //     "평균 충전: "];
+    // distanceTeleportedStr = [
+    //     "Dist Teleported: ", 
+    //     "テレポート距離：",
+    //     "순간이동 거리: "];
+    // virusHitsStr = [
+    //     "Virus Hits: ", 
+    //     "ウイルス命中：",
+    //     "바이러스로 명중: "];
+    // virusAccStr = [
+    //     "Virus Acc: ", 
+    //     "ウイルス命中率：",
+    //     "바이러스로 명중률: "];
+    // virusKillsStr = [
+    //     "Virus Kills: ", 
+    //     "ウイルスキル：",
+    //     "바이러스로 처치: "];
+    // hammerKillsStr = [
+    //     "Hammer Kills: ", 
+    //     "ハンマーキル：",
+    //     "망치 처치: "];
+    // overloadEfficacyStr = [
+    //     "Overload Efficacy: ", 
+    //     "オーバーロード能率：",
+    //     "과부하로 효율성: "];
+    // bombsStuckStr = [
+    //     "Bombs Stuck: ", 
+    //     "ボム付着：",
+    //     "폭탄 명중: "];
+    // bombsStickAccStr = [
+    //     "Bomb Stick Acc: ", 
+    //     "ボム付着命中率：",
+    //     "폭탄 부착률: "];
+    // bombKillsStr = [
+    //     "Bomb Kills: ", 
+    //     "ボムキル：",
+    //     "폭탄 처치: "];
+    // healthRecalledStr = [
+    //     "HP Recalled: ", 
+    //     "リコール回復：",
+    //     "생명력 되돌림"];
+    // airShotAccStr = [
+    //     "Air Shot Acc: ", 
+    //     "空中攻撃命中率：",
+    //     "공중 공격 명중률: "];
+    // killsWhileMidAirStr = [
+    //     "Mid-air Kills: ", 
+    //     "空中キル：",
+    //     "공중에서 처치: "];
+    // fortifyEfficacyStr = [
+    //     "Fortify Efficacy: ", 
+    //     "フォーティファイ能率：",
+    //     "방어 강화 효율성: "];
+    // javelinsHitStr = [
+    //     "Javelins Hit: ", 
+    //     "槍投げ命中：",
+    //     "투창 명중: "];
+    // javelinAccStr = [
+    //     "Javelin Acc: ", 
+    //     "槍投げ命中率：",
+    //     "투창 명중률: "];
+    // javelinKillsStr = [
+    //     "Javelin Kills: ", 
+    //     "槍投げキル：",
+    //     "투창 처치: "];
+    // shoutEfficacyStr = [
+    //     "Shout Efficacy: ", 
+    //     "シャウト能率：",
+    //     "외침 효율성: "];
+    // healedFromAbilitiesStr = [
+    //     "HP from abilities: ", 
+    //     "アビリティ回復：",
+    //     "스킬 회복 생명력: "];
+    // knivesHitStr = [
+    //     "Knives Hit: ", 
+    //     "ナイフ命中：",
+    //     "나이프 명중: "];
+    // knifeAccStr = [
+    //     "Knife Acc: ", 
+    //     "ナイフ命中率：",
+    //     "나이프 명중률: "];
+    // knifeKillsStr = [
+    //     "Knife Kills: ", 
+    //     "ナイフキル：",
+    //     "나이프 처치: "];
+    // rocksHitStr = [
+    //     "Rocks Hit: ", 
+    //     "アクリーション命中：",
+    //     "강착 명중: "];
+    // rockAccStr = [
+    //     "Rock Acc: ", 
+    //     "アクリーション命中率：",
+    //     "강착 명중률: "];
+    // focusingBeamAccStr = [
+    //     "Beam Acc: ", 
+    //     "ビーム命中率：",
+    //     "광선 명중률: "];
+    // focusingBeamKillsStr = [
+    //     "Beam Kills: ", 
+    //     "ビームキル：",
+    //     "광선 처치: "];
+    // focusingBeamEfficacyStr = [
+    //     "Beam Efficacy: ", 
+    //     "ビーム能率：",
+    //     "광선 효율성:"];
+    // hooksHitStr = [
+    //     "Hooks Hit: ", 
+    //     "フック命中：",
+    //     "갈고리 명중: "];
+    // hookAccStr = [
+    //     "Hook Acc: ", 
+    //     "フック命中率：",
+    //     "갈고리 명중률: "];
+    // firestrikesHitStr = [
+    //     "Firestrikes Hit: ", 
+    //     "ファイア命中：",
+    //     "화염 강타 명중: "];
+    // firestrikeAccStr = [
+    //     "Firestrike Acc: ", 
+    //     "ファイア命中率：",
+    //     "화염 강타 명중률: "];
+    // firestrikeKillsStr = [
+    //     "Firestrike Kills: ", 
+    //     "ファイアキル：",
+    //     "화염 강타 처치: "];
+    // whipshotsHitStr = [
+    //     "Whipshots Hit: ", 
+    //     "ウィップ・ショット命中：",
+    //     "도리깨 투척 명중: "];
+    // whipshotAccStr = [
+    //     "Whipshot Acc: ", 
+    //     "ウィップ・ショット命中率：",
+    //     "도리깨 투척 명중률: "];
+    // whipshotKillsStr = [
+    //     "Whipshot Kills: ", 
+    //     "ウィップ・ショットキル：",
+    //     "도리깨 투척 처치: "];
+    // nemesisEfficacyStr = [
+    //     "Nemesis Efficacy: ", 
+    //     "ネメシス能率：",
+    //     "네메시스 효율성: "];
 
     ////////////////////
     // hero stats end //
