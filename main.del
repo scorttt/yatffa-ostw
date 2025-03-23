@@ -87,12 +87,12 @@ Boolean PlayerSwappedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
 rule: "v2.4.0 | Created by scort#12211"
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
-    aaaaaCreatedByScort = "2.4.0.250111 - scort";
     DisableInspectorRecording();
 }
 
 rule: "Initial Global"
 {
+    aaaaaCreatedByScort = "2.4.0.250111 - scort";
     dbgUsrs = ["scort", "gigaballs"];
 
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
