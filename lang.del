@@ -294,11 +294,11 @@ rule: "Init Strings"
 
     playerWasAFKKickedStr = [
         "{player} was kicked after {minutes} minutes of inactivity", 
-        "{player}さん{minutes}分間のAFKの後キックされました", 
+        "{player}さんは{minutes}分間の放置（AFK）でキックされました", 
         "{player}님이 {minutes}분간의 비활동 후 추방되었습니다"];
     playerAFKKickTimerStr = [
         "You will be kicked for inactivity in {minutes}{seconds}", 
-        "AFKだから{minutes}{seconds}でキックされる", 
+        "放置状態が{minutes}{seconds}続くとキックされます", 
         "비활동으로 인해 {minutes}{seconds} 후 추방됩니다"];
 
 
