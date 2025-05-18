@@ -150,7 +150,7 @@ rule: "Initial Global"
     S_ORB_COLLECTION_DESPAWN = WorkshopSettingToggle("H. Healing Pickups (Only applicable if \"Health Pickups\" is the healing type)", "All pickups disappear after collection", false, 2);
     S_ORB_COLLECT_DIST = WorkshopSettingReal("H. Healing Pickups (Only applicable if \"Health Pickups\" is the healing type)", "Pickup Collection Distance (Meters)", 1.5, 1, 3, 3);
 
-    Number credit! = WorkshopSettingCombo("Z. Credit", "Credit", 0, ["scort#11221", "さるよ (JP Locale)", "Josbird (Cursor math)"], 1000);
+    Number credit! = WorkshopSettingCombo("Z. Credit", "Credit", 0, ["scort#11221", "Josbird (Cursor math)", "Please credit!"], 1000);
     credit = WorkshopSettingCombo("Z. Credit", "Import Codes", 0, ["BXRXY (NA/EU)", "5RKYY (JP)"], 1000);
 
     // heal amount

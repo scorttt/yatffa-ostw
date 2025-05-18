@@ -169,7 +169,7 @@ globalvar String[] disableRandomHeroNotifStr!;
 
 rule: "Init Strings"
 {
-    # jp translator: saruyo/さるよ, scort. kr translator: N/A, ai translated based on english and japanese strings
+    # kr is ai translated based on english and japanese strings
     // TODO: find someone to manually verify kr strings
     holdToOpenMenuStr = [
         "Hold [{interact}] to open menu", 
