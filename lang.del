@@ -199,7 +199,7 @@ rule: "Init Strings"
 
     pressToRespawnInstantlyStr = [
         "{interact} to respawn instantly", 
-        "「{interact}」を直ぐにリスポーンする",
+        "「{interact}」ですぐにリスポーン",
         "즉시 리스폰하려면 [{interact}]를 누릅니다."];
     useNormalHeroSelectStr = [
         "Use normal hero select to change hero", 
@@ -228,7 +228,7 @@ rule: "Init Strings"
         "{number}명 연속 킬! 이 로비의 최고 기록입니다!"];
     playerGotServerBestKillStreakStr = [
         "{player} got a {number} player killstreak! The lobby's best!", 
-        "{player}さんは{number}人連続キルを得ました！このロビーで最高！",
+        "{player}さんは{number}人連続キルを達成！このロビーで最高！",
         "{player}님이 {number}명 연속 킬을 달성했습니다! 이 로비의 최고 기록입니다!"];
     youStr = [
         " (You)", 
@@ -236,7 +236,7 @@ rule: "Init Strings"
         " (당신)"];
     bestKillStreakByPlayer = [
         "Best Streak: {number} by {player}", 
-        "最高連続キル：{player}さん{number}人殺した",
+        "最高連続キル記録：{player}さんが{number}キルを達成！",
         "최고 연속 킬: {player}님 {number}명 처치"];
 
 
