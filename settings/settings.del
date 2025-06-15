@@ -24,6 +24,7 @@ settings
             {
                 Château Guillard
             }
+            Enable Perks: On
             Score To Win: 60
         }
     }
@@ -38,6 +39,7 @@ settings
                 Baptiste
                 Bastion
                 Doomfist
+                Freja
                 Genji
                 Hanzo
                 Junker Queen
@@ -134,6 +136,10 @@ settings
                 Energy Javelin Cooldown Time: 50%
                 Fortify: Off
                 Javelin Spin: Off
+            }
+            Freja
+            {
+                Ultimate Ability Bola Shot: Off
             }
             Genji
             {
