@@ -28,6 +28,7 @@ if (S_HOT_INTERRUPT)
 if (healing)
 if (IsAlive())
 if (EventWasHealthPack())
+if (EventHealing() >= 75)
 {
     StopHealReward();
 }
