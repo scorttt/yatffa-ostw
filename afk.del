@@ -8,9 +8,9 @@ Event.OngoingPlayer
 if (S_AFK_ENABLED)
 if (!isDbgUsr)
 if (!IsDummyBot())
-if (NormalizedHealth() == 1)
 if (!HasSpawned() ||
    (HasSpawned() && 
+    NormalizedHealth() == 1 &&
     ThrottleOf() == Vector() && 
     !IsPrimaryHeld() && 
     !IsSecondaryHeld() &&
