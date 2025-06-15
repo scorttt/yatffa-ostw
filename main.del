@@ -92,7 +92,7 @@ rule: "v2.4.0 | Created by scort#12211"
 
 rule: "Initial Global"
 {
-    aaaaaCreatedByScort = "2.4.0.250518 - scort#12211";
+    aaaaaCreatedByScort = "2.4.0.250615 - scort#12211";
     dbgUsrs = ["scort", "gigaballs"];
 
     boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
