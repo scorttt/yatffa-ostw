@@ -24,7 +24,7 @@ settings
             {
                 Château Guillard
             }
-            Enable Perks: On
+            // Enable Perks: On
             Score To Win: 60
         }
     }
