@@ -236,7 +236,7 @@ rule: "Init Strings"
         " (당신)"];
     bestKillStreakByPlayer = [
         "Best Streak: {number} by {player}", 
-        "最高連続キル記録：{player}さんが{number}キルを達成！",
+        "最高連続キル：{player}さんが{number}キル",
         "최고 연속 킬: {player}님 {number}명 처치"];
 
 
