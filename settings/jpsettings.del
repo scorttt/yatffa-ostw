@@ -9,6 +9,7 @@ settings
         Max FFA Players: 12
         Max Spectators: 3
         Return To Lobby: Never
+        Data Center Preference: Japan2
     }
     modes
     {
