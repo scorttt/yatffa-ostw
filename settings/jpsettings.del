@@ -33,6 +33,8 @@ settings
     {
         General
         {
+            Passive Health Regeneration: Off
+
             enabled heroes
             {
                 Ana
@@ -226,6 +228,6 @@ settings
     main
     {
         Mode Name: "Tryhard FFA (JP)"
-        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.0｜2025年06月15日"
+        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.0｜2025年07月14日"
     }
 }

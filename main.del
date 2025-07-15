@@ -64,7 +64,7 @@ globalvar Boolean S_SCORE_TO_WIN;
 globalvar Number S_FLAT_HEAL_AMT;
 globalvar Boolean S_HERO_HEALTH_CAP;
 globalvar Number S_HERO_HEALTH_CAP_AMT;
-globalvar Boolean S_STOP_OW_AUTOHEAL;
+// globalvar Boolean S_STOP_OW_AUTOHEAL;
 globalvar Boolean flatHeal;
 globalvar Number S_HEAL_PERCENT;
 globalvar Number finalHeal;
@@ -94,7 +94,7 @@ rule: "v2.4.0 | Created by scort#12211"
 
 rule: "Initial Global"
 {
-    aaaaaCreatedByScort = "2.4.0.250615 - scort#12211";
+    aaaaaCreatedByScort = "2.4.0.250714 - scort#12211";
     dbgUsrs = ["scort", "gigaballs"];
 
     # unsanitized string stuff for the menu cursor, might break in future updates
@@ -105,7 +105,8 @@ rule: "Initial Global"
     txCharacter = StringSlice(StringReplace("______________________________________________________________________________________________________________________________〼", txCharacter, FirstOf(LastCreatedEntity())), 126, true);
     DestroyAllDummyBots();
 
-    boundingBoxArr = [Hero.Pharah, Hero.Lucio]; // array of heroes that are affected by the bounding box below mega on chataeu
+    # array of heroes that are affected by the bounding box below mega on chataeu
+    boundingBoxArr = [Hero.Pharah, Hero.Lucio];
 
     S_LITE_MODE = WorkshopSettingToggle("!. YATFFA Lite", "Enable Lite Mode (Disables everything except for Healing, destroying railings, and instant respawns)", false, 0);
 
@@ -116,7 +117,7 @@ rule: "Initial Global"
     S_DESTROY_RAILINGS = WorkshopSettingToggle("A. General", "Destroy Railings on Round Start (Chataeu Guillard Only)", true, 4);
 
     S_USE_OW_SCOREBORD = WorkshopSettingToggle("B. Overwatch Changes", "Use Overwatch's Deathmatch Scoreboard", false, 0);
-    S_STOP_OW_AUTOHEAL = WorkshopSettingToggle("B. Overwatch Changes", "Disable Overwatch's Auto Heal (Affects Shield Health Regen)", false, 1);
+    // S_STOP_OW_AUTOHEAL = WorkshopSettingToggle("B. Overwatch Changes", "Disable Overwatch's Auto Heal (Affects Shield Health Regen)", false, 1);
     S_HERO_HEALTH_CAP = WorkshopSettingToggle("B. Overwatch Changes", "Cap Hero Maximum Health on Spawn", true, 2);
     S_HERO_HEALTH_CAP_AMT = WorkshopSettingInteger("B. Overwatch Changes", "Maximum Hero Health (Only applicable if \"Cap Hero Health on Spawn\" is enabled)", 325, 150, 800, 3);
 
@@ -592,32 +593,32 @@ void RandomizeHeroPool() playervar "Randomize Hero Pool"
     // SmallMessage(player, randomHeroPool.Length);
 }
 
-rule: "Stop OW Auto Heal DPS/Tank"
-Event.OngoingPlayer
-if (S_STOP_OW_AUTOHEAL)
-if (IsAlive())
-if (HasSpawned())
-if (!playerCCed)
-if (!AllSupportHeroes().Contains(HeroOf()))
-if (NormalizedHealth() != 1)
-{
-    Wait(4.99);
-    Damage(player, null, 0.000001);
-    Heal(player, null, 0.000001);
-    LoopIfConditionIsTrue();
-}
+// rule: "Stop OW Auto Heal DPS/Tank"
+// Event.OngoingPlayer
+// if (S_STOP_OW_AUTOHEAL)
+// if (IsAlive())
+// if (HasSpawned())
+// if (!playerCCed)
+// if (!AllSupportHeroes().Contains(HeroOf()))
+// if (NormalizedHealth() != 1)
+// {
+//     Wait(4.99);
+//     Damage(player, null, 0.000001);
+//     Heal(player, null, 0.000001);
+//     LoopIfConditionIsTrue();
+// }
 
-rule: "Stop OW Auto Heal Support"
-Event.OngoingPlayer
-if (S_STOP_OW_AUTOHEAL)
-if (IsAlive())
-if (HasSpawned())
-if (!playerCCed)
-if (AllSupportHeroes().Contains(HeroOf()))
-if (NormalizedHealth() != 1)
-{
-    Wait(2.49);
-    Damage(player, null, 0.000001);
-    Heal(player, null, 0.000001);
-    LoopIfConditionIsTrue();
-}
+// rule: "Stop OW Auto Heal Support"
+// Event.OngoingPlayer
+// if (S_STOP_OW_AUTOHEAL)
+// if (IsAlive())
+// if (HasSpawned())
+// if (!playerCCed)
+// if (AllSupportHeroes().Contains(HeroOf()))
+// if (NormalizedHealth() != 1)
+// {
+//     Wait(2.49);
+//     Damage(player, null, 0.000001);
+//     Heal(player, null, 0.000001);
+//     LoopIfConditionIsTrue();
+// }
