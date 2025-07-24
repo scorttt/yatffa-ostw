@@ -422,13 +422,13 @@ if (IsInteractHeld())
     // cursor
     CreateInWorldText(
         VisibleTo:      player,
-        // Header:         "↖",
-        Header:         TXString("C0000000002DD21"),
-        // Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
+        Header:         "↖",
+        // Header:         TXString("C0000000002DD21"),
         Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
+        // Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
         TextColor:      selItem == Item.Invalid ? Rainbow() : HoverPulse(),
-        // Scale:          3,
-        Scale:          2,
+        Scale:          3,
+        // Scale:          2,
         Clipping:       Clipping.DoNotClip,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor
     );
