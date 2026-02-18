@@ -9,7 +9,6 @@ settings
         Max FFA Players: 12
         Max Spectators: 3
         Return To Lobby: Never
-        Data Center Preference: Japan2
     }
     modes
     {
@@ -34,18 +33,23 @@ settings
         General
         {
             Passive Health Regeneration: Off
+            Role Passives: Off
 
             enabled heroes
             {
                 Ana
+                Anran
                 Ashe
                 Baptiste
                 Bastion
                 Doomfist
+                Domina
+                Emre
                 Freja
                 Genji
                 Hanzo
                 Junker Queen
+                Jetpack Cat
                 Juno
                 Orisa
                 Illari
@@ -53,6 +57,7 @@ settings
                 Lifeweaver
                 Cassidy
                 Mei
+                Mizuki
                 Echo
                 Kiriko
                 Sombra
@@ -63,6 +68,7 @@ settings
                 Torbjörn
                 // Venture
                 Widowmaker
+                Wuyang
                 Zarya
                 Zenyatta
             }
@@ -70,6 +76,11 @@ settings
             {
                 Ultimate Ability Nano Boost: Off
                 Sleep Dart Cooldown Time: 80%
+            }
+            Anran 
+            {
+                Dancing Blaze: Off
+                Ultimate Ability Vermillion Ascent: Off
             }
             Cassidy
             {
@@ -100,10 +111,21 @@ settings
                 Reconfigure: Off
                 Ultimate Ability Configuration: Artillery: Off
             }
+            Domina 
+            {
+                Ultimate Ability Panopticon: Off 
+                Barrier Array: Off
+                Healing Dealt: 10%
+            }
             Echo
             {
                 Ultimate Ability Duplicate: Off
             }
+            Emre
+            {
+                Ultimate Ability Override Protocol: Off
+            }
+
             Torbjörn
             {
                 Deploy Turret: Off
@@ -117,15 +139,26 @@ settings
                 Primary Fire: Off
                 Ultimate Ability Blizzard: Off
             }
+            Mizuki 
+            {
+                Binding Chain: Off
+                Ultimate Ability Kekkai Sanctuary: Off 
+                Healing Dealt: 60%
+            }
             Hanzo
             {
                 Ultimate Ability Dragonstrike: Off
+            }
+            Jetpack Cat 
+            {
+                Ultimate Ability Catnapper: Off
+                Healing Dealt: 40%
             }
             Junker Queen
             {
                 Commanding Shout: Off
                 Carnage: Off
-                Jagged Blade Cooldown Time: 75%
+                Jagged Blade Gracie Cooldown Time: 75%
                 Ultimate Ability Rampage: Off
             }
             Juno
@@ -189,7 +222,7 @@ settings
                 Ultimate Ability Tree of Life: Off
                 Petal Platform Health: 25%
             }
-            Lúcio
+            Lúcio 
             {
                 Ultimate Ability Sound Barrier: Off
                 Healing Dealt: 40%
@@ -228,6 +261,6 @@ settings
     main
     {
         Mode Name: "Tryhard FFA (JP)"
-        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.0｜2025年07月14日"
+        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.1｜2026年02月18日"
     }
 }
