@@ -26,6 +26,7 @@ settings
             }
             // Enable Perks: On
             Score To Win: 60
+            Health Pack Respawn Time Scalar: 85%
         }
     }
     heroes
