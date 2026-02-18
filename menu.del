@@ -186,7 +186,7 @@ if (S_MENU)
     # all hud toggle
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         <"<0>   <1> ▼<2>", local.showStatsEnabled && local.showStreakEnabled 
+        Header:         <"<0>   <1><2>", local.showStatsEnabled && local.showStreakEnabled 
                                                 ? IconString(Icon.Checkmark) 
                                                 : local.showStatsEnabled || local.showStreakEnabled && !(local.showStatsEnabled && local.showStreakEnabled) 
                                                     ? IconString(Icon.Asterisk) 
@@ -253,7 +253,7 @@ if (S_MENU)
     # healing toggle
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         <"<0>   <1><2>▼<3>", local.healEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
+        Header:         <"<0>   <1><2><3>", local.healEnabled ? IconString(Icon.Checkmark) : IconString(Icon.No), 
                                     healingItemStr[local.LangID],
                                     healTypeDescriptorStr[local.LangID],
                                     local.favItem == Item.Heal 
@@ -335,7 +335,7 @@ if (S_MENU)
     # language
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
-        Header:         <"<0> ▼", languageItemStr[local.LangID]>,
+        Header:         <"<0>", languageItemStr[local.LangID]>,
         Position:       RenderPosOf(0, local.itemYPos[9]), 
         Scale:          1.25,
         TextColor:      Color.White,
@@ -400,7 +400,7 @@ if (S_MENU)
     CreateInWorldText(
         VisibleTo:      localPlayerHasMenuOpen ? local : null, 
         Header:         modifierItems.Contains(local.selItem)
-                            ? <"<0>  ←                       →   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire)> 
+                            ? <"<0>  <2>                       <3>   <1>", BindString(Button.SecondaryFire), BindString(Button.PrimaryFire), IconString(Icon.ArrowLeft), IconString(Icon.ArrowRight)> 
                             : "",
         Position:       SlowRenderPosOf(0.01, local.itemYPos[local.selItem + 2] - 0.005), 
         Scale:          1.8,
@@ -422,13 +422,13 @@ if (IsInteractHeld())
     // cursor
     CreateInWorldText(
         VisibleTo:      player,
-        Header:         "↖",
-        // Header:         TXString("C0000000002DD21"),
-        Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
+        // Header:         "↖",
+        Header:         TXString("C0000000002DD21"),
         // Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
+        Position:       RenderPosOf(CursorX(player) + 0.05, CursorY(player) - 0.105),
         TextColor:      selItem == Item.Invalid ? Rainbow() : HoverPulse(),
-        Scale:          3,
-        // Scale:          2,
+        // Scale:          3,
+        Scale:          2,
         Clipping:       Clipping.DoNotClip,
         Reevaluation:   InworldTextRev.VisibleToPositionStringAndColor
     );

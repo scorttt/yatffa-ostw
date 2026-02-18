@@ -83,10 +83,10 @@ playervar Boolean hasOpenedMenu;
 playervar Number userJoinTime;
 
 globalvar String txCharacter;
-// String TXString(String value): "{0}TX {1}>".Format([txCharacter, value]);
+String TXString(String value): "{0}TX {1}>".Format([txCharacter, value]);
 
-Boolean PlayerSwappedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
-rule: "v2.4.0 | Created by scort#12211"
+Boolean PlayerChangedHero(Player p = player): p.heroOnLastDeath != HeroOf(p);
+rule: "v2.4.1 | Created by scort#12211"
 {
     # OSTW source code can be found at https://github.com/scorttt/yatffa-ostw - workshop.codes listing: https://workshop.codes/BKRXY
     DisableInspectorRecording();
@@ -94,19 +94,19 @@ rule: "v2.4.0 | Created by scort#12211"
 
 rule: "Initial Global"
 {
-    aaaaaCreatedByScort = "2.4.0.250714 - scort#12211";
+    aaaaaCreatedByScort = "2.4.1.260218 - scort#12211";
     dbgUsrs = ["scort", "gigaballs"];
 
     # unsanitized string stuff for the menu cursor, might break in future updates
-    // CreateDummyBot(<Hero>AllHeroes(), <Team>host, false, null, null);
-    // StartForcingDummyBotName(LastCreatedEntity(), "______________________________________________________________________________________________________________________________〼");
-    // txCharacter = StringSplit(FirstOf(LastCreatedEntity()), EmptyArray());
-    // StartForcingDummyBotName(LastCreatedEntity(), "______________________________________________________________________________________________________________________________ࡀ");
-    // txCharacter = StringSlice(StringReplace("______________________________________________________________________________________________________________________________〼", txCharacter, FirstOf(LastCreatedEntity())), 126, true);
-    // DestroyAllDummyBots();
+    CreateDummyBot(<Hero>AllHeroes(), <Team>host, false, null, null);
+    StartForcingDummyBotName(LastCreatedEntity(), "______________________________________________________________________________________________________________________________〼");
+    txCharacter = StringSplit(FirstOf(LastCreatedEntity()), EmptyArray());
+    StartForcingDummyBotName(LastCreatedEntity(), "______________________________________________________________________________________________________________________________ࡀ");
+    txCharacter = StringSlice(StringReplace("______________________________________________________________________________________________________________________________〼", txCharacter, FirstOf(LastCreatedEntity())), 126, true);
+    DestroyAllDummyBots();
 
-    # array of heroes that are affected by the bounding box below mega on chataeu
-    boundingBoxArr = [Hero.Pharah, Hero.Lucio];
+    // array of heroes that are affected by the bounding box below mega on chataeu
+    // boundingBoxArr = [Hero.Pharah, Hero.Lucio];
 
     S_LITE_MODE = WorkshopSettingToggle("!. YATFFA Lite", "Enable Lite Mode (Disables everything except for Healing, destroying railings, and instant respawns)", false, 0);
 
