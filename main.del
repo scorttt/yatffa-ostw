@@ -392,13 +392,6 @@ if (HasSpawned())
 
     ResetHeroAvailability();
 
-    if (randomHeroDisabledFromSwap)
-    {
-        randomHeroDisabledFromSwap = false;
-        favStatusIcon = IconString(Icon.No);
-        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), swapDisabledRandomHeroNotifStr[local.LangID]>);
-    }
-
     checkSpawn = true;
 
     Wait(0.08);
@@ -409,6 +402,13 @@ if (HasSpawned())
     SetAbilityCooldown(player, Button.Ability2, 0);
     SetAbilityCooldown(player, Button.PrimaryFire, 0);
     SetAbilityCooldown(player, Button.SecondaryFire, 0);
+
+    if (randomHeroDisabledFromSwap)
+    {
+        randomHeroDisabledFromSwap = false;
+        favStatusIcon = IconString(Icon.No);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), swapDisabledRandomHeroNotifStr[local.LangID]>);
+    }
 
     Wait(0.5);
     async CapSpawnHealth();
