@@ -86,6 +86,7 @@ globalvar String[] hideStatsNotifStr!;
 globalvar String[] hideKillStreaksNotifStr!;
 globalvar String[] disableHealNotifStr!;
 globalvar String[] disableRandomHeroNotifStr!;
+globalvar String[] swapDisabledRandomHeroNotifStr!;
 
 // hero stat values
 // playervar String[] statMetric;
@@ -478,6 +479,11 @@ rule: "Init Strings"
         "Random Hero Disabled!", 
         "ランダム・ヒーローを無効！",
         "무작위 영웅 비활성화됨!"];
+    swapDisabledRandomHeroNotifStr = [
+        "Hero changed, Random Hero Disabled!",
+        "ヒーローが変わった、ランダム・ヒーローを無効！",
+        "영웅이 바뀌었다, 무작위 영웅 비활성화됨!"];
+    
 
 
 

@@ -24,7 +24,7 @@ import "lang.del";
 // import "hero specific/venture.del";
 
 globalvar Any aaaaaCreatedByScort;
-globalvar Hero[] boundingBoxArr;
+// globalvar Hero[] boundingBoxArr;
 globalvar Boolean S_LITE_MODE;
 
 globalvar Number S_MATCH_TIME;
@@ -330,6 +330,7 @@ if (HasSpawned())
         SmallMessage(player, <"   <0><1>", welcomeStr[local.LangID], StringReplace(holdToOpenMenuStr[local.LangID], "{interact}", BindString(Button.Interact))>);
 }
 
+playervar Boolean randomHeroDisabledFromSwap;
 rule: "Spawning : Respawn"
 Event.OngoingPlayer
 if (IsAlive())
@@ -365,9 +366,7 @@ if (HasSpawned())
         {
             StopForcingHero();
             randomHeroEnabled = false;
-
-            favStatusIcon = IconString(Icon.No);
-            SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), swapDisabledRandomHeroNotifStr[local.LangID]>);
+            randomHeroDisabledFromSwap = true;
         }
     }
 
@@ -392,6 +391,14 @@ if (HasSpawned())
     MinWait();
 
     ResetHeroAvailability();
+
+    if (randomHeroDisabledFromSwap)
+    {
+        randomHeroDisabledFromSwap = false;
+        favStatusIcon = IconString(Icon.No);
+        SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), swapDisabledRandomHeroNotifStr[local.LangID]>);
+    }
+
     checkSpawn = true;
 
     Wait(0.08);
@@ -536,44 +543,44 @@ if (mapIsChateau)
     }
 }
 
-rule: "Bounding Box"
-Event.OngoingPlayer
-if (mapIsChateau)
-if (boundingBoxArr.Contains(HeroOf()))
-if (PosOf().Y < 6)
-if (IsInRange(PosOf().Z, 108.50, 116.50))
-if (IsInRange(PosOf().X, 186.50, 199.50))
-{
-    if (IsInRange(PosOf().X, 198.60, 199.50))
-        ApplyImpulse(player, Vector(1, 0, 0), 1);
-    else if (IsInRange(PosOf().X, 186.50, 189.70))
-        ApplyImpulse(player, Vector(-1, 0, 0), 1);
-    else if (IsInRange(PosOf().Z, 112.70, 116.50))
-        ApplyImpulse(player, Vector(0, 0, 1), 1);
-    Wait(0.05);
-    LoopIfConditionIsTrue();
-}
+// rule: "Bounding Box"
+// Event.OngoingPlayer
+// if (mapIsChateau)
+// if (boundingBoxArr.Contains(HeroOf()))
+// if (PosOf().Y < 6)
+// if (IsInRange(PosOf().Z, 108.50, 116.50))
+// if (IsInRange(PosOf().X, 186.50, 199.50))
+// {
+//     if (IsInRange(PosOf().X, 198.60, 199.50))
+//         ApplyImpulse(player, Vector(1, 0, 0), 1);
+//     else if (IsInRange(PosOf().X, 186.50, 189.70))
+//         ApplyImpulse(player, Vector(-1, 0, 0), 1);
+//     else if (IsInRange(PosOf().Z, 112.70, 116.50))
+//         ApplyImpulse(player, Vector(0, 0, 1), 1);
+//     Wait(0.05);
+//     LoopIfConditionIsTrue();
+// }
 
-playervar Boolean playerCCed;
-rule: "Player cced" // this is so fucking ugly
-Event.OngoingPlayer
-if (HasStatus(player, Status.Asleep) ||
-    HasStatus(player, Status.Frozen) ||
-    HasStatus(player, Status.KnockedDown) ||
-    HasStatus(player, Status.Rooted) ||
-    HasStatus(player, Status.Stunned))
-{
-    playerCCed = true;
+// playervar Boolean playerCCed;
+// rule: "Player cced" // this is so fucking ugly
+// Event.OngoingPlayer
+// if (HasStatus(player, Status.Asleep) ||
+//     HasStatus(player, Status.Frozen) ||
+//     HasStatus(player, Status.KnockedDown) ||
+//     HasStatus(player, Status.Rooted) ||
+//     HasStatus(player, Status.Stunned))
+// {
+//     playerCCed = true;
 
-    WaitUntil(!HasStatus(player, Status.Asleep) &&
-              !HasStatus(player, Status.Frozen) &&
-              !HasStatus(player, Status.KnockedDown) &&
-              !HasStatus(player, Status.Rooted) &&
-              !HasStatus(player, Status.Stunned),
-    5);
+//     WaitUntil(!HasStatus(player, Status.Asleep) &&
+//               !HasStatus(player, Status.Frozen) &&
+//               !HasStatus(player, Status.KnockedDown) &&
+//               !HasStatus(player, Status.Rooted) &&
+//               !HasStatus(player, Status.Stunned),
+//     5);
 
-    playerCCed = false;
-}
+//     playerCCed = false;
+// }
 
 void RandomizeHeroPool() playervar "Randomize Hero Pool"
 {
