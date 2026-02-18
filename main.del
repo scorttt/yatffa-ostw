@@ -337,19 +337,17 @@ if (HasSpawned())
 {
     if (randomHeroEnabled)
     {
-        if (!PlayerSwappedHero())
-        {
-            if (randomizerType == RandomizerType.Queue)
-            {
-                if (firstPoolRandomized)
-                {
-                    Hero chosenRandomHero = randomHeroPool.First;
-                    ForcePlayerHero(player, chosenRandomHero);
-                    randomHeroPool = randomHeroPool - chosenRandomHero;
-                    StopForcingHero();
+        Hero chosenRandomHero = randomHeroPool.First;
 
-                    // "Spawning : Previous Hero" OnDeath rule checks if the randomHeroPool is empty then randomizes it again
-                }
+        if (!PlayerChangedHero() || !S_MODIFY_RANDOMHERO)
+        {
+            if (firstPoolRandomized && randomizerType == RandomizerType.Queue)
+            {
+                ForcePlayerHero(player, chosenRandomHero);
+                randomHeroPool = randomHeroPool - chosenRandomHero;
+                StopForcingHero();
+
+                // "Spawning : Previous Hero" OnDeath rule checks if the randomHeroPool is empty then randomizes it again
             }
             else
             {
@@ -363,14 +361,17 @@ if (HasSpawned())
                 heroArr = AllowedHeroes() + heroOnLastDeath;
             }
         }
-        else
+        else if (S_MODIFY_RANDOMHERO && PlayerChangedHero())
         {
             StopForcingHero();
             randomHeroEnabled = false;
+
+            favStatusIcon = IconString(Icon.No);
+            SmallMessage(player, <"   <0>  <1>", IconString(Icon.No), swapDisabledRandomHeroNotifStr[local.LangID]>);
         }
     }
 
-    if (PlayerSwappedHero())
+    if (PlayerChangedHero())
     {
         // SetHeroStats();
         SetMaxHealth(player, 100);
@@ -409,7 +410,7 @@ if (HasSpawned())
 playervar Hero heroOnLastDeath;
 rule: "Spawning : Previous Hero"
 Event.OnDeath
-if (PlayerSwappedHero())
+if (PlayerChangedHero())
 {
     heroOnLastDeath = HeroOf();
 
