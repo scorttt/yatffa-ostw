@@ -62,6 +62,7 @@ settings
                 Echo
                 Kiriko
                 Sombra
+                Sierra
                 Pharah
                 Soldier: 76
                 Sojourn
@@ -262,6 +263,6 @@ settings
     main
     {
         Mode Name: "Tryhard FFA (JP)"
-        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.1｜2026年02月18日"
+        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.1｜2026年04月14日"
     }
 }
