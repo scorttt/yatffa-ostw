@@ -1,8 +1,8 @@
 // Created by scort: https://github.com/scorttt/yatffa-ostw
 // workshop.codes listing: https://workshop.codes/BKRXY
 
-import "settings/settings.del";
-// import "settings/jpsettings.del";
+// import "settings/settings.del";
+import "settings/jpsettings.del";
 // import "settings/debug_settings.del";
 
 import "../macros-ostw/main.del";
@@ -110,7 +110,7 @@ rule: "Initial Global"
 
     S_LITE_MODE = WorkshopSettingToggle("!. YATFFA Lite", "Enable Lite Mode (Disables everything except for Healing, destroying railings, and instant respawns)", false, 0);
 
-    S_DEF_LANG = WorkshopSettingCombo("A. General", "Language", 0, ["English", "日本語", "한국어"], 0);
+    S_DEF_LANG = WorkshopSettingCombo("A. General", "Language", 1, ["English", "日本語", "한국어"], 0);
     S_MATCH_TIME = WorkshopSettingInteger("A. General", "Match Time (Minutes)", 30, 5, 60, 1) * 60;
     S_INSTANT_RESPAWN = WorkshopSettingToggle("A. General", "Respawn instantly on Interact", true, 2);
     S_SCORE_TO_WIN = WorkshopSettingToggle("A. General", "Use Score Win Condition", true, 3);

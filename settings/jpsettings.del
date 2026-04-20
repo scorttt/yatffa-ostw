@@ -205,6 +205,10 @@ settings
                 Disruptor Shot: Off
                 Ultimate Generation - Combat Overclock: 80%
             }
+            Sierra
+            {
+                Ultimate Ability Trailblazer: Off
+            }
             Ashe
             {
                 Ultimate Ability B.O.B.: Off
