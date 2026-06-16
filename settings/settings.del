@@ -63,6 +63,7 @@ settings
                 Kiriko
                 Sombra
                 Sierra
+                Shion
                 Pharah
                 Soldier: 76
                 Sojourn
@@ -205,6 +206,10 @@ settings
                 Disruptor Shot: Off
                 Ultimate Generation - Combat Overclock: 80%
             }
+            Shion
+            {
+                Ultimate Ability Satsuriku Spree: Off
+            }
             Sierra
             {
                 Ultimate Ability Trailblazer: Off
@@ -271,6 +276,6 @@ settings
 Code: BKRXY | https://workshop.codes/BKRXY
 Support me: https://scort.cc/donate
 Favorite or use the above code instead of saving a preset!
-2.4.1 | April 14, 2026 | Trans rights!"
+2.4.1 | June 16, 2026 | Trans rights!"
     }
 }

@@ -63,6 +63,7 @@ settings
                 Kiriko
                 Sombra
                 Sierra
+                Shion
                 Pharah
                 Soldier: 76
                 Sojourn
@@ -205,6 +206,10 @@ settings
                 Disruptor Shot: Off
                 Ultimate Generation - Combat Overclock: 80%
             }
+            Shion
+            {
+                Ultimate Ability Satsuriku Spree: Off
+            }
             Sierra
             {
                 Ultimate Ability Trailblazer: Off
@@ -267,6 +272,6 @@ settings
     main
     {
         Mode Name: "Tryhard FFA (JP)"
-        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.1｜2026年04月14日"
+        Description: "Tryhard FFA\nコード：5RKYY｜https://workshop.codes/BKRXY\n作者：scort#11221（僕は英語だけ分かる！）\n2.4.1｜2026年06月16日"
     }
 }
