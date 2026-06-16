@@ -94,7 +94,7 @@ rule: "v2.4.1 | Created by scort#12211"
 
 rule: "Initial Global"
 {
-    aaaaaCreatedByScort = "2.4.1.260414 - scort#12211";
+    aaaaaCreatedByScort = "2.4.1.260616 - scort#12211";
     dbgUsrs = ["scort", "gigaballs"];
 
     # unsanitized string stuff for the menu cursor, might break in future updates
