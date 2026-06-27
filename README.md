@@ -12,8 +12,8 @@ Inspired by the Tryhard FFA lobbies hosted by Immanust in 2018/2019, YATFFA aims
 
 ## Features
 
-- **Extensive Workshop Settings for Lobby hosts**
-Customize a slew of options for your lobby via Workshop Settings
+### Extensive Workshop Settings for Lobby hosts
+- Customize a slew of options for your lobby via Workshop Settings
 
 ### In-Game Cursor Menu
 - Access and modify settings at anytime mid-game:
